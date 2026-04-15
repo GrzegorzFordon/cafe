@@ -1,0 +1,10 @@
+import image from "../../assets/rules.png"
+function HowTo() {
+  return (
+    <>
+      <div>HowTo</div>
+      <img src={image} width={"60%"} />
+    </>
+  );
+}
+export default HowTo;

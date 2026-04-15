@@ -1,0 +1,59 @@
+.navBar {
+  display: flex;
+  position: fixed;
+  top: 1rem;
+  background-color: rebeccapurple;
+  border-radius: 5px;
+  width: 95%;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  color: #aaa;
+  font-weight: bolder;
+  text-decoration: none;
+  transition: 100ms;
+  height: 50px;
+  z-index: 1;
+  box-shadow: 1px 1px 5px #111;
+}
+
+.navBar > a:hover {
+  color: #555;
+}
+
+.navBar__leading {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navBar__main {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navBar__actions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.homeButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  /* overflow: visible; */
+}
+
+a {
+  color: #aaa;
+  font-weight: bolder;
+  text-decoration: none;
+  transition: 100ms;
+}
+
+a:hover {
+  color: #555;
+}
