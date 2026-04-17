@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 // import useAuthStore from "../../../stores/useAuthStore.js";
-import {registerService} from "../../../services/authService.js";
+import {registerService} from "../services/authService.js";
 
 const useRegister = () => {
   const navigate = useNavigate();

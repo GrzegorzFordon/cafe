@@ -6,12 +6,6 @@
   align-items: center;
 }
 
-.multplayer_art_board {
-  height: 80%;
-  transform: scaleY(0.6);
-  /* width: ; */
-}
-
 .multplayer_art_table {
   position: absolute;
   transform: scale(0.8);
@@ -31,14 +25,4 @@
   left: 40%;
   transform: scale(0.3);
   transform-origin: 50% 50%;
-}
-
-.testbox{
-    background-color: green;
-    width: 200px;
-    height: 200px;
-}
-
-.multplayer_art_figurine{
-    position: absolute;
 }

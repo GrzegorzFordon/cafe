@@ -1,63 +1,47 @@
 import "dotenv/config";
 import express from "express";
 import http from "http";
-import { Server as SocketIOServer } from "socket.io";
 import cors from "cors";
 import path from "path";
-import moviesRouter from "./routes/movies.js";
-import usersRouter from "./routes/users.js";
-import authRouter from "./routes/auth.js";
+import moviesRouter from "./modules/movie/movies.routes.js";
+import usersRouter from "./modules/user/user.routes.js";
+import authRouter from "./modules/auth/auth.routes.js";
 import { logEvents, logger } from "./middleware/logger.js";
 import errorHandler from "./middleware/errorHandler.js";
 import cookieParser from "cookie-parser";
 import corsOptions from "./config/corsOptions.js";
 import connectDB from "./config/dbConn.js";
 import mongoose from "mongoose";
+import createWebSocketServer from "./socket/socket.server.js";
+import app from "./app.js"
 
-const app = express();
+// const app = express();
 
 const PORT = process.env.PORT || 3500;
 
-app.use("/static", express.static("public"));
-app.use(logger);
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(cookieParser());
+// app.use("/static", express.static("public"));
+// app.use(logger);
+// app.use(cors(corsOptions));
+// app.use(express.json());
+// app.use(cookieParser());
 
-connectDB();
 
 const httpServer = http.createServer(app);
 
-const io = new SocketIOServer(httpServer, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-  },
-});
 
-io.on("connection", (socket) => {
-  console.log(`User connected (${socket.id})`);
 
-  socket.on("send_message", (data) => {
-    console.log(data);
-    data.message += " back at you.";
-    io.emit("send_message", data);
-  });
+// app.get("/", (req, res) => {
+//   res.send("Welcome.");
+// });
 
-  socket.on("disconnect", () => {
-    console.log(`User disconnected (${socket.id})`);
-  });
-});
+// app.use("/movies", moviesRouter);
+// app.use("/users", usersRouter);
+// app.use("/auth", authRouter);
 
-app.get("/", (req, res) => {
-  res.send("Welcome.");
-});
+// app.use(errorHandler);
 
-app.use("/movies", moviesRouter);
-app.use("/users", usersRouter);
-app.use("/auth", authRouter);
-
-app.use(errorHandler);
+connectDB();
+const io = createWebSocketServer(httpServer);
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
