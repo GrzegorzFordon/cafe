@@ -12,6 +12,8 @@ import Multiplayer from "../pages/Multiplayer/Multiplayer.jsx";
 import Profile from "../pages/Profile/Profile.jsx";
 import Shop from "../pages/Shop/Shop.jsx";
 import SoloRun from "../pages/SoloRun/SoloRun.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
+import Lobby from "../pages/Lobby/Lobby.jsx";
 
 const router = createBrowserRouter([
   {
@@ -22,13 +24,19 @@ const router = createBrowserRouter([
       { path: "/about", element: <About /> },
       { path: "/auth", element: <Auth /> },
       { path: "/cards", element: <CardList /> },
-      { path: "/builder", element: <DeckBuilder /> },
       { path: "/heroes", element: <HeroBios /> },
       { path: "/rules", element: <HowTo /> },
-      { path: "/mp", element: <Multiplayer /> },
-      { path: "/profile", element: <Profile /> },
-      { path: "/shop", element: <Shop /> },
-      { path: "/solo", element: <SoloRun /> },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: "/builder", element: <DeckBuilder /> },
+          { path: "/mp", element: <Multiplayer /> },
+          { path: "/profile", element: <Profile /> },
+          { path: "/shop", element: <Shop /> },
+          { path: "/solo", element: <SoloRun /> },
+          { path: "/lobby", element: <Lobby /> },
+        ],
+      },
     ],
   },
 ]);

@@ -2,14 +2,9 @@ import asyncHandler from "express-async-handler";
 import { UserService } from "./user.service.js";
 
 const getUser = asyncHandler(async (req, res) => {
-  // const result = await User.findOne({ name }).lean().exec();
-  try {
-    const { id } = req.body;
-    const user = await UserService.getUserById(id);
-    res.status(200).json({ data: user });
-  } catch (error) {
-    res.status(500).json({ message: "Server Error" });
-  }
+  const { id } = req.body;
+  const user = await UserService.getUserById(id);
+  res.status(200).json({ data: user });
 });
 
 const createUser = asyncHandler(async (req, res) => {});

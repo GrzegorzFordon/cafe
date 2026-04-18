@@ -9,7 +9,7 @@ const create = async (userData) => {
   }
 };
 
-const get = async (userID) => {
+const getByID = async (userID) => {
   try {
     const user = User.findById(userID);
     if (!user) {
@@ -21,7 +21,20 @@ const get = async (userID) => {
   }
 };
 
+const getByUsername = async (userName) => {
+  try {
+    const user = User.findOne({name:userName});
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user;
+  } catch (error) {
+    throw new Error(`Error fetching user: ${error.message}`);
+  }
+};
+
 export const UserRepository = {
   create,
-  get,
+  getByID,
+  getByUsername,
 };

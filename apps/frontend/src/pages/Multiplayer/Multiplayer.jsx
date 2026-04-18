@@ -1,4 +1,3 @@
-import "./multiplayer.css";
 import table from "../../features/game/assets/table.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
@@ -14,12 +13,13 @@ function Multiplayer() {
   console.log(figs);
 
   return (
-    <div className="multplayer__container">
-      <img className="home__image multplayer_art_table" src={table} />
+    // <div className="multplayer__container">
+    <div className="flex size-full justify-center align-middle">
+      <img className=" absolute scale-80 origin-[50%_200%]" src={table} />
       <Board />
       {figs}
       {cards}
-      <Timer/>
+      <Timer />
     </div>
   );
 }

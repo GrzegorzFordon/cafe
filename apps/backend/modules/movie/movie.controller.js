@@ -1,16 +1,15 @@
 import Movie from "./movie.model.js";
-import asyncHandler from "express-async-handler";
 
-const getAllMovies = asyncHandler(async (req, res) => {
+const getAllMovies = async (req, res) => {
   const movies = await Movie.find().limit(20).lean().exec();
   if (!movies) {
     return res.status(400).json({ message: "no movies found." });
   }
 
   res.json(movies);
-});
+};
 
-const createMovie = asyncHandler(async (req, res) => {
+const createMovie = async (req, res) => {
   const { title, description, year } = req.body;
   if (!title || !description || !year) {
     return res.status(400).json({ message: "All fields required" });
@@ -29,11 +28,11 @@ const createMovie = asyncHandler(async (req, res) => {
   } else {
     res.status(400).json({ message: "Invalid data received" });
   }
-});
+};
 
-const updateMovie = asyncHandler(async (req, res) => {});
+const updateMovie = async (req, res) => {};
 
-const deleteMovie = asyncHandler(async (req, res) => {});
+const deleteMovie = async (req, res) => {};
 
 export const moviesController = {
   getAllMovies,

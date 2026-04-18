@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 function Card() {
   return (
     <motion.img
-      className="absolute "
+      className="absolute"
       drag
       dragElastic={0.6}
       dragMomentum={false}

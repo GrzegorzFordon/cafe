@@ -15,7 +15,7 @@ const useLogin = () => {
         //mutation call the service
         const result = await loginService(payload);
         //this call also sets the zustand state
-        console.log(result);
+        // console.log(result);
         setAccessToken(result);
         navigate("/");
       } catch (error) {

@@ -1,9 +1,8 @@
-import "./auth.css"
 import AuthWindow from "../../components/AuthWindow/AuthWindow";
 
 function Auth() {
   return (
-    <div className="auth__container">
+    <div className="flex justify-center items-center size-full">
       <AuthWindow />
     </div>
   );

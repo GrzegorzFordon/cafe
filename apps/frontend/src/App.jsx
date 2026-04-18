@@ -1,10 +1,9 @@
-import "./styles/App.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/routes.jsx";
 
 function App() {
   return (
-    <div className="app">
+    <div className="flex w-dvw h-dvh">
       <RouterProvider router={router} />
     </div>
   );
