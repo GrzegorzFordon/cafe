@@ -1,24 +1,48 @@
 import io from "socket.io-client";
 import useSocketStore from "../../../stores/useSocketStore";
 import { useCallback, useEffect } from "react";
+import { publish } from "../../../util/events";
 
 const SOCKET_URL = "http://localhost:3500";
 
 const useSocket = () => {
   const socket = useSocketStore((state) => state.socket);
   const setSocket = useSocketStore((state) => state.setSocket);
-  // const roomId = useSocketStore((state)=>state.roomId);
-  
+
   useEffect(() => {
     const connection = io(SOCKET_URL);
     setSocket(connection);
 
+    connection.on("send_message", (val) => publish("chat:message", val));
+    connection.on("join_room", (val) => publish("room:join", val));
+
     return () => {
       connection.disconnect();
+      connection.offAny();
     };
   }, [setSocket]);
 
-  //function to emit messages
+  const sendMessage = useCallback(
+    (val) => {
+      socket.emit("send_message", val);
+    },
+    [socket],
+  );
+
+  const joinRoom = useCallback(
+    (val) => socket.emit("join_room", val),
+    [socket],
+  );
+
+  return {
+    sendMessage,
+    joinRoom,
+  };
+};
+
+export default useSocket;
+
+/*  //function to emit messages
   const emit = useCallback(
     (e, data) => {
       if (socket) socket.emit(e, data);
@@ -33,8 +57,6 @@ const useSocket = () => {
     },
     [socket],
   );
-
   return { socket, emit, on };
-};
 
-export default useSocket;
+  */

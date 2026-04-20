@@ -1,24 +1,50 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSocket from "../../features/socket/hooks/useSocket";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import useAuthStore from "../../stores/useAuthStore";
+import { subscribe, unsubscribe } from "../../util/events";
 
 function Lobby() {
-  const { emit, on } = useSocket();
+  const { sendMessage, joinRoom } = useSocket();
   const accessTokenData = useAuthStore((state) => state.accessTokenData);
 
   const [msg, setMsg] = useState("");
   const [room, setRoom] = useState("");
-
   const [chat, setChat] = useState([
     { message: "first", room: "one", username: "someone" },
     { message: "second", room: "one", username: "else" },
   ]);
 
-  const handleSubmitMessage = (e) => {
+  //HANDLERS: INCOMING
+
+  const handleChatMessage = useCallback(
+    (e) => {
+      const newval = [...chat, e.detail];
+      setChat(newval);
+    },
+    [chat],
+  );
+
+  const handleRoomJoinedMessage = useCallback((e) => {
+    console.log(e.detail);
+  }, []);
+
+  useEffect(() => {
+    subscribe("chat:message", handleChatMessage);
+    subscribe("room:join", handleRoomJoinedMessage);
+
+    return () => {
+      unsubscribe("chat:message", handleChatMessage);
+      unsubscribe("room:join", handleRoomJoinedMessage);
+    };
+  }, [handleChatMessage, handleRoomJoinedMessage]);
+
+  //HANDLERS: OUTGOING
+
+  const handleSendMessage = (e) => {
     e.preventDefault();
-    emit("send_message", {
+    sendMessage({
       message: msg,
       room: room,
       username: accessTokenData.username,
@@ -26,39 +52,18 @@ function Lobby() {
     setMsg("");
   };
 
-  const handleRoomMessage = (e) => {
+  const handleJoinRoom = (e) => {
     e.preventDefault();
-    emit("join_room", {
-      roomID: room,
-    });
-    setRoom("");
+    joinRoom({ roomID: room });
   };
-
-  useEffect(() => {
-    const handleMessage = (e) => {
-      const newval = [...chat, e];
-      setChat(newval);
-    };
-
-    const receiveMessage = on("send_message", (value) => {
-      handleMessage(value);
-    });
-
-    const receiveRoomConfirmation = on("join_room", (value) => {
-      console.log(value);
-    });
-
-    return () => {
-      receiveMessage;
-      receiveRoomConfirmation;
-    };
-  }, [chat, on]);
 
   return (
     <div className="flex flex-col-reverse size-full gap-4 justify-center items-center">
       <div className="flex flex-col shadow  justify-center items-center gap-4 p-4 size-full max-w-sm max-h-1/6 bg-amber-800 rounded ">
-        <form className="flex justify-center items-center gap-4" onSubmit={handleSubmitMessage}>
-          {/* <label>Room</label> */}
+        <form
+          className="flex justify-center items-center gap-4"
+          onSubmit={handleJoinRoom}
+        >
           <input
             className="p-2 bg-amber-50 rounded appearance-none  text-gray-900 focus:outline-none"
             type="text"
@@ -71,14 +76,15 @@ function Lobby() {
             whileHover={{ scale: 1.025, transition: { duration: 0.1 } }}
             whileTap={{ scale: 1 }}
             className="bg-amber-950 text-amber-100 font-bold rounded px-4 py-2 cursor-pointer hover:bg-amber-500"
-            onClick={handleRoomMessage}
           >
             set
           </motion.button>
         </form>
 
-        <form className="flex justify-center items-center gap-4" onSubmit={handleSubmitMessage}>
-          {/* <label>Message</label> */}
+        <form
+          className="flex justify-center items-center gap-4"
+          onSubmit={handleSendMessage}
+        >
           <input
             className="p-2 bg-amber-50 rounded appearance-none  text-gray-900 focus:outline-none"
             type="text"
@@ -90,7 +96,6 @@ function Lobby() {
             whileHover={{ scale: 1.025, transition: { duration: 0.1 } }}
             whileTap={{ scale: 1 }}
             className="bg-amber-950 text-amber-100 font-bold rounded px-4 py-2 cursor-pointer hover:bg-amber-500"
-            onClick={handleSubmitMessage}
           >
             send
           </motion.button>
@@ -99,7 +104,7 @@ function Lobby() {
       <div className="flex bg-green-500 text-black font-bold p-4 size-full max-w-sm max-h-1/3 rounded justify-center items-center">
         <ul className="size-full ">
           {chat.map((val) => (
-            <li key={val.message}>
+            <li>
               {val.username}: {val.message}
             </li>
           ))}

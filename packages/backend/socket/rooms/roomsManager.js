@@ -1,4 +1,5 @@
 import { customAlphabet } from "nanoid";
+import Room from "./room.js";
 
 const rooms = new Map();
 const engines = new Map();
@@ -12,7 +13,13 @@ const getRandomRoomCode = () => {
   return ID;
 };
 
-const createRoom = () => {};
+const createRoom = () => {
+  const roomID = getRandomRoomCode();
+  console.log(`Room Manager creating new Room with ID ${roomID}`);
+  const room = new Room();
+  rooms.set(roomID, room);
+};
+
 const joinRoom = () => {};
 const leaveRoom = () => {};
 

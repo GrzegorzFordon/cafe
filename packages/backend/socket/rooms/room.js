@@ -1,6 +1,6 @@
 /* this is the room object used for creating specific games */
 
-const Room = () => {};
+const Room = ({ID}) => {};
 
 export default Room;
 
