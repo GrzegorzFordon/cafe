@@ -2,6 +2,10 @@ import io from "socket.io-client";
 import useSocketStore from "../../../stores/useSocketStore";
 import { useCallback, useEffect } from "react";
 import { publish } from "../../../util/events";
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "../../../../../shared/protocol";
 
 const SOCKET_URL = "http://localhost:3500";
 
@@ -13,8 +17,12 @@ const useSocket = () => {
     const connection = io(SOCKET_URL);
     setSocket(connection);
 
-    connection.on("send_message", (val) => publish("chat:message", val));
-    connection.on("join_room", (val) => publish("room:join", val));
+    connection.on(ServerToClientEvents.get("SendMessage"), (val) =>
+      publish(ServerToClientEvents.get("SendMessage"), val),
+    );
+    connection.on(ServerToClientEvents.get("JoinRoom"), (val) =>
+      publish(ServerToClientEvents.get("JoinRoom"), val),
+    );
 
     return () => {
       connection.disconnect();
@@ -23,14 +31,12 @@ const useSocket = () => {
   }, [setSocket]);
 
   const sendMessage = useCallback(
-    (val) => {
-      socket.emit("send_message", val);
-    },
+    (val) => socket.emit(ClientToServerEvents.get("SendMessage"), val),
     [socket],
   );
 
   const joinRoom = useCallback(
-    (val) => socket.emit("join_room", val),
+    (val) => socket.emit(ClientToServerEvents.get("JoinRoom"), val),
     [socket],
   );
 

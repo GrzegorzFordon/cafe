@@ -4,6 +4,7 @@ import useSocket from "../../features/socket/hooks/useSocket";
 import { motion } from "motion/react";
 import useAuthStore from "../../stores/useAuthStore";
 import { subscribe, unsubscribe } from "../../util/events";
+import { ServerToClientEvents } from "../../../../shared/protocol";
 
 function Lobby() {
   const { sendMessage, joinRoom } = useSocket();
@@ -31,12 +32,15 @@ function Lobby() {
   }, []);
 
   useEffect(() => {
-    subscribe("chat:message", handleChatMessage);
-    subscribe("room:join", handleRoomJoinedMessage);
+    subscribe(ServerToClientEvents.get("SendMessage"), handleChatMessage);
+    subscribe(ServerToClientEvents.get("JoinRoom"), handleRoomJoinedMessage);
 
     return () => {
-      unsubscribe("chat:message", handleChatMessage);
-      unsubscribe("room:join", handleRoomJoinedMessage);
+      unsubscribe(ServerToClientEvents.get("SendMessage"), handleChatMessage);
+      unsubscribe(
+        ServerToClientEvents.get("JoinRoom"),
+        handleRoomJoinedMessage,
+      );
     };
   }, [handleChatMessage, handleRoomJoinedMessage]);
 

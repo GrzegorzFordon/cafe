@@ -1,5 +1,9 @@
 import { Server as SocketIOServer } from "socket.io";
 import getRandomRoomCode from "./rooms/roomsManager.js";
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from "../../shared/protocol.js";
 
 const createWebSocketServer = (httpServer) => {
   const server = new SocketIOServer(httpServer, {
@@ -13,19 +17,14 @@ const createWebSocketServer = (httpServer) => {
 
   const onJoinRoom = async (socket, data) => {
     await socket.join(data.roomID);
-    console.log(data);
-    socket.emit("join_room", {
+    socket.emit(ServerToClientEvents.get("JoinRoom"), {
       message: `successfully joined room ${data.roomID}. Also here is a random ID: ${getRandomRoomCode()}`,
       roomID: data.roomID,
     });
   };
 
   const onSendMessage = (socket, data) => {
-    console.log(data);
-    // // data.message += " back at you.";
-    server.emit("send_message", data);
-    // for (room in socket.rooms) server.to(room).emit("send_message", data);
-    console.log(socket.rooms);
+    server.emit(ServerToClientEvents.get("SendMessage"), data);
   };
 
   // WIRE UP
@@ -33,17 +32,20 @@ const createWebSocketServer = (httpServer) => {
   server.on("connection", async (socket) => {
     console.log(`User connected (${socket.id})`);
 
-    socket.on("join_room", (data) => onJoinRoom(socket, data));
+    socket.on(ClientToServerEvents.get("JoinRoom"), (data) =>
+      onJoinRoom(socket, data),
+    );
 
-    socket.on("send_message", (data) => onSendMessage(socket, data));
+    socket.on(ClientToServerEvents.get("SendMessage"), (data) =>
+      onSendMessage(socket, data),
+    );
 
-    socket.on("disconnect", () => {
-      console.log(`User disconnected (${socket.id})`);
-    });
+    socket.on("disconnect", () =>
+      console.log(`User disconnected (${socket.id})`),
+    );
   });
 };
 
 //OWN SERVERSIDE EMITTERS
-
 
 export default createWebSocketServer;
