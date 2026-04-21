@@ -20,7 +20,7 @@
   background: var(--bg);
   background-image: url(../../public/bg_tex.png);
   opacity: 0.8;
-  /* overflow: hidden; */
+  overflow: hidden;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;

@@ -10,6 +10,7 @@ import {
 const SOCKET_URL = "http://localhost:3500";
 
 const useSocket = () => {
+  //socket is stored in zustand store
   const socket = useSocketStore((state) => state.socket);
   const setSocket = useSocketStore((state) => state.setSocket);
 
@@ -17,6 +18,8 @@ const useSocket = () => {
     const connection = io(SOCKET_URL);
     setSocket(connection);
 
+    //socket connects to every message type coming from the server
+    //and emits the relevant event. listeners can subscribe to events
     connection.on(ServerToClientEvents.get("SendMessage"), (val) =>
       publish(ServerToClientEvents.get("SendMessage"), val),
     );
@@ -30,19 +33,48 @@ const useSocket = () => {
     };
   }, [setSocket]);
 
+  //functions that implement all the client to server events
+  //components that need those have to import the hook
   const sendMessage = useCallback(
     (val) => socket.emit(ClientToServerEvents.get("SendMessage"), val),
     [socket],
   );
-
   const joinRoom = useCallback(
     (val) => socket.emit(ClientToServerEvents.get("JoinRoom"), val),
+    [socket],
+  );
+  const createRoom = useCallback(
+    (val) => {
+      socket.emit(ClientToServerEvents.get(""), val);
+    },
+    [socket],
+  );
+  const leaveRoom = useCallback(
+    (val) => {
+      socket.emit(ClientToServerEvents.get(""), val);
+    },
+    [socket],
+  );
+  const startGame = useCallback(
+    (val) => {
+      socket.emit(ClientToServerEvents.get(""), val);
+    },
+    [socket],
+  );
+  const playGame = useCallback(
+    (val) => {
+      socket.emit(ClientToServerEvents.get(""), val);
+    },
     [socket],
   );
 
   return {
     sendMessage,
     joinRoom,
+    createRoom,
+    leaveRoom,
+    startGame,
+    playGame,
   };
 };
 

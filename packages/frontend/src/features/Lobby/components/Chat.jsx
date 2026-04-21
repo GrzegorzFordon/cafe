@@ -1,23 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
-import useSocket from "../../features/socket/hooks/useSocket";
+import { useCallback, useEffect, useRef, useState } from "react";
+import useSocket from "../../socket/hooks/useSocket";
+import useAuthStore from "../../../stores/useAuthStore";
+import { subscribe, unsubscribe } from "../../../util/events";
+import { ServerToClientEvents } from "../../../../../shared/protocol";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
-import useAuthStore from "../../stores/useAuthStore";
-import { subscribe, unsubscribe } from "../../util/events";
-import { ServerToClientEvents } from "../../../../shared/protocol";
 
-function Lobby() {
-  const { sendMessage, joinRoom } = useSocket();
+function Chat() {
+  const { sendMessage } = useSocket();
   const accessTokenData = useAuthStore((state) => state.accessTokenData);
 
   const [msg, setMsg] = useState("");
-  const [room, setRoom] = useState("");
+  //   const [room, setRoom] = useState("");
   const [chat, setChat] = useState([
     { message: "first", room: "one", username: "someone" },
     { message: "second", room: "one", username: "else" },
   ]);
 
-  //HANDLERS: INCOMING
+  const scrollDiv = useRef(null);
 
   const handleChatMessage = useCallback(
     (e) => {
@@ -27,44 +27,47 @@ function Lobby() {
     [chat],
   );
 
-  const handleRoomJoinedMessage = useCallback((e) => {
-    console.log(e.detail);
-  }, []);
-
   useEffect(() => {
     subscribe(ServerToClientEvents.get("SendMessage"), handleChatMessage);
-    subscribe(ServerToClientEvents.get("JoinRoom"), handleRoomJoinedMessage);
 
     return () => {
       unsubscribe(ServerToClientEvents.get("SendMessage"), handleChatMessage);
-      unsubscribe(
-        ServerToClientEvents.get("JoinRoom"),
-        handleRoomJoinedMessage,
-      );
+      unsubscribe(ServerToClientEvents.get("JoinRoom"));
     };
-  }, [handleChatMessage, handleRoomJoinedMessage]);
+  }, [handleChatMessage]);
 
-  //HANDLERS: OUTGOING
+  useEffect(() => {
+    scrollDiv.current.scrollTop = scrollDiv.current.scrollHeight;
+  }, [chat]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     sendMessage({
       message: msg,
-      room: room,
+      //   room: room,
       username: accessTokenData.username,
     });
     setMsg("");
   };
 
-  const handleJoinRoom = (e) => {
-    e.preventDefault();
-    joinRoom({ roomID: room });
-  };
+
 
   return (
-    <div className="flex flex-col-reverse size-full gap-4 justify-center items-center">
-      <div className="flex flex-col shadow  justify-center items-center gap-4 p-4 size-full max-w-sm max-h-1/6 bg-amber-800 rounded ">
-        <form
+    <div className="flex flex-col size-full max-w-sm max-h-80 justify-center items-center gap-2 p-2 rounded bg-amber-950">
+      <div
+        ref={scrollDiv}
+        className="flex z-5 bg-amber-900 border-4 border-amber-950 shadow text-black font-bold overflow-y-scroll px-4 py-2 size-full rounded-md justify-center items-center"
+      >
+        <ul className="size-full ">
+          {chat.map((val) => (
+            <li>
+              {val.username}: {val.message}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="flex z-10 flex-col shadow size-full justify-center items-center gap-2 py-4 px-2 max-h-1/6 bg-amber-800 rounded ">
+        {/* <form
           className="flex justify-center items-center gap-4"
           onSubmit={handleJoinRoom}
         >
@@ -83,38 +86,30 @@ function Lobby() {
           >
             set
           </motion.button>
-        </form>
+        </form> */}
 
         <form
-          className="flex justify-center items-center gap-4"
+          className="flex justify-center size-full items-center gap-2"
           onSubmit={handleSendMessage}
         >
           <input
-            className="p-2 bg-amber-50 rounded appearance-none  text-gray-900 focus:outline-none"
+            className="p-2 bg-amber-50 rounded appearance-none w-full  text-gray-900 focus:outline-none"
             type="text"
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
             placeholder="message"
           />
           <motion.button
-            whileHover={{ scale: 1.025, transition: { duration: 0.1 } }}
-            whileTap={{ scale: 1 }}
-            className="bg-amber-950 text-amber-100 font-bold rounded px-4 py-2 cursor-pointer hover:bg-amber-500"
+            // whileHover={{ scale: 1.025, transition: { duration: 0.1 } }}
+            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+            className="bg-amber-950 text-amber-100 font-bold rounded px-4 py-2 cursor-pointer hover:bg-amber-500 disabled:bg-gray-500 disabled:cursor-default disabled:opacity-45"
+            disabled={!msg}
           >
             send
           </motion.button>
         </form>
       </div>
-      <div className="flex bg-green-500 text-black font-bold p-4 size-full max-w-sm max-h-1/3 rounded justify-center items-center">
-        <ul className="size-full ">
-          {chat.map((val) => (
-            <li>
-              {val.username}: {val.message}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
-export default Lobby;
+export default Chat;

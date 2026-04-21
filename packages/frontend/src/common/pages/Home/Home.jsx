@@ -1,6 +1,6 @@
 import "./home.css";
 
-import useAuthStore from "../../stores/useAuthStore.js";
+import useAuthStore from "../../../stores/useAuthStore.js";
 import HomeInside from "./HomeInside.jsx";
 import HomeOutside from "./HomeOutside.jsx";
 

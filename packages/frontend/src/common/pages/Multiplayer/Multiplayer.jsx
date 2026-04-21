@@ -15,7 +15,7 @@ function Multiplayer() {
   return (
     // <div className="multplayer__container">
     <div className="flex size-full justify-center align-middle">
-      <img className=" absolute scale-80 origin-[50%_200%]" src={table} />
+      <img className=" absolute scale-80 origin-[50%_150%]" src={table} />
       <Board />
       {figs}
       {cards}

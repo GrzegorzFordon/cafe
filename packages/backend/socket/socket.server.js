@@ -24,13 +24,26 @@ const createWebSocketServer = (httpServer) => {
   };
 
   const onSendMessage = (socket, data) => {
-    server.emit(ServerToClientEvents.get("SendMessage"), data);
+    console.log(socket.rooms);
+    for (const room in socket.rooms) {
+      console.log(room);
+      socket.to(room).emit(ServerToClientEvents.get("SendMessage"), data);
+    }
+    socket.rooms.forEach((element) => {
+      console.log(element);
+      if (element === socket.id) return;
+      server.to(element).emit(ServerToClientEvents.get("SendMessage"), data);
+    });
+    // server.emit(ServerToClientEvents.get("SendMessage"), data);
   };
 
   // WIRE UP
 
   server.on("connection", async (socket) => {
     console.log(`User connected (${socket.id})`);
+
+    //Add player to general room
+    socket.join("general");
 
     socket.on(ClientToServerEvents.get("JoinRoom"), (data) =>
       onJoinRoom(socket, data),

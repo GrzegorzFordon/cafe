@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/cafe_logo.png";
 import { useNavigate } from "react-router";
 import ProfileCard from "../ProfileCard/ProfileCard";
-import useAuthStore from "../../stores/useAuthStore";
+import useAuthStore from "../../../stores/useAuthStore";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 
