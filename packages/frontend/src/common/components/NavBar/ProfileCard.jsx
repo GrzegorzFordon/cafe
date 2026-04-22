@@ -1,4 +1,4 @@
-import pfp from "../../assets/pfp.png";
+import pfp from "../../../assets/pfp.png";
 import useAuthStore from "../../../stores/useAuthStore";
 import { useNavigate } from "react-router";
 // eslint-disable-next-line no-unused-vars

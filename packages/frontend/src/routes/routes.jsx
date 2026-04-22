@@ -2,18 +2,18 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "../common/pages/Layout/Layout.jsx";
 import NotFound from "../common/pages/NotFound/NotFound.jsx";
 import Home from "../common/pages/Home/Home.jsx";
-import About from "../common/pages/About/About.jsx";
-import Auth from "../pages/Auth/Auth.jsx";
+import About from "../common/pages/AboutPage.jsx";
+import Auth from "../features/auth/AuthPage.jsx";
 import CardList from "../common/pages/CardList/CardList.jsx";
 import DeckBuilder from "../common/pages/Deckbuilder/DeckBuilder.jsx";
 import HeroBios from "../common/pages/HeroBios/HeroBios.jsx";
 import HowTo from "../common/pages/HowTo/HowTo.jsx";
-import Multiplayer from "../common/pages/Multiplayer/Multiplayer.jsx";
+import Multiplayer from "../features/game/GamePage.jsx";
 import Profile from "../common/pages/Profile/Profile.jsx";
 import Shop from "../common/pages/Shop/Shop.jsx";
 import SoloRun from "../common/pages/SoloRun/SoloRun.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
-import Lobby from "../pages/Lobby/Lobby.jsx";
+import Lobby from "../features/lobby/LobbyPage.jsx";
 
 const router = createBrowserRouter([
   {

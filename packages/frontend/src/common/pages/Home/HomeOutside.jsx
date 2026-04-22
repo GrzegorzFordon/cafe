@@ -1,6 +1,6 @@
-import storefront from "../../assets/homeArt/storefront.png";
-import lamppost from "../../assets/homeArt/lamppost.png";
-import street from "../../assets/homeArt/more_street.png";
+import storefront from "../../../assets/homeArt/storefront.png";
+import lamppost from "../../../assets/homeArt/lamppost.png";
+import street from "../../../assets/homeArt/more_street.png";
 
 function HomeOutside() {
   return (

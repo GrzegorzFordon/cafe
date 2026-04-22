@@ -10,9 +10,6 @@ ClientToServerEvents.set("GamePlay", "game:play");
 
 const ServerToClientEvents = new Map();
 ServerToClientEvents.set("SendMessage", "chat:message");
-ServerToClientEvents.set("JoinRoom", "room:join"); // TODO change to acknoledgement
-ServerToClientEvents.set("CreateRoom", "room:create"); // TODO change to acknoledgement
-ServerToClientEvents.set("LeaveRoom", "room:leave"); // TODO change to acknoledgement
 ServerToClientEvents.set("LobbyChange", "lobby:change"); //updates to the lobby (like a new room opening)
 ServerToClientEvents.set("RoomChange", "room:change"); //updates to the room/lobby user is in (like another player joining)
 ServerToClientEvents.set("GameState", "game:state"); //used by the server to transmit new game states

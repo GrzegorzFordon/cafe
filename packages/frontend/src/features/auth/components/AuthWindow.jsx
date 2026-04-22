@@ -1,4 +1,4 @@
-import image from "../../assets/home.png";
+import image from "../../../assets/home.png";
 
 import { useState } from "react";
 import LoginForm from "./LoginForm";

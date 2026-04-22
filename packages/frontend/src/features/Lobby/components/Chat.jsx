@@ -27,12 +27,17 @@ function Chat() {
     [chat],
   );
 
+  const handleRoomJoin = (e) => {
+    console.log(e.detail);
+  };
+
   useEffect(() => {
     subscribe(ServerToClientEvents.get("SendMessage"), handleChatMessage);
+    subscribe(ServerToClientEvents.get("JoinRoom"), handleRoomJoin);
 
     return () => {
       unsubscribe(ServerToClientEvents.get("SendMessage"), handleChatMessage);
-      unsubscribe(ServerToClientEvents.get("JoinRoom"));
+      unsubscribe(ServerToClientEvents.get("JoinRoom"), handleRoomJoin);
     };
   }, [handleChatMessage]);
 
@@ -49,8 +54,6 @@ function Chat() {
     });
     setMsg("");
   };
-
-
 
   return (
     <div className="flex flex-col size-full max-w-sm max-h-80 justify-center items-center gap-2 p-2 rounded bg-amber-950">

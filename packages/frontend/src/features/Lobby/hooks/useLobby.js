@@ -1,7 +1,12 @@
-const useLobby = () => {};
+// const useLobby = () => {};
 
-export default useLobby;
+// export default useLobby;
 
-/*
-cares about lobby updates
-*/
+// /*
+// cares about lobby updates
+
+// holds list of active rooms
+
+// calls create room?
+
+// */

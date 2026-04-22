@@ -1,5 +1,5 @@
 import { Server as SocketIOServer } from "socket.io";
-import getRandomRoomCode from "./rooms/roomsManager.js";
+import Lobby from "./lobby/lobby.js";
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -13,12 +13,14 @@ const createWebSocketServer = (httpServer) => {
     },
   });
 
-  // HANDLER FUNCTIONS
+  const roomsManager = new Lobby();
 
+  // HANDLER FUNCTIONS
   const onJoinRoom = async (socket, data) => {
+    //change to see if the room exists, send error back otherwise
     await socket.join(data.roomID);
     socket.emit(ServerToClientEvents.get("JoinRoom"), {
-      message: `successfully joined room ${data.roomID}. Also here is a random ID: ${getRandomRoomCode()}`,
+      message: `successfully joined room ${data.roomID}.}`,
       roomID: data.roomID,
     });
   };
@@ -30,15 +32,28 @@ const createWebSocketServer = (httpServer) => {
       socket.to(room).emit(ServerToClientEvents.get("SendMessage"), data);
     }
     socket.rooms.forEach((element) => {
-      console.log(element);
+      // console.log(element);
       if (element === socket.id) return;
       server.to(element).emit(ServerToClientEvents.get("SendMessage"), data);
     });
     // server.emit(ServerToClientEvents.get("SendMessage"), data);
   };
 
-  // WIRE UP
+  const onCreateRoom = (socket, data, callback) => {
+    console.log(`received request to create room from ${socket.id}`);
+    try {
+      const res = roomsManager.createRoom();
+      socket.join(res.roomID);
+      socket.leave("general"); //change to leave other rooms too (other than own id)
+      //TODO - set socket as room owner
+      callback({ status: "ok", roomID: res.roomID });
+    } catch (error) {
+      console.log(error);
+      callback({ status: "error" });
+    }
+  };
 
+  // WIRE UP
   server.on("connection", async (socket) => {
     console.log(`User connected (${socket.id})`);
 
@@ -53,6 +68,10 @@ const createWebSocketServer = (httpServer) => {
       onSendMessage(socket, data),
     );
 
+    socket.on(ClientToServerEvents.get("CreateRoom"), (data, callback) =>
+      onCreateRoom(socket, data, callback),
+    );
+
     socket.on("disconnect", () =>
       console.log(`User disconnected (${socket.id})`),
     );
@@ -60,5 +79,14 @@ const createWebSocketServer = (httpServer) => {
 };
 
 //OWN SERVERSIDE EMITTERS
+
+const broadcastLobbyChange = (val) => {
+  server.emit(ServerToClientEvents.get("LobbyChange"), val);
+};
+
+const broadcastRoomUpdate = (val) => {
+  // const room =
+  server.emit(ServerToClientEvents.get("RoomChange"), val);
+};
 
 export default createWebSocketServer;

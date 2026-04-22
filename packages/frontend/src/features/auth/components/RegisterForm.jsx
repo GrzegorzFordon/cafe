@@ -1,23 +1,25 @@
-import useLogin from "../../features/auth/hooks/useLogin";
+import useRegister from "../hooks/useRegister";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 // eslint-disable-next-line no-unused-vars
 import { motion, scale } from "motion/react";
-function LoginForm() {
-  const { login } = useLogin();
+function RegisterForm() {
+  const { register } = useRegister();
 
   const validationSchema = yup.object({
-    name: yup.string().max(15, "15 characters or less").required("Required"),
-    pwd: yup.string().required("Required"),
+    username: yup
+      .string()
+      .max(15, "15 characters or less")
+      .required("Required"),
+    password: yup.string().required("Required"),
   });
-
   return (
     <Formik
-      initialValues={{ name: "Teddy", pwd: "a123" }}
+      initialValues={{ username: "Teddy", password: "a123" }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        // console.log(values);
-        login(values);
+        console.log(values);
+        register(values);
       }}
     >
       <Form className="flex flex-col size-full justify-evenly gap-4 p-2 ">
@@ -32,19 +34,19 @@ function LoginForm() {
         <Field
           className="shadow-2xl appearance-none border leading-tight  rounded w-full py-2 px-4 focus:outline-none"
           type="password"
-          name="pwd"
+          name="password"
         />
-        <ErrorMessage name="pwd" component="div" />
+        <ErrorMessage name="password" component="div" />
         <motion.button
-          className="bg-purple-500 hover:bg-purple-700 rounded-md text-gray-900 font-bold"
+          className="bg-amber-500 hover:bg-amber-700 rounded-md text-gray-900 font-bold"
           type="submit"
           whileHover={{ scale: 1.1 }}
-          whileTap={{scale:1.05}}
+          whileTap={{ scale: 1.05 }}
         >
-          Login
+          Register
         </motion.button>
       </Form>
     </Formik>
   );
 }
-export default LoginForm;
+export default RegisterForm;

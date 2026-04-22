@@ -22,6 +22,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "awilix": "^13.0.3"
+    "awilix": "^13.0.3",
+    "zod": "^4.3.6"
   }
 }

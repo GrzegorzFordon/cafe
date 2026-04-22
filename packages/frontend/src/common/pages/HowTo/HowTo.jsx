@@ -1,4 +1,4 @@
-import image from "../../assets/rules.png"
+import image from "../../../assets/rules.png";
 function HowTo() {
   return (
     <>

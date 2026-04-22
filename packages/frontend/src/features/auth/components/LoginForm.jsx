@@ -1,22 +1,23 @@
-import useRegister from "../../features/auth/hooks/useRegister";
+import useLogin from "../hooks/useLogin";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 // eslint-disable-next-line no-unused-vars
 import { motion, scale } from "motion/react";
-function RegisterForm() {
-  const { register } = useRegister();
+function LoginForm() {
+  const { login } = useLogin();
 
   const validationSchema = yup.object({
-    username: yup.string().max(15, "15 characters or less").required("Required"),
-    password: yup.string().required("Required"),
+    name: yup.string().max(15, "15 characters or less").required("Required"),
+    pwd: yup.string().required("Required"),
   });
+
   return (
     <Formik
-      initialValues={{ username: "Teddy", password: "a123" }}
+      initialValues={{ name: "Teddy", pwd: "a123" }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log(values);
-        register(values);
+        // console.log(values);
+        login(values);
       }}
     >
       <Form className="flex flex-col size-full justify-evenly gap-4 p-2 ">
@@ -31,19 +32,19 @@ function RegisterForm() {
         <Field
           className="shadow-2xl appearance-none border leading-tight  rounded w-full py-2 px-4 focus:outline-none"
           type="password"
-          name="password"
+          name="pwd"
         />
-        <ErrorMessage name="password" component="div" />
+        <ErrorMessage name="pwd" component="div" />
         <motion.button
-          className="bg-amber-500 hover:bg-amber-700 rounded-md text-gray-900 font-bold"
+          className="bg-purple-500 hover:bg-purple-700 cursor-pointer rounded-md text-gray-900 font-bold"
           type="submit"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 1.05 }}
+          // whileHover={{ scale: 1.1 }}
+          whileTap={{scale:0.95}}
         >
-          Register
+          Login
         </motion.button>
       </Form>
     </Formik>
   );
 }
-export default RegisterForm;
+export default LoginForm;

@@ -7,13 +7,13 @@ const getUser = asyncHandler(async (req, res) => {
   res.status(200).json({ data: user });
 });
 
-const createUser = asyncHandler(async (req, res) => {});
+// const createUser = asyncHandler(async (req, res) => {});
 const updateUser = asyncHandler(async (req, res) => {});
 
 export const userController = {
   getUser,
-  createUser,
   updateUser,
+  // createUser,
   //   getAllUsers,
   //   deleteUser,
 };

@@ -1,4 +1,4 @@
-import AuthWindow from "../../components/AuthWindow/AuthWindow";
+import AuthWindow from "./components/AuthWindow.jsx";
 
 function Auth() {
   return (

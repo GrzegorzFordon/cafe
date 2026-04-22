@@ -1,4 +1,4 @@
-import image from "../../assets/heroes.png"
+import image from "../../../assets/heroes.PNG"
 
 function HeroBios() {
   return (

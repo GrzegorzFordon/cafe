@@ -1,4 +1,4 @@
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import useSocketStore from "../../../stores/useSocketStore";
 import { useCallback, useEffect } from "react";
 import { publish } from "../../../util/events";
@@ -7,74 +7,85 @@ import {
   ServerToClientEvents,
 } from "../../../../../shared/protocol";
 
-const SOCKET_URL = "http://localhost:3500";
-
 const useSocket = () => {
   //socket is stored in zustand store
   const socket = useSocketStore((state) => state.socket);
-  const setSocket = useSocketStore((state) => state.setSocket);
+  const connect = useSocketStore((state) => state.connect);
+  const disconnect = useSocketStore((state) => state.disconnect);
 
   useEffect(() => {
-    const connection = io(SOCKET_URL);
-    setSocket(connection);
+    connect();
+    return () => {
+      disconnect();
+    };
+  }, [connect, disconnect]);
 
+  useEffect(() => {
     //socket connects to every message type coming from the server
     //and emits the relevant event. listeners can subscribe to events
-    connection.on(ServerToClientEvents.get("SendMessage"), (val) =>
+
+    socket?.on(ServerToClientEvents.get("SendMessage"), (val) =>
       publish(ServerToClientEvents.get("SendMessage"), val),
     );
-    connection.on(ServerToClientEvents.get("JoinRoom"), (val) =>
+    socket?.on(ServerToClientEvents.get("JoinRoom"), (val) =>
       publish(ServerToClientEvents.get("JoinRoom"), val),
     );
 
     return () => {
-      connection.disconnect();
-      connection.offAny();
+      socket?.offAny();
     };
-  }, [setSocket]);
+  }, [socket]);
 
   //functions that implement all the client to server events
   //components that need those have to import the hook
   const sendMessage = useCallback(
-    (val) => socket.emit(ClientToServerEvents.get("SendMessage"), val),
+    (val) =>
+      socket.emit(ClientToServerEvents.get("SendMessage"), val, (res) => {
+        console.log(res.status);
+      }),
     [socket],
   );
   const joinRoom = useCallback(
-    (val) => socket.emit(ClientToServerEvents.get("JoinRoom"), val),
+    (val) =>
+      socket.emit(ClientToServerEvents.get("JoinRoom"), val, (res) => {
+        console.log(res);
+      }),
     [socket],
   );
+
   const createRoom = useCallback(
-    (val) => {
-      socket.emit(ClientToServerEvents.get(""), val);
-    },
+    (val) =>
+      socket.emit(ClientToServerEvents.get("CreateRoom"), val, (res) => {
+        console.log(res);
+      }),
     [socket],
   );
-  const leaveRoom = useCallback(
-    (val) => {
-      socket.emit(ClientToServerEvents.get(""), val);
-    },
-    [socket],
-  );
-  const startGame = useCallback(
-    (val) => {
-      socket.emit(ClientToServerEvents.get(""), val);
-    },
-    [socket],
-  );
-  const playGame = useCallback(
-    (val) => {
-      socket.emit(ClientToServerEvents.get(""), val);
-    },
-    [socket],
-  );
+  // const leaveRoom = useCallback(
+  //   (val) => {
+  //     socket.emit(ClientToServerEvents.get(""), val);
+  //   },
+  //   [socket],
+  // );
+  // const startGame = useCallback(
+  //   (val) => {
+  //     socket.emit(ClientToServerEvents.get(""), val);
+  //   },
+  //   [socket],
+  // );
+  // const playGame = useCallback(
+  //   (val) => {
+  //     socket.emit(ClientToServerEvents.get(""), val);
+  //   },
+  //   [socket],
+  // );
 
   return {
     sendMessage,
     joinRoom,
     createRoom,
-    leaveRoom,
-    startGame,
-    playGame,
+    // leaveRoom,
+    // startGame,
+    // playGame,
   };
 };
 

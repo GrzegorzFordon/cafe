@@ -1,4 +1,4 @@
-import storeinside from "../../assets/homeArt/inside.png";
+import storeinside from "../../../assets/homeArt/inside.png";
 
 function HomeInside() {
   return <img className="absolute" src={storeinside} />;
