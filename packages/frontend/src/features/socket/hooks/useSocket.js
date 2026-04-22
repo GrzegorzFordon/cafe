@@ -1,7 +1,6 @@
 // import io from "socket.io-client";
 import useSocketStore from "../../../stores/useSocketStore";
 import { useCallback, useEffect } from "react";
-import { publish } from "../../../util/events";
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -20,25 +19,6 @@ const useSocket = () => {
     };
   }, [connect, disconnect]);
 
-  useEffect(() => {
-    //socket connects to every message type coming from the server
-    //and emits the relevant event. listeners can subscribe to events
-
-    socket?.on(ServerToClientEvents.get("SendMessage"), (val) =>
-      publish(ServerToClientEvents.get("SendMessage"), val),
-    );
-    // socket?.on(ServerToClientEvents.get("JoinRoom"), (val) =>
-    //   publish(ServerToClientEvents.get("JoinRoom"), val),
-    // );
-    socket?.on(ServerToClientEvents.get("LobbyChange"), (val) =>
-      publish(ServerToClientEvents.get("LobbyChange"), val),
-    );
-
-    return () => {
-      socket?.offAny();
-    };
-  }, [socket]);
-
   //functions that implement all the client to server events
   //components that need those have to import the hook
   const sendMessage = useCallback(
@@ -50,7 +30,7 @@ const useSocket = () => {
   );
   const joinRoom = useCallback(
     (val) =>
-      socket.emit(ClientToServerEvents.get("JoinRoom"), val, (res) => {
+      socket.emit("room:join", val, (res) => {
         console.log(res);
       }),
     [socket],
@@ -112,3 +92,14 @@ export default useSocket;
   return { socket, emit, on };
 
   */
+
+//receiving end taken over by auth store
+// useEffect(() => {
+//   //socket connects to every message type coming from the server
+//   //and emits the relevant event. listeners can subscribe to events
+//   console.log("got here");
+//   socket?.offAny();
+//   return () => {
+//     socket?.offAny();
+//   };
+// }, [socket]);

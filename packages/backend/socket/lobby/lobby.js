@@ -21,6 +21,7 @@ class Lobby {
       console.log(`Room Manager creating new Room with ID ${roomID}`);
       const room = new Room("hostID", roomID);
       this.rooms.set(roomID, room);
+      // this.rooms.forEach((val, key, map) => console.log(key));
       return { roomID };
     } catch (error) {
       throw error;
@@ -36,7 +37,7 @@ class Lobby {
 
   getAllRooms() {
     const list = [];
-    for (room in this.rooms) list.push({ id: room.id });
+    this.rooms.forEach((val, key, map) => list.push({ id: key }));
     return list;
   }
 }

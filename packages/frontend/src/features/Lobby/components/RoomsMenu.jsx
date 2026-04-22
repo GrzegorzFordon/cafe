@@ -6,11 +6,11 @@ function RoomsListMenu() {
   const { createRoom } = useSocket();
 
   return (
-    <div className="size-full bg-amber-700 max-h-12 flex justify-evenly items-center rounded gap-2 p-2">
+    <div className="flex size-full max-h-12 items-center justify-evenly gap-2 rounded bg-amber-700 p-2">
       <motion.button
-        onClick={()=>createRoom()}
+        onClick={() => createRoom()}
         whileTap={{ scale: 0.95, transition: { duration: 0.05 } }}
-        className="size-full bg-amber-800 text-black font-bold hover:bg-amber-400 cursor-pointer rounded"
+        className="size-full cursor-pointer rounded bg-amber-800 font-bold text-black hover:bg-amber-400"
       >
         CREATE ROOM
       </motion.button>

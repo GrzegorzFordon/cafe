@@ -1,14 +1,35 @@
 import Room from "./Room";
 import RoomsCard from "./RoomsCard";
 import RoomsListMenu from "./RoomsMenu";
+import { subscribe, unsubscribe } from "../../../util/events";
+import { useCallback, useEffect, useState } from "react";
 
 function RoomsList() {
+  const [rooms, setRooms] = useState([]);
+
+  const handleLobbyUpdate = useCallback((e) => {
+    // console.log(e.detail);
+    setRooms(e.detail.rooms);
+  }, []);
+
+  useEffect(() => {
+    subscribe("lobby:change", handleLobbyUpdate);
+    return () => {
+      unsubscribe("lobby:change", handleLobbyUpdate);
+    };
+  }, [handleLobbyUpdate]);
+
   return (
-    <div className="size-full max-w-lg max-h-80 bg-amber-950 rounded flex flex-col gap-2 p-2 justify-center items-center">
-      <div className="size-full bg-amber-800 rounded flex flex-col gap-2 justify-start items-center overflow-y-scroll text-black italic p-2">
+    <div className="flex size-full max-h-80 max-w-lg flex-col items-center justify-center gap-2 rounded bg-amber-950 p-2">
+      <div className="flex size-full flex-col items-center justify-start gap-2 overflow-y-scroll rounded bg-amber-800 p-2 text-black italic">
+        {rooms.map((room) => (
+          <RoomsCard roomID={room.id} />
+        ))}
       </div>
-      <RoomsListMenu/>
+
+      <RoomsListMenu />
     </div>
   );
 }
+
 export default RoomsList;

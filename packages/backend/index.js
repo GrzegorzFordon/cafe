@@ -5,7 +5,7 @@ import connectDB from "./config/dbConn.js";
 import mongoose from "mongoose";
 // import createWebSocketServer from "./socket/socket.server.js";
 import app from "./app.js";
-import Socket from "./socket/socket.asclass.js";
+import Socket from "./socket/socket.js";
 
 const PORT = process.env.PORT || 3500;
 

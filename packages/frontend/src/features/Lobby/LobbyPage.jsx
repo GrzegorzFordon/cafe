@@ -1,43 +1,13 @@
-// import { useCallback, useEffect, useRef, useState } from "react";
-// import useSocket from "../../features/socket/hooks/useSocket";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
-// import useAuthStore from "../../stores/useAuthStore";
-// import { subscribe, unsubscribe } from "../../util/events";
-import { ServerToClientEvents } from "../../../../shared/protocol.js";
 // import lobbytable from "../../assets/lobby_table.png";
 import Chat from "./components/Chat.jsx";
 import RoomsList from "./components/Rooms.jsx";
 import Room from "./components/Room.jsx";
 
 function Lobby() {
-  // const { joinRoom } = useSocket();
-  // const accessTokenData = useAuthStore((state) => state.accessTokenData);
-
-  // const handleRoomJoinedMessage = useCallback((e) => {
-  //   console.log(e.detail);
-  // }, []);
-
-  // useEffect(() => {
-  //   subscribe(ServerToClientEvents.get("JoinRoom"), handleRoomJoinedMessage);
-
-  //   return () => {
-  //     unsubscribe(
-  //       ServerToClientEvents.get("JoinRoom"),
-  //       handleRoomJoinedMessage,
-  //     );
-  //   };
-  // }, [handleRoomJoinedMessage]);
-
-  //HANDLERS: OUTGOING
-
-  // const handleJoinRoom = (e) => {
-  //   e.preventDefault();
-  //   joinRoom({ roomID: room });
-  // };
-
   return (
-    <div className="flex relative  size-full max-w-4xl gap-2 justify-center items-center">
+    <div className="relative flex size-full max-w-4xl items-center justify-center gap-2">
       <Chat />
       <RoomsList />
       <Room />

@@ -7,6 +7,7 @@ const useAuthStore = create(
     accessToken: undefined,
     accessTokenData: undefined,
 
+    
     setAccessToken: (token) => {
       const decode = token ? jwtDecode(token.accessToken) : undefined;
       const accessTokenData = { username: decode.username, id: decode.id };
