@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 import {
   ClientToServerEvents,
   ServerToClientEvents,
-} from "../../../../../shared/protocol";
+} from "../../../../../../packages/shared/protocol";
 
 const useSocket = () => {
   //socket is stored in zustand store
