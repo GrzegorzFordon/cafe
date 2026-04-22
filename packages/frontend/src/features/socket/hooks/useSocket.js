@@ -27,8 +27,11 @@ const useSocket = () => {
     socket?.on(ServerToClientEvents.get("SendMessage"), (val) =>
       publish(ServerToClientEvents.get("SendMessage"), val),
     );
-    socket?.on(ServerToClientEvents.get("JoinRoom"), (val) =>
-      publish(ServerToClientEvents.get("JoinRoom"), val),
+    // socket?.on(ServerToClientEvents.get("JoinRoom"), (val) =>
+    //   publish(ServerToClientEvents.get("JoinRoom"), val),
+    // );
+    socket?.on(ServerToClientEvents.get("LobbyChange"), (val) =>
+      publish(ServerToClientEvents.get("LobbyChange"), val),
     );
 
     return () => {

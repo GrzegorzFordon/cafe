@@ -38,14 +38,18 @@ const createWebSocketServer = (httpServer) => {
     });
     // server.emit(ServerToClientEvents.get("SendMessage"), data);
   };
-
+  const broadcastLobbyChange = (val) => {
+    // const roomIDs = roomsManager.getAllRooms();
+    const roomIDs = "foo";
+    server.emit(ServerToClientEvents.get("LobbyChange"), roomIDs);
+  };
   const onCreateRoom = (socket, data, callback) => {
     console.log(`received request to create room from ${socket.id}`);
     try {
       const res = roomsManager.createRoom();
       socket.join(res.roomID);
       socket.leave("general"); //change to leave other rooms too (other than own id)
-      //TODO - set socket as room owner
+      broadcastLobbyChange();
       callback({ status: "ok", roomID: res.roomID });
     } catch (error) {
       console.log(error);
@@ -79,10 +83,6 @@ const createWebSocketServer = (httpServer) => {
 };
 
 //OWN SERVERSIDE EMITTERS
-
-const broadcastLobbyChange = (val) => {
-  server.emit(ServerToClientEvents.get("LobbyChange"), val);
-};
 
 const broadcastRoomUpdate = (val) => {
   // const room =

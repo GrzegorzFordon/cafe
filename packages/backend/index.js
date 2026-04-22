@@ -3,15 +3,17 @@ import http from "http";
 import { logEvents } from "./middleware/logger.js";
 import connectDB from "./config/dbConn.js";
 import mongoose from "mongoose";
-import createWebSocketServer from "./socket/socket.server.js";
+// import createWebSocketServer from "./socket/socket.server.js";
 import app from "./app.js";
+import Socket from "./socket/socket.asclass.js";
 
 const PORT = process.env.PORT || 3500;
 
 const httpServer = http.createServer(app);
-
+// createWebSocketServer(httpServer);
+const socket = new Socket(httpServer);
+socket.init();
 connectDB();
-createWebSocketServer(httpServer);
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");

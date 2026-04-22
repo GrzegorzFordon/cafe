@@ -5,7 +5,7 @@ class Lobby {
   constructor() {
     this.rooms = new Map();
   }
-  
+
   getRandomRoomCode() {
     const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4);
     let ID;
@@ -37,6 +37,7 @@ class Lobby {
   getAllRooms() {
     const list = [];
     for (room in this.rooms) list.push({ id: room.id });
+    return list;
   }
 }
 
