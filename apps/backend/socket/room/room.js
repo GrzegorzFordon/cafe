@@ -1,13 +1,27 @@
 /* this is the room object used for creating specific games */
 
+import { roomStatus } from "../../../../packages/shared/schemas/roomDTO.js";
+
 class Room {
-  constructor(roomID, hostID) {
-    this.id = roomID;
-    this.hostID = hostID;
+  constructor(roomDTO) {
+    this.id = roomDTO.id;
+    this.hostID = roomDTO.hostID;
+    this.players = [];
+    this.status = roomDTO.status;
   }
 
-  addPlayer() {}
-  removePlayer() {}
+  addPlayer(PlayerDTO) {
+    console.log(`Room ${this.id} is adding Player ${PlayerDTO.id}`);
+    this.players.push(PlayerDTO);
+  }
+  removePlayer(PlayerDTO) {
+    console.log(`Room ${this.id} is removing Player ${PlayerDTO.id}`);
+    this.players = this.players.filter((val) => val.id !== PlayerDTO.id);
+  }
+
+  startGame() {
+    this.status = roomStatus.INPROGRESS;
+  }
 }
 
 export default Room;

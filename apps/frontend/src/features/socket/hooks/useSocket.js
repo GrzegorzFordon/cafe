@@ -1,29 +1,29 @@
-// import io from "socket.io-client";
 import useSocketStore from "../../../stores/useSocketStore";
-import { useCallback, useEffect } from "react";
-import {
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from "../../../../../../packages/shared/protocol";
+// import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 const useSocket = () => {
   //socket is stored in zustand store
   const socket = useSocketStore((state) => state.socket);
-  const connect = useSocketStore((state) => state.connect);
-  const disconnect = useSocketStore((state) => state.disconnect);
+  // const connect = useSocketStore((state) => state.connect);
+  // const disconnect = useSocketStore((state) => state.disconnect);
+  const setActiveRoomID = useSocketStore((state) => state.setActiveRoomID);
 
-  useEffect(() => {
-    connect();
-    return () => {
-      disconnect();
-    };
-  }, [connect, disconnect]);
+  // useEffect(() => {
+  //   console.log("socket on");
+  //   connect();
+  //   return () => {
+  //     console.log("socket off");
+  //     // disconnect();
+  //   };
+  // }, [connect, disconnect]);
 
   //functions that implement all the client to server events
   //components that need those have to import the hook
+
   const sendMessage = useCallback(
     (val) =>
-      socket.emit(ClientToServerEvents.get("SendMessage"), val, (res) => {
+      socket.emit("chat:message", val, (res) => {
         console.log(res.status);
       }),
     [socket],
@@ -32,29 +32,36 @@ const useSocket = () => {
     (val) =>
       socket.emit("room:join", val, (res) => {
         console.log(res);
+        if (res.status == "ok") setActiveRoomID(res.roomID);
       }),
+    [setActiveRoomID, socket],
+  );
+  const createRoom = useCallback(
+    (val) =>
+      socket.emit("room:create", val, (res) => {
+        console.log(res);
+        if (res.status == "ok") setActiveRoomID(res.roomID);
+      }),
+    [setActiveRoomID, socket],
+  );
+  const leaveRoom = useCallback(
+    (val) =>
+      socket.emit("room:leave", val, (res) => {
+        console.log(res);
+        if (res.status == "ok") setActiveRoomID("general");
+      }),
+    [setActiveRoomID, socket],
+  );
+
+  const startGame = useCallback(
+    (val) => {
+      socket.emit("game:start", val, (res) => {
+        console.log(res);
+      });
+    },
     [socket],
   );
 
-  const createRoom = useCallback(
-    (val) =>
-      socket.emit(ClientToServerEvents.get("CreateRoom"), val, (res) => {
-        console.log(res);
-      }),
-    [socket],
-  );
-  // const leaveRoom = useCallback(
-  //   (val) => {
-  //     socket.emit(ClientToServerEvents.get(""), val);
-  //   },
-  //   [socket],
-  // );
-  // const startGame = useCallback(
-  //   (val) => {
-  //     socket.emit(ClientToServerEvents.get(""), val);
-  //   },
-  //   [socket],
-  // );
   // const playGame = useCallback(
   //   (val) => {
   //     socket.emit(ClientToServerEvents.get(""), val);
@@ -66,8 +73,8 @@ const useSocket = () => {
     sendMessage,
     joinRoom,
     createRoom,
-    // leaveRoom,
-    // startGame,
+    leaveRoom,
+    startGame,
     // playGame,
   };
 };

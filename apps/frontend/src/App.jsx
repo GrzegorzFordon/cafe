@@ -3,7 +3,7 @@ import router from "./routes/routes.jsx";
 
 function App() {
   return (
-    <div className="flex w-dvw h-dvh">
+    <div className="flex h-dvh w-dvw">
       <RouterProvider router={router} />
     </div>
   );
