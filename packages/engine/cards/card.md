@@ -1,1 +1,0 @@
-general card entity

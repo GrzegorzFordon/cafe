@@ -5,15 +5,16 @@ class BoardManager {
 export default BoardManager;
 
 //map of tiles (hash map?)
-//all pawns? probably rather pawns will have tile reference instead
+//all pawns? probably rather pawns will have tile reference instead / tiles reference pawns
 
 /**
- * board state and actions
 
 *the grid (the tiles)
+*pawns (all, players also have map of their own units)
 
 
-//actions//
+getLegalMoveTargets(player,unit)
+moveUnit(player,unit,target)
 
-get movement
+
  */

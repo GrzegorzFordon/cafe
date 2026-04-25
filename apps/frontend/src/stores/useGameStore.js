@@ -5,10 +5,15 @@ import { devtools } from "zustand/middleware";
 
 const useGameStore = create(
   devtools((set) => ({
-    game: undefined,
+    gameManager: undefined,
+    gameState: undefined,
 
-    setGame: (game) => {
-      set({ game: game });
+    setGameManager: (gameManager) => {
+      set({ gameManager: gameManager });
+    },
+
+    setGameState: (gameState) => {
+      set({ gameState: gameState });
     },
   })),
 );

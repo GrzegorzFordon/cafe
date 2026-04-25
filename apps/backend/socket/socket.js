@@ -2,6 +2,8 @@ import { Server as SocketIOServer } from "socket.io";
 import Lobby from "./lobby/lobby.js";
 import RoomDTO from "../../../packages/shared/schemas/roomDTO.js";
 import PlayerDTO from "../../../packages/shared/schemas/playerDTO.js";
+import GameDTO from "../../../packages/shared/schemas/gameDTO.js";
+import Games from "./game/games.js";
 
 class Socket {
   constructor(httpServer) {
@@ -12,6 +14,7 @@ class Socket {
       },
     });
     this.lobby = new Lobby();
+    this.games = new Games();
   }
 
   onSendMessage(socket, data) {
@@ -89,7 +92,10 @@ class Socket {
     this.lobby.startGameInRoom(data.roomID);
   }
 
-  onGameAction(socket, data, ack) {}
+  onGameActions(socket, data, ack) {
+    //either sends the actions to the game manager
+    //or it collects all actions for the turn, sorts them by speed, THEN sends that to the game manager
+  }
 
   onGameFinish(socket, data, ack) {
     console.log(
@@ -121,13 +127,13 @@ class Socket {
         this.broadcastRoomState(data.roomID);
         this.broadcastLobbyState();
       });
-      socket.on("game:start", (data, ack) => {
+      socket.on("room:start", (data, ack) => {
         this.onGameStart(socket, data, ack);
         this.broadcastRoomState(data.roomID);
         this.broadcastLobbyState();
       });
-      socket.on("game:action", (data, ack) => {
-        this.onGameAction(socket, data, ack);
+      socket.on("game:actions", (data, ack) => {
+        this.onGameActions(socket, data, ack);
       });
       socket.on("game:finish", (data, ack) => {
         this.onGameFinish(socket, data, ack);
@@ -166,6 +172,13 @@ class Socket {
 
   broadcastGameState(roomID, gameState) {
     console.log("Broadcasting game state");
+    const result = GameDTO.parse({
+      id: "gameID",
+      roomID: roomID,
+      hostID: "hostID",
+    });
+
+    this.server.to(roomID).emit("game:change", result);
   }
 }
 

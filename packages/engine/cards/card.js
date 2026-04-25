@@ -3,3 +3,7 @@ class Card {
 }
 
 export default Card;
+
+/**
+ * general card entity
+ */

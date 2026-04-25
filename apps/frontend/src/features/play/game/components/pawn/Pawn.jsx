@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import pawnSprite from "../../assets/pawns/character_yellow_front.png";
 import pawnSpriteA from "../../assets/pawns/character_purple_front.png";
 // eslint-disable-next-line no-unused-vars
@@ -6,25 +6,31 @@ import { motion } from "motion/react";
 
 function Pawn({ isEven }) {
   const [yPos, setYPos] = useState(100);
+  const ref = useRef();
+
+  useEffect(() => {
+    setYPos(ref.current.getBoundingClientRect().y);
+  }, []);
 
   return (
     <motion.div
+      ref={ref}
       drag
+      dragElastic
       dragMomentum={false}
-      className="relative flex size-fit flex-col items-center"
-      onDrag={(event, info) => {
-        // console.log(info.point.x, info.point.y);
-        setYPos(info.point.y);
+      className="relative flex size-fit origin-center flex-col items-center"
+      onDrag={() => {
+        const y = ref.current.getBoundingClientRect().y;
+        setYPos(y);
       }}
-      style={{ zIndex: yPos }}
+      style={{ zIndex: Math.round(yPos) }}
     >
       <div className="absolute top-1/10 z-10 flex h-fit w-8/10 justify-center gap-px">
         <div className="rounded-1 top-0 h-3 w-full border border-gray-800 bg-green-400 opacity-60"></div>
         <div className="rounded-1 top-0 h-3 w-full border border-gray-800 bg-green-400 opacity-60"></div>
       </div>
       <img
-        whileDrag={{ scale: 1.1 }}
-        className="pointer-events-none size-fit select-none"
+        className="pointer-events-none size-fit select-none hover:scale-105"
         src={isEven ? pawnSprite : pawnSpriteA}
       />
       <div className="absolute bottom-0 z-10 flex w-full justify-evenly text-2xl font-black text-black text-shadow-sm">

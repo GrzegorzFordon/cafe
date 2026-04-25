@@ -18,7 +18,7 @@ function GamePage() {
   const { finishGame } = useSocket();
   return (
     // <div className="multplayer__container">
-    <div className="relative flex size-full flex-col items-center justify-end overflow-hidden p-2 align-middle">
+    <div className="relative flex size-full flex-col items-center justify-end overflow-hidden p-2">
       {/* <img className="absolute origin-[50%_10%] scale-60 scale-y-150" src={table} /> */}
       {/* <img className="object-cover" src={table} /> */}
       <Board />

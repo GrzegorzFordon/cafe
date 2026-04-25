@@ -5,7 +5,7 @@ const GameDTO = z.object({
   id: z.string(),
   roomID: z.string(),
   hostId: z.string(),
-  players: z.array(PlayerDTO),
+  // players: z.array(PlayerDTO),
 });
 
 export default GameDTO;

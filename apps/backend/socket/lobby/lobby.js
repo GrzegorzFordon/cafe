@@ -1,5 +1,5 @@
 import { customAlphabet } from "nanoid";
-import Room from "../room/room.js";
+import Room from "./room.js";
 import PlayerDTO from "../../../../packages/shared/schemas/playerDTO.js";
 import RoomDTO, {
   roomStatus,

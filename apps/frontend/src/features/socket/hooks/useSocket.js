@@ -40,36 +40,22 @@ const useSocket = () => {
   );
   const startGame = useCallback(
     (val) => {
-      socket.emit("game:start", val, (res) => {
+      socket.emit("room:start", val, (res) => {
         console.log(res);
       });
     },
     [socket],
   );
-  const playCard = useCallback(
+
+  const sendActions = useCallback(
     (val) => {
-      socket.emit("game:card", val, (res) => {
+      socket.emit("game:actions", val, (res) => {
         console.log(res);
       });
     },
     [socket],
   );
-  const playAlt = useCallback(
-    (val) => {
-      socket.emit("game:alt", val, (res) => {
-        console.log(res);
-      });
-    },
-    [socket],
-  );
-  const playMove = useCallback(
-    (val) => {
-      socket.emit("game:move", val, (res) => {
-        console.log(res);
-      });
-    },
-    [socket],
-  );
+
   const finishGame = useCallback(
     (val) => {
       socket.emit("game:finish", val, (res) => {
@@ -85,10 +71,8 @@ const useSocket = () => {
     createRoom,
     leaveRoom,
     startGame,
+    sendActions,
     finishGame,
-    playCard,
-    playAlt,
-    playMove,
   };
 };
 
