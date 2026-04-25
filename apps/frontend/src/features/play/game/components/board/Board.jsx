@@ -8,7 +8,7 @@ import { Hex } from "../../../../../../../../packages/shared/util/hex";
 
 function Board() {
   const layout = useMemo(
-    () => new Layout(Layout.flat, new Point(40, 38), new Point(230, 245)),
+    () => new Layout(Layout.flat, new Point(45, 35), new Point(230, 245)),
     [],
   );
 

@@ -5,11 +5,11 @@ import { motion } from "motion/react";
 function Timer() {
   return (
     <motion.img
-      drag
+      // drag
       // dragElastic={0.6}
-      dragMomentum={false}
+      // dragMomentum={false}
       // whileDrag={{ scale: 1.1 }}
-      className="absolute origin-center select-none z-6 bottom-0 left-0"
+      className="absolute scale-80 origin-center select-none z-6 bottom-0 left-0"
       src={sprite}
     />
   );

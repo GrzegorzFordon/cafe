@@ -10,14 +10,16 @@ import useSocketStore from "../../../stores/useSocketStore";
 import Hand from "./components/hand/Hand";
 
 function GamePage() {
-  const figs = Array(1, 2, 3, 4, 5).map((v) => <Pawn key={v} />);
+  const figs = Array(1, 2, 3, 4, 5).map((v) => (
+    <Pawn key={v} isEven={v % 2 == 0} />
+  ));
   const roomData = useSocketStore((state) => state.roomData);
 
   const { finishGame } = useSocket();
   return (
     // <div className="multplayer__container">
     <div className="relative flex size-full flex-col items-center justify-end overflow-hidden p-2 align-middle">
-      {/* <img className="absolute origin-[50%_150%] scale-80" src={table} /> */}
+      {/* <img className="absolute origin-[50%_10%] scale-60 scale-y-150" src={table} /> */}
       {/* <img className="object-cover" src={table} /> */}
       <Board />
       <div className="absolute top-1/2 left-1/2 flex size-25 w-full -translate-1/2 justify-center">

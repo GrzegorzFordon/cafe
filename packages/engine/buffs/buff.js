@@ -3,3 +3,7 @@ class Buff {
 }
 
 export default Buff;
+
+/**
+ * modifier state and actions
+ */

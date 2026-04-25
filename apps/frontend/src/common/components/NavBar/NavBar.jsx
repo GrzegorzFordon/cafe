@@ -25,12 +25,12 @@ function NavBar() {
         />
         <Link to={"/"}>Home</Link>
       </div>
-      {/* <div className="flex items-center gap-8">
+      <div className="flex items-center gap-8">
+        <Link to={"/heroes"}>Regulars</Link>
         <Link to={"/cards"}>Cards</Link>
-        <Link to={"/heroes"}>Heroes</Link>
         <Link to={"/rules"}>Rules</Link>
         <Link to={"/about"}>The Team</Link>
-      </div> */}
+      </div>
       {accessTokenData && (
         <div className="flex items-center gap-8">
           <Link to={"/builder"}>Decks</Link>

@@ -8,10 +8,11 @@ function Card() {
       // className="cursor-pointer"
       drag
       dragElastic={0.6}
+      onDrag={(e, info) => console.log(info.offset)}
       dragSnapToOrigin
       dragMomentum={false}
       whileHover={{ scale: 1.05 }}
-      whileDrag={{ scale: 1.15, cursor:"grabbing" }}
+      whileDrag={{ scale: 1.15, cursor: "grabbing" }}
       src={cardSprite}
     />
   );

@@ -3,10 +3,10 @@ import useLogout from "../../../features/auth/hooks/useLogout";
 function Profile() {
   const { logout } = useLogout();
   return (
-    <div className="flex flex-col size-full max-w-lg shadow max-h-1/3  gap-24 rounded bg-pink-900 justify-center items-center">
+    <div className="flex size-full max-h-72 max-w-xl flex-col items-center justify-center gap-2 bg-pink-200 text-2xl font-bold text-black">
       <div className="font-bold text-black">Profile</div>
       <button
-        className="bg-gray-500 hover:bg-gray-700 text-black rounded px-4 py-2"
+        className="cursor-pointer rounded bg-gray-500 px-4 py-2 text-black hover:bg-gray-700"
         onClick={() => logout()}
       >
         logout

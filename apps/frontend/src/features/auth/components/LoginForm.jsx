@@ -13,7 +13,7 @@ function LoginForm() {
 
   return (
     <Formik
-      initialValues={{ name: "Teddy", pwd: "a123" }}
+      initialValues={{ name: "Fordi", pwd: "fordi" }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
         // console.log(values);
