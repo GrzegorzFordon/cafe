@@ -6,12 +6,12 @@ function Timer() {
   return (
     <motion.img
       drag
-      dragElastic={0.6}
+      // dragElastic={0.6}
       dragMomentum={false}
-      whileDrag={{ scale: 1.1 }}
-      className="absolute"
+      // whileDrag={{ scale: 1.1 }}
+      className="absolute origin-center select-none z-6 bottom-0 left-0"
       src={sprite}
     />
-  )
+  );
 }
-export default Timer
+export default Timer;

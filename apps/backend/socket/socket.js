@@ -91,6 +91,13 @@ class Socket {
 
   onGameAction(socket, data, ack) {}
 
+  onGameFinish(socket, data, ack) {
+    console.log(
+      `User ${socket.id} is trying to finish game in Room ${data.roomID}`,
+    );
+    this.lobby.finishGameInRoom(data.roomID);
+  }
+
   init() {
     console.log("initializing websocket");
     this.server.on("connection", async (socket) => {
@@ -121,6 +128,10 @@ class Socket {
       });
       socket.on("game:action", (data, ack) => {
         this.onGameAction(socket, data, ack);
+      });
+      socket.on("game:finish", (data, ack) => {
+        this.onGameFinish(socket, data, ack);
+        this.broadcastRoomState(data.roomID);
       });
 
       socket.on("disconnecting", () => {

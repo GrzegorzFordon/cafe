@@ -5,11 +5,13 @@ import { motion } from "motion/react";
 function Card() {
   return (
     <motion.img
-      className="absolute"
+      // className="cursor-pointer"
       drag
       dragElastic={0.6}
+      dragSnapToOrigin
       dragMomentum={false}
-      whileDrag={{ scale: 1.1 }}
+      whileHover={{ scale: 1.05 }}
+      whileDrag={{ scale: 1.15, cursor:"grabbing" }}
       src={cardSprite}
     />
   );

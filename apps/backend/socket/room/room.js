@@ -22,6 +22,9 @@ class Room {
   startGame() {
     this.status = roomStatus.INPROGRESS;
   }
+  finishGame() {
+    this.status = roomStatus.FINISHED;
+  }
 }
 
 export default Room;

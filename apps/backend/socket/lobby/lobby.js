@@ -89,6 +89,15 @@ class Lobby {
       throw error;
     }
   }
+
+  finishGameInRoom(roomID) {
+    try {
+      const room = this.getRoomByID(roomID);
+      room.finishGame();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Lobby;

@@ -11,7 +11,6 @@ function Chat() {
   const accessTokenData = useAuthStore((state) => state.accessTokenData);
 
   const [msg, setMsg] = useState("");
-  //   const [room, setRoom] = useState("");
   const [chat, setChat] = useState([
     { message: "first", room: "one", username: "someone" },
     { message: "second", room: "one", username: "else" },
@@ -27,19 +26,10 @@ function Chat() {
     [chat],
   );
 
-  // const handleRoomJoin = (e) => {
-  //   console.log(e.detail);
-  //   const newVal = [...chat, `Joined Room ${e.id}`];
-  //   setChat(newVal);
-  // };
-
   useEffect(() => {
     subscribe("chat:message", handleChatMessage);
-    // subscribe("room:join", handleRoomJoin);
-
     return () => {
       unsubscribe("chat:message", handleChatMessage);
-      // unsubscribe("room:join", handleRoomJoin);
     };
   }, [handleChatMessage]);
 
@@ -58,26 +48,26 @@ function Chat() {
   };
 
   return (
-    <div className="flex size-full max-h-80 max-w-sm flex-col items-center justify-center gap-2 rounded bg-amber-950 p-2">
+    <div className="flex size-full flex-col items-center justify-center gap-2 rounded bg-amber-950 p-2">
       <div
         ref={scrollDiv}
         className="z-5 flex size-full items-center justify-center overflow-y-scroll rounded-md border-4 border-amber-950 bg-amber-900 px-4 py-2 font-bold text-black shadow"
       >
         <ul className="size-full">
           {chat.map((val) => (
-            <li>
+            <li key={chat.indexOf(val)}>
               {val.username}: {val.message}
             </li>
           ))}
         </ul>
       </div>
-      <div className="z-10 flex size-full max-h-1/6 flex-col items-center justify-center gap-2 rounded bg-amber-800 p-1 shadow">
+      <div className="z-10 flex w-full h-fit flex-col items-center justify-center gap-2 rounded bg-amber-800 p-1 shadow">
         <form
           className="flex size-full items-center justify-center gap-2"
           onSubmit={handleSendMessage}
         >
           <input
-            className="size-full appearance-none rounded bg-amber-50 p-2 text-gray-900 focus:outline-none"
+            className="w-full appearance-none rounded bg-amber-50 p-2 text-gray-900 focus:outline-none"
             type="text"
             value={msg}
             onChange={(e) => setMsg(e.target.value)}
