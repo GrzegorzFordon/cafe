@@ -1,6 +1,7 @@
 import * as VFX from "react-vfx";
 import sprite from "../assets/a25-141-lightning-bolt.jpg";
-function VFXCard() {
+
+/*
   const shader = `
 precision highp float;
 uniform sampler2D src;
@@ -96,14 +97,17 @@ void main() {
   outColor += rand(vec3(p, time)) * 0.1;
 }
 `;
+*/
 
+function CardVisual() {
   return (
     <VFX.VFXImg
-      shader={shader}
+      // shader={shader}
+      shader="none"
       src={sprite}
       draggable="false"
-      className="size-full origin-top-left list-image-none select-none"
+      className="size-full select-none"
     />
   );
 }
-export default VFXCard;
+export default CardVisual;

@@ -3,6 +3,7 @@ import pawnSprite from "../assets/pawns/character_yellow_front.png";
 import pawnSpriteA from "../assets/pawns/character_purple_front.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
+// import useGame from "../hooks/useGame";
 
 /**
  * Pawn component
@@ -10,6 +11,8 @@ import { motion } from "motion/react";
  */
 
 function Pawn({ isEven }) {
+  // const moveUnit = useGame();
+
   const [yPos, setYPos] = useState(100);
   const ref = useRef();
 
@@ -23,7 +26,8 @@ function Pawn({ isEven }) {
       drag
       dragElastic
       dragMomentum={false}
-      className="relative flex size-fit origin-center flex-col items-center"
+      whileDrag={{ opacity: 0.3, transition: { duration: 0.2 } }}
+      className="relative flex size-fit origin-center flex-col items-center select-none"
       onDrag={() => {
         const y = ref.current.getBoundingClientRect().y;
         setYPos(y);
@@ -47,3 +51,9 @@ function Pawn({ isEven }) {
   );
 }
 export default Pawn;
+
+/**
+ * pawn needs to have an offset from bottom value
+ * on drag start, get the difference between the mousepos and that offset
+ * per default the offset would be zero, so the mouseoffset would be mouse<->bottom of unit
+ */

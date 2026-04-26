@@ -23,7 +23,7 @@ function PlayPage() {
   }, [connect, disconnect]);
 
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-2 p-2">
+    <div className="flex size-full flex-col items-center justify-center gap-2 p-2 pb-0">
       {/* <button
         className="cursor-pointer rounded bg-amber-500 px-4 py-2 font-bold text-black select-none"
         onClick={() => setShowGame(!showGame)}

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import Layout from "./layout";
+import Layout from "../util/layout";
 import Point from "../../../../../../../packages/shared/util/point";
 import { Hex } from "../../../../../../../packages/shared/util/hex";
 import useMousePos from "../hooks/useMousePos";

@@ -3,17 +3,16 @@
 import { motion } from "motion/react";
 import Board from "./board/Board";
 import Pawn from "./components/Pawn";
-import Card from "./components/Card";
+import Card from "./Card/Card";
 import Timer from "./components/Timer";
 import useSocket from "../../socket/hooks/useSocket";
 import useSocketStore from "../../../stores/useSocketStore";
 // import useGameStore from "../../../stores/useGameStore";
 import Hand from "./components/Hand";
+import BurnZone from "./components/BurnZone";
 
 function GamePage() {
-  const figs = Array("1").map((v) => (
-    <Pawn key={v} isEven={v % 2 == 0} />
-  ));
+  const figs = Array("1").map((v) => <Pawn key={v} isEven={v % 2 == 0} />);
 
   const roomData = useSocketStore((state) => state.roomData);
 
@@ -22,7 +21,7 @@ function GamePage() {
   const { finishGame } = useSocket();
   return (
     // <div className="multplayer__container">
-    <div className="relative flex size-full flex-col items-center justify-end overflow-hidden p-2">
+    <div className="relative flex size-full items-center justify-center overflow-hidden p-2">
       {/* <img className="absolute origin-[50%_10%] scale-60 scale-y-150" src={table} /> */}
       {/* <img className="object-cover" src={table} /> */}
       <Board />
@@ -30,8 +29,8 @@ function GamePage() {
         {figs}
       </div>
       <Hand />
+      <BurnZone />
       {/* <Timer /> */}
-      {/* <h1 className="text-4xl font-bold text-black">GAME SCREEN</h1> */}
       <button
         onClick={() => finishGame({ roomID: roomData.id })}
         className="absolute right-2 bottom-2 size-fit cursor-pointer rounded bg-amber-50 px-4 py-2 font-bold text-black select-none"

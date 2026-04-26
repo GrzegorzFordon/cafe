@@ -28,34 +28,8 @@ class Layout {
   pixelToHexRounded(p) {
     return this.pixelToHexFractional(p).round();
   }
-  // hexCornerOffset(corner) {
-  //   var M = this.orientation;
-  //   var size = this.size;
-  //   var angle = (2.0 * Math.PI * (M.start_angle - corner)) / 6.0;
-  //   return new Point(size.x * Math.cos(angle), size.y * Math.sin(angle));
-  // }
-  // polygonCorners(h) {
-  //   var corners = [];
-  //   var center = this.hexToPixel(h);
-  //   for (var i = 0; i < 6; i++) {
-  //     var offset = this.hexCornerOffset(i);
-  //     corners.push(new Point(center.x + offset.x, center.y + offset.y));
-  //   }
-  //   return corners;
-  // }
 }
 
-Layout.pointy = new Orientation(
-  Math.sqrt(3.0),
-  Math.sqrt(3.0) / 2.0,
-  0.0,
-  3.0 / 2.0,
-  Math.sqrt(3.0) / 3.0,
-  -1.0 / 3.0,
-  0.0,
-  2.0 / 3.0,
-  0.5,
-);
 Layout.flat = new Orientation(
   3.0 / 2.0,
   0.0,

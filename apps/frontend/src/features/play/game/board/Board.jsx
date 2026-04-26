@@ -1,5 +1,5 @@
 import Tile from "./Tile";
-import useBoard from "./useBoard";
+import useBoard from "../hooks/useBoard";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const SIZE_A = 50;
@@ -51,10 +51,6 @@ function Board() {
           />
         </div>
       ))}
-      {/* <div className="absolute">{JSON.stringify(mousePos)}</div> */}
-      {/* <div className="absolute -bottom-10 flex items-center justify-center rounded bg-amber-50">
-        mousedoverhex: {JSON.stringify(mousedOverHex)}
-      </div> */}
     </div>
   );
 }

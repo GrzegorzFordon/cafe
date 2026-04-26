@@ -10,8 +10,32 @@ const useGame = () => {
 
   const actions = useRef([]);
 
+  const tryPlayCard = (cardID, target) => {
+    /**
+     * played cards can be
+     * units (target is a tile/hex)
+     * spells (target can be a unit, structure, tile, or null)
+     */
+    const action = { type: "card:play", cardID, target };
+    addAction(action);
+  };
+
+  const tryBurnCard = (cardID) => {
+    const action = { type: "card:play", cardID };
+    addAction(action);
+  };
+
+  const tryMoveUnit = (pawnID, target) => {
+    const action = { type: "card:play", pawnID, target };
+    addAction(action);
+  };
+
+  const tryUseAbility = (pawnID) => {
+    const action = { type: "card:play", pawnID };
+    addAction(action);
+  };
+
   const addAction = (action) => {
-    //add action to local state
     actions.current.push(action);
   };
 
@@ -24,7 +48,14 @@ const useGame = () => {
     resetActions();
   };
 
-  return { addAction, resetActions, submitActions };
+  return {
+    tryPlayCard,
+    tryBurnCard,
+    tryMoveUnit,
+    tryUseAbility,
+    resetActions,
+    submitActions,
+  };
 };
 
 export default useGame;
@@ -32,14 +63,6 @@ export default useGame;
 /**
  * capture active game state here by listening to game:change events?
  * this might also need to capture the sideeffects?
- */
-
-/**
- * action types:
- * move (who, where)
- * play card (what card, where)
- * burn card (which card)
- * use ability (who, target)
  */
 
 /**

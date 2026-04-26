@@ -1,4 +1,4 @@
-import Card from "./Card.jsx";
+import Card from "../Card/Card.jsx";
 
 /**
  * client side Hand component
@@ -10,7 +10,7 @@ function Hand() {
   const cards = Array(1, 2, 3, 4, 5).map((v) => <Card key={v} />);
 
   return (
-    <div className="z-5 flex size-40 w-fit justify-center gap-2 rounded bg-amber-200 p-2">
+    <div className="absolute bottom-5 left-1/2 z-5 flex size-32 w-fit -translate-x-1/2 justify-center gap-1 rounded bg-amber-50 p-1">
       {cards}
     </div>
   );
