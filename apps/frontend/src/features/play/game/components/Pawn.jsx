@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import pawnSprite from "../../assets/pawns/character_yellow_front.png";
-import pawnSpriteA from "../../assets/pawns/character_purple_front.png";
+import pawnSprite from "../assets/pawns/character_yellow_front.png";
+import pawnSpriteA from "../assets/pawns/character_purple_front.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
+
+/**
+ * Pawn component
+ * TODO Pass sprite as prop
+ */
 
 function Pawn({ isEven }) {
   const [yPos, setYPos] = useState(100);
@@ -37,6 +42,7 @@ function Pawn({ isEven }) {
         <p className="text-red-400">1</p>
         <p className="z-50 text-green-400">1</p>
       </div>
+      {/* <div className="absolute bottom-1/50 left-1/2 z-20 size-2 -translate-1/2 rounded-full bg-amber-500"></div> */}
     </motion.div>
   );
 }

@@ -6,7 +6,7 @@ state machine for phases (+start/end states)
 
 The ActionResolver is a pure state machine: (state, input) → (newPhase, sideEffects[]). 
 The GameEngine applies side effects (mutate coins, reveal cards, set timers) and broadcasts per-player views through StateSerializer.
-
+FSM needed?
  */
 
 import BoardManager from "../board/board.manager.js";

@@ -1,9 +1,12 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
-import Layout from "../components/board/layout";
+import { useMemo } from "react";
+import Layout from "./layout";
 import Point from "../../../../../../../packages/shared/util/point";
 import { Hex } from "../../../../../../../packages/shared/util/hex";
+import useMousePos from "../hooks/useMousePos";
 
 const useBoard = (size, pos) => {
+  const mousePos = useMousePos();
+
   const layout = useMemo(
     () =>
       new Layout(
@@ -14,6 +17,8 @@ const useBoard = (size, pos) => {
     [pos, size],
   );
 
+  //use board size from game state (room state?) instead of N
+  //probably choose map size in room window
   const hexList = useMemo(() => {
     const newHexList = [];
     const N = 3;
@@ -36,28 +41,12 @@ const useBoard = (size, pos) => {
     return newPosList;
   }, [hexList, layout]);
 
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [mousedOverHex, setMousedOverHex] = useState(new Hex(0, 0, 0));
+  const mousedOverHex = useMemo(() => {
+    const hex = layout.pixelToHexRounded(mousePos);
+    return hex;
+  }, [layout, mousePos]);
 
-  const handleMouseMove = useCallback(
-    (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-      //   console.log(mousePos);
-      const hex = layout.pixelToHexRounded(new Point(mousePos.x, mousePos.y));
-      //   console.log(hex);
-      setMousedOverHex(hex);
-    },
-    [layout, mousePos],
-  );
-
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [handleMouseMove]);
-
-  return { mousePos, layout, mousedOverHex, positions };
+  return { layout, positions, mousePos, mousedOverHex };
 };
 
 export default useBoard;

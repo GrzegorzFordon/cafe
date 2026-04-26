@@ -1,6 +1,11 @@
 /* this is the room object used for creating specific games */
 
-import { roomStatus } from "../../../../packages/shared/schemas/roomDTO.js";
+
+export const roomStatus = {
+  LOBBY: 0,
+  INPROGRESS: 1,
+  FINISHED: 2,
+};
 
 class Room {
   constructor(roomDTO) {

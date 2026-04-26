@@ -1,6 +1,7 @@
 {
   "name": "turboexample",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -23,6 +24,7 @@
   ],
   "dependencies": {
     "awilix": "^13.0.3",
+    "react-vfx": "^0.18.0",
     "zod": "^4.3.6"
   }
 }

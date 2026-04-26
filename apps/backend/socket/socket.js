@@ -1,8 +1,10 @@
 import { Server as SocketIOServer } from "socket.io";
 import Lobby from "./lobby/lobby.js";
-import RoomDTO from "../../../packages/shared/schemas/roomDTO.js";
-import PlayerDTO from "../../../packages/shared/schemas/playerDTO.js";
-import GameDTO from "../../../packages/shared/schemas/gameDTO.js";
+import {
+  GameDTO,
+  RoomDTO,
+  PlayerDTO,
+} from "../../../packages/shared/schemas/schemas.js";
 import Games from "./game/games.js";
 
 class Socket {

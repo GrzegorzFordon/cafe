@@ -1,19 +1,23 @@
 // import table from "./assets/table.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
-import Board from "./components/board/Board";
-import Pawn from "./components/pawn/Pawn";
-import Card from "./components/card/Card";
-import Timer from "./components/timer/Timer";
+import Board from "./board/Board";
+import Pawn from "./components/Pawn";
+import Card from "./components/Card";
+import Timer from "./components/Timer";
 import useSocket from "../../socket/hooks/useSocket";
 import useSocketStore from "../../../stores/useSocketStore";
-import Hand from "./components/hand/Hand";
+// import useGameStore from "../../../stores/useGameStore";
+import Hand from "./components/Hand";
 
 function GamePage() {
-  const figs = Array(1, 2, 3, 4, 5).map((v) => (
+  const figs = Array("1").map((v) => (
     <Pawn key={v} isEven={v % 2 == 0} />
   ));
+
   const roomData = useSocketStore((state) => state.roomData);
+
+  // const gameData = useGameStore((state) => state.gameData);
 
   const { finishGame } = useSocket();
   return (
@@ -26,7 +30,7 @@ function GamePage() {
         {figs}
       </div>
       <Hand />
-      <Timer />
+      {/* <Timer /> */}
       {/* <h1 className="text-4xl font-bold text-black">GAME SCREEN</h1> */}
       <button
         onClick={() => finishGame({ roomID: roomData.id })}
@@ -34,6 +38,7 @@ function GamePage() {
       >
         FINISH GAME
       </button>
+      {/* <div className="absolute top-1/2 left-0 bg-amber-50 size-50">{gameData}</div> */}
     </div>
   );
 }

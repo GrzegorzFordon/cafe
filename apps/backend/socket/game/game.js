@@ -4,6 +4,7 @@ class Game {
   constructor() {
     //this is a server game object
     this.manager = new GameManager();
+    // this.state = new GameState();
   }
 }
 

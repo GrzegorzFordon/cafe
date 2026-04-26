@@ -4,7 +4,7 @@ import LobbyPage from "./lobby/LobbyPage";
 import GamePage from "./game/GamePage";
 import Chat from "./lobby/components/Chat";
 // import { subscribe, unsubscribe } from "../../util/events";
-import RoomDTO from "../../../../../packages/shared/schemas/roomDTO";
+import { RoomDTO } from "../../../../../packages/shared/schemas/schemas.js";
 
 function PlayPage() {
   //   const activeRoomID = useSocketStore((state) => state.activeRoomID);

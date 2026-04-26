@@ -3,7 +3,7 @@ import { devtools } from "zustand/middleware";
 import { publish } from "../util/events";
 
 import io from "socket.io-client";
-import RoomDTO from "../../../../packages/shared/schemas/roomDTO";
+import {RoomDTO} from "../../../../packages/shared/schemas/schemas.js";
 
 const SOCKET_URL = "http://localhost:3500";
 
