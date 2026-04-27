@@ -1,0 +1,1 @@
+//encapsulate all communications with the game manager?

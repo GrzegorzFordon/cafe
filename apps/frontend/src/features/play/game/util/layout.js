@@ -2,6 +2,7 @@ import { Hex } from "../../../../../../../packages/shared/util/hex";
 import Orientation from "../../../../../../../packages/shared/util/orientation";
 import Point from "../../../../../../../packages/shared/util/point";
 
+
 class Layout {
   constructor(orientation, size, origin) {
     this.orientation = orientation;

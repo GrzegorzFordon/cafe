@@ -1,10 +1,15 @@
 import GameManager from "../../../../packages/engine/game/game.manager";
+import Socket from "../socket";
 
 class Game {
   constructor() {
     //this is a server game object
     this.manager = new GameManager();
     // this.state = new GameState();
+  }
+
+  startGame(){
+    Socket.broadcastGameState();
   }
 }
 

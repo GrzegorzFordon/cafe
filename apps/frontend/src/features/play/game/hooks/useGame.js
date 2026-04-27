@@ -7,8 +7,10 @@ const useGame = () => {
   // const gameState = useGameStore((state) => state.gameState);
 
   const sendActions = useSocket();
-
   const actions = useRef([]);
+
+  
+
 
   const tryPlayCard = (cardID, target) => {
     /**
@@ -18,6 +20,7 @@ const useGame = () => {
      */
     const action = { type: "card:play", cardID, target };
     addAction(action);
+    console.log(cardID);
   };
 
   const tryBurnCard = (cardID) => {

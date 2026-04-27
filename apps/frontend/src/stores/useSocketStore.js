@@ -3,31 +3,49 @@ import { devtools } from "zustand/middleware";
 import { publish } from "../util/events";
 
 import io from "socket.io-client";
-import {RoomDTO} from "../../../../packages/shared/schemas/schemas.js";
+import { RoomDTO } from "../../../../packages/shared/schemas/schemas.js";
 
 const SOCKET_URL = "http://localhost:3500";
 
 const useSocketStore = create(
   devtools((set, get) => ({
     socket: undefined,
-    // activeRoomID: "general",
     roomData: undefined,
 
     connect: () => {
-      if (get().socket) {
-        return;
-      }
+      if (get().socket) return;
+
       console.log("Socket Store: Connecting");
       const socket = io(SOCKET_URL);
+
+      /**
+       * Chat Events
+       */
       socket?.on("chat:message", (val) => publish("chat:message", val));
+
+      /**
+       * Lobby Events
+       */
+      socket?.on("lobby:change", (val, ack) => {
+        publish("lobby:change", val);
+        ack?.({ status: "ok" });
+      });
+
+      /**
+       * Room Events
+       */
       socket?.on("room:join", (val) => publish("room:join", val));
-      socket?.on("lobby:change", (val) => publish("lobby:change", val));
-      // socket?.on("room:change", (val) => publish("room:change", val));
       socket?.on("room:change", (val) => {
-        console.log(val);
         const res = RoomDTO.parse(val);
         set({ roomData: res });
       });
+
+      /**
+       * Game Events
+       */
+      socket?.on("game:start", (val) => publish("game:start", val));
+      socket?.on("game:phase", (val) => publish("game:change", val));
+
       set({ socket });
     },
     disconnect: () => {
@@ -44,4 +62,3 @@ const useSocketStore = create(
 );
 
 export default useSocketStore;
-

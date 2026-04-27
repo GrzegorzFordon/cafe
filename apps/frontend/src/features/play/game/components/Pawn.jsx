@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import pawnSprite from "../assets/pawns/character_yellow_front.png";
-import pawnSpriteA from "../assets/pawns/character_purple_front.png";
+import pawnSprite from "../assets/units/character_yellow_front.png";
+import pawnSpriteA from "../assets/units/character_purple_front.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 // import useGame from "../hooks/useGame";

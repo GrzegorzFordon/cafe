@@ -4,17 +4,20 @@ import Point from "../../../../../../../packages/shared/util/point";
 import { Hex } from "../../../../../../../packages/shared/util/hex";
 import useMousePos from "../hooks/useMousePos";
 
-const useBoard = (size, pos) => {
+export const TILE_SIZE = 50;
+export const Y_SQUASH = 0.7;
+
+const useBoard = () => {
   const mousePos = useMousePos();
 
   const layout = useMemo(
     () =>
       new Layout(
         Layout.flat,
-        new Point(size.x, size.y),
-        new Point(pos.x, pos.y),
+        new Point(TILE_SIZE, TILE_SIZE * Y_SQUASH),
+        new Point(0, 0),
       ),
-    [pos, size],
+    [],
   );
 
   //use board size from game state (room state?) instead of N
@@ -46,7 +49,7 @@ const useBoard = (size, pos) => {
     return hex;
   }, [layout, mousePos]);
 
-  return { layout, positions, mousePos, mousedOverHex };
+  return { layout, positions, mousedOverHex };
 };
 
 export default useBoard;

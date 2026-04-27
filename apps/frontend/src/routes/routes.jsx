@@ -27,6 +27,8 @@ const router = createBrowserRouter([
       { path: "/cards", element: <CardList /> },
       { path: "/heroes", element: <HeroBios /> },
       { path: "/rules", element: <HowTo /> },
+      { path: "/play", element: <PlayPage /> },
+
       {
         element: <ProtectedRoute />,
         children: [
@@ -36,7 +38,7 @@ const router = createBrowserRouter([
           { path: "/shop", element: <Shop /> },
           { path: "/solo", element: <SoloRun /> },
           { path: "/lobby", element: <Lobby /> },
-          { path: "/play", element: <PlayPage /> },
+          // { path: "/play", element: <PlayPage /> },
         ],
       },
     ],

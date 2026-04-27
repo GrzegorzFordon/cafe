@@ -29,7 +29,7 @@ function GamePage() {
         {figs}
       </div>
       <Hand />
-      <BurnZone />
+      {/* <BurnZone /> */}
       {/* <Timer /> */}
       <button
         onClick={() => finishGame({ roomID: roomData.id })}

@@ -1,16 +1,14 @@
 import Tile from "./Tile";
 import useBoard from "../hooks/useBoard";
 import { useEffect, useMemo, useRef, useState } from "react";
+import useMousePos from "../hooks/useMousePos";
 
 const SIZE_A = 50;
-const SIZE_BOARD = 600;
 
 function Board() {
   const ref = useRef();
-  const { positions, mousePos, layout } = useBoard(
-    { x: SIZE_A, y: SIZE_A * 0.7 },
-    { x: SIZE_BOARD * 0.5 * 0.9, y: SIZE_BOARD * 0.5 * 0.7 },
-  );
+  const mousePos = useMousePos();
+  const { positions, layout } = useBoard({ x: SIZE_A, y: SIZE_A * 0.7 });
 
   const [localmousepos, setLocalmousepos] = useState({ x: 0, y: 0 });
 
@@ -31,9 +29,10 @@ function Board() {
   return (
     <div
       ref={ref}
-      style={{ width: SIZE_BOARD * 0.9, height: SIZE_BOARD * 0.7 }}
+      // style={{ width: SIZE_BOARD * 0.9, height: SIZE_BOARD * 0.7 }}
       className="absolute top-3/7 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded bg-amber-50 text-2xl font-black text-black"
     >
+      <div className="absolute size-150 max-h-72 rounded-2xl bg-amber-50"></div>
       {positions.map((val) => (
         <div
           style={{

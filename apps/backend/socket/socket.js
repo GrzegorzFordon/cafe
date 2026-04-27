@@ -6,6 +6,7 @@ import {
   PlayerDTO,
 } from "../../../packages/shared/schemas/schemas.js";
 import Games from "./game/games.js";
+import { GAME_PHASES } from "../../../packages/engine/config.js";
 
 class Socket {
   constructor(httpServer) {
@@ -114,8 +115,14 @@ class Socket {
       socket.join("general");
       this.broadcastLobbyState();
 
+      /**
+       * Chat Events
+       */
       socket.on("chat:message", (data) => this.onSendMessage(socket, data));
 
+      /**
+       * Room Events
+       */
       socket.on("room:create", (data, ack) => {
         this.onCreateRoom(socket, data, ack);
         this.broadcastLobbyState();
@@ -134,6 +141,10 @@ class Socket {
         this.broadcastRoomState(data.roomID);
         this.broadcastLobbyState();
       });
+
+      /**
+       * Game Events
+       */
       socket.on("game:actions", (data, ack) => {
         this.onGameActions(socket, data, ack);
       });
@@ -155,13 +166,19 @@ class Socket {
   broadcastLobbyState() {
     console.log("Broadcasting lobby state");
     const rooms = this.lobby.getAllRooms();
-    this.server.emit("lobby:change", { rooms: rooms });
+    this.server
+      .timeout(1000 * 10)
+      .emit("lobby:change", { rooms: rooms }, (err, responses) => {
+        if (err) {
+        } else {
+          console.log("lobby ack: ", responses);
+        }
+      });
   }
 
   broadcastRoomState(roomID) {
     console.log(`Broadcasting Room state to Room ${roomID}`);
     const room = this.lobby.getRoomByID(roomID);
-    // if (!room) throw new Error("room does not exist");
     if (!room) return;
     const result = RoomDTO.parse({
       id: roomID,
@@ -172,15 +189,21 @@ class Socket {
     this.server.to(roomID).emit("room:change", result);
   }
 
-  broadcastGameState(roomID, gameState) {
-    console.log("Broadcasting game state");
+  broadcastGameStart(roomID, initialState) {
+    console.log("Broadcasting game start");
     const result = GameDTO.parse({
       id: "gameID",
       roomID: roomID,
       hostID: "hostID",
     });
 
-    this.server.to(roomID).emit("game:change", result);
+    this.server.to(roomID).emit("game:start", result);
+  }
+
+  broadcastGamePhase(roomID, info) {
+    console.log("Broadcasting game phase");
+    const result = { phase: GAME_PHASES.PLAN, effects: info.effects };
+    this.server.to(roomID).emit("game:phase", result);
   }
 }
 

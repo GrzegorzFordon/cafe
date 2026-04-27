@@ -1,20 +1,17 @@
+/**
+ * the grid (the tiles) (hash map??)
+ * pawns (all, players also have map of their own units) (maybe in tiles)
+ * getLegalMoveTargets(player,unit)
+ * moveUnit(player,unit,target)
+ **/
+
 class BoardManager {
-  constructor() {}
+  constructor() {
+    this.tiles = [];
+    this.units = [];
+  }
+
+  spawnUnit(unitID) {}
 }
 
 export default BoardManager;
-
-//map of tiles (hash map?)
-//all pawns? probably rather pawns will have tile reference instead / tiles reference pawns
-
-/**
-
-*the grid (the tiles)
-*pawns (all, players also have map of their own units)
-
-
-getLegalMoveTargets(player,unit)
-moveUnit(player,unit,target)
-
-
- */

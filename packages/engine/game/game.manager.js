@@ -4,19 +4,18 @@
  * So this is game state AND manager? Then this is not what we send to the player. We send a gameDTO, which is a player parsed game state
  * instead of passing a game state to the parser, this holds the game state and is the parser
 
-state machine for phases (+start/end states)
-
-The ActionResolver is a pure state machine: (state, input) → (newPhase, sideEffects[]). 
-The GameEngine applies side effects (mutate coins, reveal cards, set timers) and broadcasts per-player views through StateSerializer.
-FSM needed?
+ * state machine for phases (+start/end states)?
  */
 
 import BoardManager from "../board/board.manager.js";
+import gameState from "./game.state.js";
 
 class GameManager {
   constructor(options) {
     this.id = options.id;
+    // this.state = gameState;
     this.boardManager = new BoardManager();
+    this.players = new Map();
   }
 
   init() {
@@ -25,10 +24,9 @@ class GameManager {
     console.log(`GameManager is initialized`);
   }
 
-  draw(player, amount) {}
-
-  //??
-  validateDeck(deck) {}
+  serialize() {
+    //TODO turn all needed info into a game(state?)DTO (schemas)
+  }
 }
 
 export default GameManager;

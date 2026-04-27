@@ -30,6 +30,7 @@ function NavBar() {
         <Link to={"/cards"}>Cards</Link>
         <Link to={"/rules"}>Rules</Link>
         <Link to={"/about"}>The Team</Link>
+        <Link to={"/play"}>Play</Link>
       </div>
       {accessTokenData && (
         <div className="flex items-center gap-8">
@@ -38,7 +39,7 @@ function NavBar() {
           <Link to={"/shop"}>Shop</Link>
           {/* <Link to={"/mp"}>Play</Link> */}
           {/* <Link to={"/lobby"}>Lobby</Link> */}
-          <Link to={"/play"}>Play</Link>
+          {/* <Link to={"/play"}>Play</Link> */}
         </div>
       )}
       <div className="flex items-center gap-8">

@@ -4,9 +4,11 @@ import { useCallback } from "react";
 
 const useSocket = () => {
   const socket = useSocketStore((state) => state.socket);
-  // const roomData = useSocketStore((state) => state.roomData);
   const setRoomData = useSocketStore((state) => state.setRoomData);
 
+  /**
+   * Chat Actions
+   */
   const sendMessage = useCallback(
     (val) =>
       socket.emit("chat:message", val, (res) => {
@@ -14,6 +16,10 @@ const useSocket = () => {
       }),
     [socket],
   );
+
+  /**
+   * Room Actions
+   */
   const joinRoom = useCallback(
     (val) =>
       socket.emit("room:join", val, (res) => {
@@ -47,6 +53,9 @@ const useSocket = () => {
     [socket],
   );
 
+  /**
+   * Game Actions
+   */
   const sendActions = useCallback(
     (val) => {
       socket.emit("game:actions", val, (res) => {
@@ -55,7 +64,6 @@ const useSocket = () => {
     },
     [socket],
   );
-
   const finishGame = useCallback(
     (val) => {
       socket.emit("game:finish", val, (res) => {
