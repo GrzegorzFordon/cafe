@@ -7,15 +7,17 @@
  * state machine for phases (+start/end states)?
  */
 
-import BoardManager from "../board/board.manager.js";
+import Board from "../board/board.manager.js";
+import { GAME_PHASES } from "../config.js";
 import gameState from "./game.state.js";
 
 class GameManager {
   constructor(options) {
     this.id = options.id;
     // this.state = gameState;
-    this.boardManager = new BoardManager();
+    this.board = new Board();
     this.players = new Map();
+    this.activePhase = GAME_PHASES.START;
   }
 
   init() {

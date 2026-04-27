@@ -1,16 +1,19 @@
 import sprite from "../assets/hexagon_png.png";
 import spriteActive from "../assets/hex_active.png";
+import useBoard from "../hooks/useBoard";
 
 /**
  * Client Tile component
  * Handles display based on props (different types, different status effects)
  */
 
-function Tile({ coords, hoveredcoords }) {
+function Tile({ coords }) {
+  const { mousedOverHex } = useBoard();
+
   const isactive =
-    coords.q === hoveredcoords.q &&
-    coords.r === hoveredcoords.r &&
-    coords.s === hoveredcoords.s;
+    coords.q === mousedOverHex.q &&
+    coords.r === mousedOverHex.r &&
+    coords.s === mousedOverHex.s;
 
   return (
     <div className="select-none">

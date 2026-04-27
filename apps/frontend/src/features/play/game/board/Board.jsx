@@ -1,56 +1,49 @@
 import Tile from "./Tile";
 import useBoard from "../hooks/useBoard";
-import { useEffect, useMemo, useRef, useState } from "react";
-import useMousePos from "../hooks/useMousePos";
-
-const SIZE_A = 50;
+import { useEffect, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion, Reorder } from "motion/react";
+import useBoardStore from "../../../../stores/useBoardStore";
 
 function Board() {
-  const ref = useRef();
-  const mousePos = useMousePos();
-  const { positions, layout } = useBoard({ x: SIZE_A, y: SIZE_A * 0.7 });
+  const setBoardRef = useBoardStore((state) => state.setBoardRef);
+  const tileSize = useBoardStore((state) => state.tileSize);
 
-  const [localmousepos, setLocalmousepos] = useState({ x: 0, y: 0 });
+  const ref = useRef();
+  const { positions, layout } = useBoard();
 
   useEffect(() => {
-    const rect = ref.current.getBoundingClientRect();
-    const offsetpos = {
-      x: Math.round(mousePos.x - rect.left + rect.width * 0 * 0.5),
-      y: Math.round(mousePos.y - rect.top + rect.height * 0 * 0.5),
-    };
-    setLocalmousepos(offsetpos);
-  }, [mousePos]);
-
-  const mousedOverHex = useMemo(() => {
-    const hex = layout.pixelToHexRounded(localmousepos);
-    return hex;
-  }, [layout, localmousepos]);
+    setBoardRef(ref.current);
+  }, [setBoardRef, ref]);
 
   return (
-    <div
+    <motion.div
+      drag
+      dragMomentum="false"
+      draggable="false"
       ref={ref}
-      // style={{ width: SIZE_BOARD * 0.9, height: SIZE_BOARD * 0.7 }}
-      className="absolute top-3/7 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded bg-amber-50 text-2xl font-black text-black"
+      className="absolute top-3/7 left-1/2 z-20 flex -translate-1/2 flex-col items-center justify-center rounded bg-amber-500 text-2xl font-black text-black"
     >
-      <div className="absolute size-150 max-h-72 rounded-2xl bg-amber-50"></div>
+      <div
+        draggable="false"
+        className="absolute size-150 max-h-72 rounded-2xl bg-amber-50"
+      ></div>
       {positions.map((val) => (
         <div
+          draggable="false"
           style={{
             position: "absolute",
-            left: val.x - SIZE_A * 0.5,
-            top: val.y - SIZE_A * 0.5,
-            width: SIZE_A,
-            height: SIZE_A,
+            left: val.x - tileSize * 0.5,
+            top: val.y - tileSize * 0.5,
+            width: tileSize,
+            height: tileSize,
           }}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center select-none"
         >
-          <Tile
-            coords={layout.pixelToHexRounded(val)}
-            hoveredcoords={mousedOverHex}
-          />
+          <Tile coords={layout.pixelToHexRounded(val)} />
         </div>
       ))}
-    </div>
+    </motion.div>
   );
 }
 export default Board;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import pawnSprite from "../assets/units/character_yellow_front.png";
-import pawnSpriteA from "../assets/units/character_purple_front.png";
+import unitSprite from "../assets/units/character_yellow_front.png";
+import unitSpriteA from "../assets/units/character_purple_front.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 // import useGame from "../hooks/useGame";
@@ -10,7 +10,7 @@ import { motion } from "motion/react";
  * TODO Pass sprite as prop
  */
 
-function Pawn({ isEven }) {
+function Unit({ isEven }) {
   // const moveUnit = useGame();
 
   const [yPos, setYPos] = useState(100);
@@ -23,7 +23,7 @@ function Pawn({ isEven }) {
   return (
     <motion.div
       ref={ref}
-      drag
+      // drag
       dragElastic
       dragMomentum={false}
       whileDrag={{ opacity: 0.3, transition: { duration: 0.2 } }}
@@ -40,17 +40,29 @@ function Pawn({ isEven }) {
       </div>
       <img
         className="pointer-events-none size-fit select-none hover:scale-105"
-        src={isEven ? pawnSprite : pawnSpriteA}
+        src={isEven ? unitSprite : unitSpriteA}
       />
       <div className="absolute bottom-0 z-10 flex w-full justify-evenly text-2xl font-black text-black text-shadow-sm">
-        <p className="text-red-400">1</p>
-        <p className="z-50 text-green-400">1</p>
+        {/* <p className="text-red-400">1</p> */}
+        {/* <p className="z-50 text-green-400">1</p> */}
       </div>
+      <motion.div
+        drag
+        dragSnapToOrigin
+        dragElastic
+        className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl"
+      >
+        <img
+          className="pointer-events-none size-fit opacity-55 select-none"
+          draggable="false"
+          src={isEven ? unitSprite : unitSpriteA}
+        />
+      </motion.div>
       {/* <div className="absolute bottom-1/50 left-1/2 z-20 size-2 -translate-1/2 rounded-full bg-amber-500"></div> */}
     </motion.div>
   );
 }
-export default Pawn;
+export default Unit;
 
 /**
  * pawn needs to have an offset from bottom value

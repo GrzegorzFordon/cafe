@@ -1,9 +1,10 @@
 import * as VFX from "react-vfx";
-import bolt from "../assets/cards/bolt.jpg";
-import golgari_guildmage from "../assets/cards/golgari_guildmage.jpg";
-import grixis_panorama from "../assets/cards/grixis_panorama.jpg";
-import reanimate from "../assets/cards/reanimate.jpg";
-import swarm_intelligence from "../assets/cards/swarm_intelligence.jpg";
+import bolt from "../assets/cards/bolt.png";
+import golgari_guildmage from "../assets/cards/golgari_guildmage.png";
+import grixis_panorama from "../assets/cards/grixis_panorama.png";
+import reanimate from "../assets/cards/reanimate.png";
+import swarm_intelligence from "../assets/cards/swarm_intelligence.png";
+import { useMemo } from "react";
 
 // const shader = `
 // precision highp float;
@@ -102,20 +103,23 @@ import swarm_intelligence from "../assets/cards/swarm_intelligence.jpg";
 // `;
 
 function CardVisual({ cardID }) {
-  const sprite =
-    cardID == 1
-      ? bolt
-      : cardID == 2
-        ? golgari_guildmage
-        : cardID == 3
-          ? grixis_panorama
-          : cardID == 4
-            ? reanimate
-            : swarm_intelligence;
+  const sprite = useMemo(
+    () =>
+      cardID == 1
+        ? bolt
+        : cardID == 2
+          ? golgari_guildmage
+          : cardID == 3
+            ? grixis_panorama
+            : cardID == 4
+              ? reanimate
+              : swarm_intelligence,
+    [cardID],
+  );
 
   return (
     <VFX.VFXImg
-      // shader={shader}
+      // shader={dragged ? shader : "none"}
       shader="none"
       src={sprite}
       draggable="false"

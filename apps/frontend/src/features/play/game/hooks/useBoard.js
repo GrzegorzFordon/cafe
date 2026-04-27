@@ -3,21 +3,23 @@ import Layout from "../util/layout";
 import Point from "../../../../../../../packages/shared/util/point";
 import { Hex } from "../../../../../../../packages/shared/util/hex";
 import useMousePos from "../hooks/useMousePos";
+import useBoardStore from "../../../../stores/useBoardStore";
 
-export const TILE_SIZE = 50;
 export const Y_SQUASH = 0.7;
 
 const useBoard = () => {
   const mousePos = useMousePos();
+  const boardRef = useBoardStore((state) => state.boardRef);
+  const tileSize = useBoardStore((state) => state.tileSize);
 
   const layout = useMemo(
     () =>
       new Layout(
         Layout.flat,
-        new Point(TILE_SIZE, TILE_SIZE * Y_SQUASH),
+        new Point(tileSize, tileSize * Y_SQUASH),
         new Point(0, 0),
       ),
-    [],
+    [tileSize],
   );
 
   //use board size from game state (room state?) instead of N
@@ -45,9 +47,16 @@ const useBoard = () => {
   }, [hexList, layout]);
 
   const mousedOverHex = useMemo(() => {
-    const hex = layout.pixelToHexRounded(mousePos);
+    const rect = boardRef && boardRef.getBoundingClientRect();
+    const left = rect ? rect.left : 0;
+    const top = rect ? rect.top : 0;
+    const offsetMousePos = {
+      x: Math.round(mousePos.x - left),
+      y: Math.round(mousePos.y - top),
+    };
+    const hex = layout.pixelToHexRounded(offsetMousePos);
     return hex;
-  }, [layout, mousePos]);
+  }, [layout, mousePos, boardRef]);
 
   return { layout, positions, mousedOverHex };
 };

@@ -1,46 +1,47 @@
 // eslint-disable-next-line no-unused-vars
-import { motion } from "motion/react";
+import { motion, Reorder } from "motion/react";
 import CardVisual from "./CardVisual.jsx";
-import useGame from "../hooks/useGame.js";
-import { useState } from "react";
 import useBoard from "../hooks/useBoard.js";
+// import useGame from "../hooks/useGame.js";
+
 /**
  * Client side Card component
  * Handles Display and Drag Events (play card, burn card)
  */
 
-function Card({ cardID }) {
-  const { tryPlayCard, tryBurnCard } = useGame();
-  const mousedOverHex = useBoard();
-  const [yDist, setYDist] = useState(0);
+function Card({ cardID, orderItem }) {
+  // const { tryPlayCard, tryBurnCard } = useGame();
+  // const [yDist, setYDist] = useState(0);
 
-  const handlePlay = () => {
-    tryPlayCard(cardID, mousedOverHex);
-  };
-  const handleBurn = () => {};
+  // const handlePlay = () => {
+  //   // tryPlayCard(cardID, mousedOverHex);
+  // };
+
+  // const handleBurn = () => {};
+
+  // const [dragged, setDragged] = useState(false);
+
+  const { mousedOverHex } = useBoard();
 
   return (
-    <motion.div
-      // drag
-      dragSnapToOrigin
+    <Reorder.Item
+      item={orderItem}
+      as="div"
+      drag
       dragElastic={0.1}
-      dragMomentum={false}
-      onDrag={(e, info) => {
-        setYDist(info.offset.y);
-        // console.log(info.offset.x);
-        // if (Math.abs(info.offset.x) > 50) swapOrder(cardID, 1);
+      dragSnapToOrigin
+      whileDrag={{ scale: 0.6, cursor: "grabbing" }}
+      onDragEnd={() => {
+        console.log("card play: ", cardID, mousedOverHex);
       }}
-      onDragEnd={(e, info) => {
-        handlePlay();
-        handleBurn();
-        setYDist(0);
-      }}
-      whileHover={{ scale: 1.05, translateY: "-10px" }}
-      whileDrag={{ scale: 0.5, cursor: "grabbing", zIndex: 10 }}
-      className="relative select-none"
+      key={orderItem}
+      value={orderItem}
     >
-      <CardVisual cardID={cardID} />
-    </motion.div>
+      <CardVisual
+        cardID={cardID}
+        whileHover={{ scale: 1.05, translateY: "-10px" }}
+      />
+    </Reorder.Item>
   );
 }
 export default Card;
