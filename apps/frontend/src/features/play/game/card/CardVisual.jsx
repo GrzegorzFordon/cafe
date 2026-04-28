@@ -1,10 +1,13 @@
-import * as VFX from "react-vfx";
+// import * as VFX from "react-vfx";
 import bolt from "../assets/cards/bolt.png";
 import golgari_guildmage from "../assets/cards/golgari_guildmage.png";
 import grixis_panorama from "../assets/cards/grixis_panorama.png";
 import reanimate from "../assets/cards/reanimate.png";
 import swarm_intelligence from "../assets/cards/swarm_intelligence.png";
 import { useMemo } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion, Reorder } from "motion/react";
+import { transform } from "zod";
 
 // const shader = `
 // precision highp float;
@@ -118,11 +121,19 @@ function CardVisual({ cardID }) {
   );
 
   return (
-    <VFX.VFXImg
-      // shader={dragged ? shader : "none"}
-      shader="none"
-      src={sprite}
+    // <VFX.VFXImg
+    //   // shader={dragged ? shader : "none"}
+    //   shader="none"
+    //   src={sprite}
+    //   draggable="false"
+    //   className="relative select-none opacity-65 scale-100"
+    // />
+    //
+    <motion.img
       draggable="false"
+      // whileHover={{ scale: 1.15, transform: "translateY(-10px)" }}
+      src={sprite}
+      alt=""
       className="size-full select-none"
     />
   );

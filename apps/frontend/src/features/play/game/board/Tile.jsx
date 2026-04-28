@@ -1,7 +1,11 @@
 import sprite from "../assets/hexagon_png.png";
 import spriteActive from "../assets/hex_active.png";
 import useBoard from "../hooks/useBoard";
-
+import CardVisual from "../card/CardVisual";
+// eslint-disable-next-line no-unused-vars
+import { motion, useMotionValue } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import Unit from "../units/Unit";
 /**
  * Client Tile component
  * Handles display based on props (different types, different status effects)
@@ -10,22 +14,52 @@ import useBoard from "../hooks/useBoard";
 function Tile({ coords }) {
   const { mousedOverHex } = useBoard();
 
+  const ref = useRef();
+
+  const [intentCardZIndex, setIntentCardZIndex] = useState(0);
+  const [intentCardData, setIntentData] = useState();
+
+  useEffect(() => {
+    const y = ref.current.getBoundingClientRect().y;
+    setIntentCardZIndex(y);
+  }, [ref]);
+
   const isactive =
     coords.q === mousedOverHex.q &&
     coords.r === mousedOverHex.r &&
     coords.s === mousedOverHex.s;
 
   return (
-    <div className="select-none">
+    <div ref={ref} className="select-none">
       <img
         draggable="false"
-        className="scale-220 scale-y-154"
+        className="scale-220 scale-y-154 opacity-70"
         src={isactive ? spriteActive : sprite}
+        // src={sprite}
         alt=""
       />
-      <div className="absolute top-1/2 left-1/2 flex -translate-1/2 flex-col text-sm font-light select-none">
-        {/* <p>{isactive && "x"}</p> */}
+      <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
+        {coords.q == coords.r && <Unit unitID={1} />}
       </div>
+      {/* <div className="absolute top-1/2 left-1/2 -translate-1/2">
+        {!isactive && <Unit />}
+      </div> */}
+      {isactive && (
+        <motion.div
+          animate={{ y: [0, -5, 0] }}
+          transition={{
+            duration: 5,
+            ease: "easeInOut",
+            times: [0, 0.5, 1],
+            repeat: Infinity,
+            repeatDelay: 0,
+          }}
+          style={{ zIndex: intentCardZIndex }}
+          className="absolute top-0 left-1/2 flex -translate-1/2 scale-200 items-center justify-center bg-green-400 select-none"
+        >
+          {/* <CardVisual /> */}
+        </motion.div>
+      )}
     </div>
   );
 }

@@ -3,10 +3,11 @@ import { devtools } from "zustand/middleware";
 import GameManager from "../../../../packages/engine/game/game.manager";
 
 const useGameStore = create(
-  devtools((set) => ({
+  devtools((set, get) => ({
     gameManager: new GameManager("fakeID"),
     gameState: undefined, //this will be the gamestate from engine??
-    debugHand: [],
+
+    intents: [],
 
     setGameManager: (gameManager) => {
       set({ gameManager: gameManager });
@@ -16,7 +17,15 @@ const useGameStore = create(
       set({ gameState: gameState });
     },
 
-    setDebugHand: (hand) => set({ hand: hand }),
+    addIntent: (intent) => {
+      console.log("Adding intent: ", intent);
+      set((state) => ({ intents: [...state.intents, intent] }));
+      console.log("new intents: ", get().intents);
+    },
+
+    resetIntents: () => {
+      set({ intents: [] });
+    },
   })),
 );
 

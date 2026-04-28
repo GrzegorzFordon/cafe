@@ -1,62 +1,59 @@
-import { useRef } from "react";
-// import useGameStore from "../../../stores/useGameStore";
-import useSocket from "../../../socket/hooks/useSocket";
+// import useGameStore from "../../../../stores/useGameStore";
 
 const useGame = () => {
   // const gameManager = useGameStore((state) => state.gameManager);
   // const gameState = useGameStore((state) => state.gameState);
+  // const sendActions = useSocket();
 
-  const sendActions = useSocket();
-  const actions = useRef([]);
+  // const addIntent = useGameStore((state) => state.addIntent);
+  // const resetIntents = useGameStore((state) => state.resetIntents);
 
-  
+  // const tryPlayCard = (cardID, target) => {
+  //   const action = { type: "card:play", cardID, target };
+  //   addAction(action);
+  //   console.log("Play Card: ", action);
+  //   return true;
+  // };
 
+  // /**
+  //  * Intent Actions
+  //  */
+  // const tryBurnCard = (cardID) => {
+  //   const action = { type: "card:burn", cardID };
+  //   addAction(action);
+  //   console.log("Burn Card: ", cardID);
+  // };
 
-  const tryPlayCard = (cardID, target) => {
-    /**
-     * played cards can be
-     * units (target is a tile/hex)
-     * spells (target can be a unit, structure, tile, or null)
-     */
-    const action = { type: "card:play", cardID, target };
-    addAction(action);
-    console.log(cardID);
-  };
+  // const tryMoveUnit = (unitID, target) => {
+  //   const action = { type: "unit:move", unitID, target };
+  //   addAction(action);
+  //   console.log("Move Unit: ", unitID, target);
+  // };
 
-  const tryBurnCard = (cardID) => {
-    const action = { type: "card:play", cardID };
-    addAction(action);
-  };
+  // const tryUseAbility = (unitID) => {
+  //   const action = { type: "card:ability", unitID };
+  //   addAction(action);
+  // };
 
-  const tryMoveUnit = (pawnID, target) => {
-    const action = { type: "card:play", pawnID, target };
-    addAction(action);
-  };
+  // const addAction = (action) => {
+  //   addIntent(action);
+  // };
 
-  const tryUseAbility = (pawnID) => {
-    const action = { type: "card:play", pawnID };
-    addAction(action);
-  };
-
-  const addAction = (action) => {
-    actions.current.push(action);
-  };
-
-  const resetActions = () => {
-    actions.current = [];
-  };
+  // const resetActions = () => {
+  //   resetIntents();
+  // };
 
   const submitActions = () => {
-    sendActions(actions);
-    resetActions();
+    // sendActions(actions);
+    // resetActions();
   };
 
   return {
-    tryPlayCard,
-    tryBurnCard,
-    tryMoveUnit,
-    tryUseAbility,
-    resetActions,
+    // tryPlayCard,
+    // tryBurnCard,
+    // tryMoveUnit,
+    // tryUseAbility,
+    // resetActions,
     submitActions,
   };
 };

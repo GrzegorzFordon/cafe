@@ -1,6 +1,7 @@
 import storefront from "../../../assets/homeArt/storefront.png";
 import lamppost from "../../../assets/homeArt/lamppost.png";
 import street from "../../../assets/homeArt/more_street.png";
+import Hand from "../../../features/play/game/components/Hand";
 
 function HomeOutside() {
   return (
@@ -18,6 +19,7 @@ function HomeOutside() {
       >
         SOCKET
       </button> */}
+      <Hand/>
     </div>
   );
 }

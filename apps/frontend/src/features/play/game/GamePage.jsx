@@ -9,24 +9,23 @@ import useSocketStore from "../../../stores/useSocketStore";
 import Hand from "./components/Hand";
 import BurnZone from "./components/BurnZone";
 import FinishGameButton from "./ui/FinishGameButton";
-import Units from "./units/units";
+import Units from "./units/Units";
+import Unit from "./units/Unit";
+import IntentDisplay from "./components/IntentDisplay";
 
 function GamePage() {
   const roomData = useSocketStore((state) => state.roomData);
   const { finishGame } = useSocket();
-
   return (
     <div className="relative flex size-full items-center justify-center overflow-hidden p-2">
       <Board />
-      {/* <Units /> */}
       <Hand />
       {/* <BurnZone /> */}
       {/* <Timer /> */}
+      {/* <Units /> */}
+      <IntentDisplay />
       <FinishGameButton callback={() => finishGame({ roomID: roomData.id })} />
-
-      <div className="absolute left-0 z-10 size-fit rounded-2xl p-2 bg-amber-600 text-2xl text-black">
-        {/* {JSON.stringify(mousePos)} */}
-      </div>
+      {/* <Unit/> */}
     </div>
   );
 }
