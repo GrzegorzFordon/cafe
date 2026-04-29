@@ -3,8 +3,9 @@
  */
 
 class Unit extends Card {
-  constructor() {
+  constructor(tile) {
     // this.id =
+    this.tile = tile;
   }
 
   // spawnUnit() {}

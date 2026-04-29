@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSocket from "../../../socket/hooks/useSocket";
 import useAuthStore from "../../../../stores/useAuthStore";
-import { subscribe, unsubscribe } from "../../../../util/events";
 // import { ServerToClientEvents } from "../../../../../shared/protocol";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
+import { eventEmitter } from "../../../../util/eventEmitter.js";
 
 function Chat() {
   const { sendMessage } = useSocket();
@@ -27,9 +27,9 @@ function Chat() {
   );
 
   useEffect(() => {
-    subscribe("chat:message", handleChatMessage);
+    eventEmitter.on("chat:message", handleChatMessage);
     return () => {
-      unsubscribe("chat:message", handleChatMessage);
+      eventEmitter.off("chat:message", handleChatMessage);
     };
   }, [handleChatMessage]);
 

@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import useGameStore from "../../../../stores/useGameStore";
 import useIntent from "../hooks/useIntent";
 import GameButton from "../ui/GameButton";
@@ -5,10 +6,13 @@ import GameButton from "../ui/GameButton";
 import { motion } from "motion/react";
 
 function IntentDisplay() {
-  const intents = useGameStore((state) => state.intents);
 
   //   const { resetActions, submitActions } = useGame();
-  const { resetIntents } = useIntent();
+  const { resetIntents, intents, getIntentsByID } = useIntent();
+
+  const [text, setText] = useState("");
+
+  const filteredIntents = getIntentsByID(text)
 
   return (
     <motion.div
@@ -17,13 +21,14 @@ function IntentDisplay() {
       className="absolute top-1/3 left-0 flex size-fit w-sm flex-col items-center justify-center gap-1 rounded-sm bg-amber-50 p-2 text-sm text-black"
     >
       IntentDisplay
-      {intents.map((intent) => (
+      {filteredIntents.map((intent) => (
         <p>{JSON.stringify(intent)}</p>
       ))}
       <div className="BUTTONS flex justify-center gap-2">
         <GameButton callback={resetIntents} text={"RESET"} />
         <GameButton callback={resetIntents} text={"SUBMIT"} />
       </div>
+      <input type="text" value={text} onChange={(e)=>setText(e.target.value)} />
     </motion.div>
   );
 }

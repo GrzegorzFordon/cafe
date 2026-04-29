@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "awilix": "^13.0.3",
+    "eventemitter3": "^5.0.4",
     "react-vfx": "^0.18.0",
     "zod": "^4.3.6"
   }

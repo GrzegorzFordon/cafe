@@ -9,32 +9,42 @@ const useIntent = () => {
    * Intent Actions
    */
 
-  const addPlayCardIntent = (cardID, target) => {
-    const action = { type: "card:play", cardID, target };
+  const addPlayCardIntent = (ID, cardID, target) => {
+    const action = { type: "card:play", ID, cardID, target };
     addIntent(action);
     console.log("Play Card: ", action);
     return true;
   };
 
-  const addBurnCardIntent = (cardID) => {
+  const addBurnCardIntent = (ID, cardID) => {
     const action = { type: "card:burn", cardID };
     addIntent(action);
     console.log("Burn Card: ", cardID);
   };
 
-  const addMoveUnitIntent = (unitID, target) => {
-    const action = { type: "unit:move", unitID, target };
+  const addMoveUnitIntent = (ID, unitID, target) => {
+    const action = { type: "unit:move", ID, unitID, target };
     addIntent(action);
-    console.log("Move Unit: ", unitID, target);
+    // console.log("Move Unit: ", unitID, target);
   };
 
-  const addUseAbilityIntent = (unitID) => {
+  const addUseAbilityIntent = (ID, unitID) => {
     const action = { type: "card:ability", unitID };
     addIntent(action);
   };
 
+  const getIntentsByID = (ID) => {
+    return intents.filter((val) => val?.ID?.includes(ID));
+  };
+
+  const getIntentsByTarget = (target) => {
+    return intents.filter((val) => val.target == target);
+  };
+
   return {
     intents,
+    getIntentsByID,
+    getIntentsByTarget,
     resetIntents,
     addPlayCardIntent,
     addBurnCardIntent,

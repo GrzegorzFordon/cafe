@@ -12,9 +12,26 @@ import FinishGameButton from "./ui/FinishGameButton";
 import Units from "./units/Units";
 import Unit from "./units/Unit";
 import IntentDisplay from "./components/IntentDisplay";
+import { useEffect } from "react";
+import { eventEmitter } from "../../../util/eventEmitter";
 
 function GamePage() {
   const roomData = useSocketStore((state) => state.roomData);
+
+  const handleDragStart = (id, unitID) =>
+    console.log("Unit Drag Start:", id, unitID);
+  const handleDragEnd = (id, unitID, target) =>
+    console.log("Unit Drag End:", id, unitID, target);
+
+  useEffect(() => {
+    eventEmitter.on("unit:dragStart", handleDragStart);
+    eventEmitter.on("unit:dragEnd", handleDragEnd);
+    return () => {
+      eventEmitter.off("unit:dragStart", handleDragStart);
+      eventEmitter.off("unit:dragEnd", handleDragEnd);
+    };
+  });
+
   const { finishGame } = useSocket();
   return (
     <div className="relative flex size-full items-center justify-center overflow-hidden p-2">

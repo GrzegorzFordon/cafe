@@ -3,7 +3,7 @@ import { motion, Reorder, useMotionValue } from "motion/react";
 import CardVisual from "./CardVisual.jsx";
 import useBoard from "../hooks/useBoard.js";
 import useGame from "../hooks/useGame.js";
-import { useState, useRef } from "react";
+import { useState, useRef, useId, useMemo } from "react";
 import useMousePos from "../hooks/useMousePos.js";
 import useIntent from "../hooks/useIntent.js";
 
@@ -13,21 +13,21 @@ import useIntent from "../hooks/useIntent.js";
  */
 
 function Card({ cardID, orderItem }) {
+  const id = useId();
   const ref = useRef();
   // const { tryPlayCard, tryBurnCard } = useGame();
-  const { addPlayCardIntent, addBurnCardIntent } = useIntent();
+  const { addPlayCardIntent, addBurnCardIntent, getIntentsByID } = useIntent();
   const mousePos = useMousePos();
   const { mousedOverHex } = useBoard();
   const isBurn = useMotionValue(0);
 
-  const [dragStartMouseOffset, setDragStartMouseOffset] = useState({
-    x: 0,
-    y: 0,
-  });
+  // const [dragStartMouseOffset, setDragStartMouseOffset] = useState({
+  //   x: 0,
+  //   y: 0,
+  // });
 
   const offset = useMotionValue();
-
-  const [isIntented, setIsIntented] = useState(false);
+  const myIntents = useMemo(() => getIntentsByID(id), [getIntentsByID, id]);
 
   //const cardData = useCardCatalog(cardID);
 
@@ -37,8 +37,7 @@ function Card({ cardID, orderItem }) {
       Math.abs(mousedOverHex.r) < 4 &&
       Math.abs(mousedOverHex.s) < 4;
     if (isWithinBoard) {
-      const res = addPlayCardIntent(cardID, mousedOverHex);
-      if (res) setIsIntented(true);
+      addPlayCardIntent(id, cardID, mousedOverHex);
     } else if (isBurn.get()) addBurnCardIntent(cardID);
   };
 
@@ -47,7 +46,7 @@ function Card({ cardID, orderItem }) {
       ref={ref}
       item={orderItem}
       as="div"
-      drag={!isIntented}
+      drag={myIntents.length == 0}
       // dragElastic={0.1}
       // dragSnapToOrigin
       whileDrag={{
@@ -57,7 +56,7 @@ function Card({ cardID, orderItem }) {
         filter: isBurn.get() == 1 ? "brightness(0.4)" : "none",
         cursor: "grabbing",
       }}
-      whileHover={{ scale: isIntented ? 1.0 : 1.2 }}
+      whileHover={{ scale: myIntents.length > 0 ? 1.0 : 1.2 }}
       // onDragStart={() => {
       //   const rect = ref.current.getBoundingClientRect();
       //   const cardPos = { x: rect.left, y: rect.top };
@@ -84,7 +83,7 @@ function Card({ cardID, orderItem }) {
       key={orderItem}
       value={orderItem}
       className="relative size-fit rounded-md select-none"
-      style={{ filter: isIntented ? "brightness(0.4)" : "none" }}
+      style={{ filter: myIntents.length > 0 ? "brightness(0.4)" : "none" }}
       // style={{
       //   // transformOrigin: `${dragStartMouseOffset.x}px ${dragStartMouseOffset.y}px`,
       //   transformOrigin: offset.get()
@@ -93,6 +92,7 @@ function Card({ cardID, orderItem }) {
       // }}
     >
       <CardVisual cardID={cardID} />
+      <p className="absolute top-0 left-0 bg-black">{id}</p>
     </Reorder.Item>
   );
 }

@@ -6,6 +6,7 @@ import CardVisual from "../card/CardVisual";
 import { motion, useMotionValue } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import Unit from "../units/Unit";
+import useIntent from "../hooks/useIntent";
 /**
  * Client Tile component
  * Handles display based on props (different types, different status effects)
@@ -18,6 +19,8 @@ function Tile({ coords }) {
 
   const [intentCardZIndex, setIntentCardZIndex] = useState(0);
   const [intentCardData, setIntentData] = useState();
+
+  const { getIntentsByTarget } = useIntent();
 
   useEffect(() => {
     const y = ref.current.getBoundingClientRect().y;
@@ -38,6 +41,7 @@ function Tile({ coords }) {
         // src={sprite}
         alt=""
       />
+
       <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
         {coords.q == coords.r && <Unit unitID={1} />}
       </div>

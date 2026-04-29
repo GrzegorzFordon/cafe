@@ -18,9 +18,9 @@ const useGameStore = create(
     },
 
     addIntent: (intent) => {
-      console.log("Adding intent: ", intent);
+      // console.log("Adding intent: ", intent);
       set((state) => ({ intents: [...state.intents, intent] }));
-      console.log("new intents: ", get().intents);
+      // console.log("new intents: ", get().intents);
     },
 
     resetIntents: () => {

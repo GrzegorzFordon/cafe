@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { publish } from "../util/events";
 
 import io from "socket.io-client";
 import { RoomDTO } from "../../../../packages/shared/schemas/schemas.js";
+import { eventEmitter } from "../util/eventEmitter";
 
 const SOCKET_URL = "http://localhost:3500";
 
@@ -21,20 +21,20 @@ const useSocketStore = create(
       /**
        * Chat Events
        */
-      socket?.on("chat:message", (val) => publish("chat:message", val));
+      socket?.on("chat:message", (val) => eventEmitter.emit("chat:message", val));
 
       /**
        * Lobby Events
        */
       socket?.on("lobby:change", (val, ack) => {
-        publish("lobby:change", val);
+        eventEmitter.emit("lobby:change", val);
         ack?.({ status: "ok" });
       });
 
       /**
        * Room Events
        */
-      socket?.on("room:join", (val) => publish("room:join", val));
+      socket?.on("room:join", (val) => eventEmitter.emit("room:join", val));
       socket?.on("room:change", (val) => {
         const res = RoomDTO.parse(val);
         set({ roomData: res });
@@ -43,8 +43,8 @@ const useSocketStore = create(
       /**
        * Game Events
        */
-      socket?.on("game:start", (val) => publish("game:start", val));
-      socket?.on("game:phase", (val) => publish("game:change", val));
+      socket?.on("game:start", (val) => eventEmitter.emit("game:start", val));
+      socket?.on("game:phase", (val) => eventEmitter.emit("game:change", val));
 
       set({ socket });
     },
