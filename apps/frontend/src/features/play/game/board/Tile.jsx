@@ -1,10 +1,11 @@
 import sprite from "../assets/hexagon_png.png";
 import spriteActive from "../assets/hex_active.png";
+import spriteIntented from "../assets/hex_intent.png";
 import useBoard from "../hooks/useBoard";
 import CardVisual from "../card/CardVisual";
 // eslint-disable-next-line no-unused-vars
 import { motion, useMotionValue } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Unit from "../units/Unit";
 import useIntent from "../hooks/useIntent";
 /**
@@ -17,38 +18,58 @@ function Tile({ coords }) {
 
   const ref = useRef();
 
-  const [intentCardZIndex, setIntentCardZIndex] = useState(0);
-  const [intentCardData, setIntentData] = useState();
+  // const [intentCardZIndex, setIntentCardZIndex] = useState(0);
+  // const [intentCardData, setIntentData] = useState();
 
   const { getIntentsByTarget } = useIntent();
 
-  useEffect(() => {
-    const y = ref.current.getBoundingClientRect().y;
-    setIntentCardZIndex(y);
-  }, [ref]);
+  // const myIntents = useMemo(
+  //   () => getIntentsByTarget(coords),
+  //   [coords, getIntentsByTarget],
+  // );
 
-  const isactive =
-    coords.q === mousedOverHex.q &&
-    coords.r === mousedOverHex.r &&
-    coords.s === mousedOverHex.s;
+  const myIntents = getIntentsByTarget(coords);
+
+  // useEffect(() => {
+  //   const y = ref.current.getBoundingClientRect().y;
+  //   setIntentCardZIndex(y);
+  // }, [ref]);
+
+  // const isactive = coords.isEqual(mousedOverHex);
+  const isactive = coords.q == mousedOverHex.q && coords.r == mousedOverHex.r && coords.s == mousedOverHex.s;
 
   return (
-    <div ref={ref} className="select-none">
+    <div
+      ref={ref}
+      className="flex size-full items-center justify-center select-none"
+    >
       <img
         draggable="false"
         className="scale-220 scale-y-154 opacity-70"
-        src={isactive ? spriteActive : sprite}
+        src={
+          isactive
+            ? spriteActive
+            : myIntents.length > 0
+              ? spriteIntented
+              : sprite
+        }
         // src={sprite}
         alt=""
       />
 
-      <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
+      {/* <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
         {coords.q == coords.r && <Unit unitID={1} />}
-      </div>
+      </div> */}
       {/* <div className="absolute top-1/2 left-1/2 -translate-1/2">
         {!isactive && <Unit />}
       </div> */}
-      {isactive && (
+    </div>
+  );
+}
+export default Tile;
+
+/**
+ *       {isactive && (
         <motion.div
           animate={{ y: [0, -5, 0] }}
           transition={{
@@ -58,13 +79,10 @@ function Tile({ coords }) {
             repeat: Infinity,
             repeatDelay: 0,
           }}
-          style={{ zIndex: intentCardZIndex }}
+          // style={{ zIndex: intentCardZIndex }}
           className="absolute top-0 left-1/2 flex -translate-1/2 scale-200 items-center justify-center bg-green-400 select-none"
         >
-          {/* <CardVisual /> */}
+           <CardVisual /> 
         </motion.div>
       )}
-    </div>
-  );
-}
-export default Tile;
+ */

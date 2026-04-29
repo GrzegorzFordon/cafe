@@ -1,13 +1,14 @@
 // import * as VFX from "react-vfx";
-import bolt from "../assets/cards/bolt.png";
-import golgari_guildmage from "../assets/cards/golgari_guildmage.png";
-import grixis_panorama from "../assets/cards/grixis_panorama.png";
-import reanimate from "../assets/cards/reanimate.png";
-import swarm_intelligence from "../assets/cards/swarm_intelligence.png";
-import { useMemo } from "react";
+// import bolt from "../assets/cards/bolt.png";
+// import golgari_guildmage from "../assets/cards/golgari_guildmage.png";
+// import grixis_panorama from "../assets/cards/grixis_panorama.png";
+// import reanimate from "../assets/cards/reanimate.png";
+// import swarm_intelligence from "../assets/cards/swarm_intelligence.png";
+// import { useMemo } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, Reorder } from "motion/react";
-import { transform } from "zod";
+// import { transform } from "zod";
+import useCardList from "../hooks/useCardList";
 
 // const shader = `
 // precision highp float;
@@ -106,19 +107,21 @@ import { transform } from "zod";
 // `;
 
 function CardVisual({ cardID }) {
-  const sprite = useMemo(
-    () =>
-      cardID == 1
-        ? bolt
-        : cardID == 2
-          ? golgari_guildmage
-          : cardID == 3
-            ? grixis_panorama
-            : cardID == 4
-              ? reanimate
-              : swarm_intelligence,
-    [cardID],
-  );
+  // const sprite = useMemo(
+  //   () =>
+  //     cardID == 1
+  //       ? bolt
+  //       : cardID == 2
+  //         ? golgari_guildmage
+  //         : cardID == 3
+  //           ? grixis_panorama
+  //           : cardID == 4
+  //             ? reanimate
+  //             : swarm_intelligence,
+  //   [cardID],
+  // );
+
+  const sprite = useCardList(cardID);
 
   return (
     // <VFX.VFXImg

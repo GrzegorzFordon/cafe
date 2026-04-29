@@ -26,7 +26,7 @@ const useBoard = () => {
   //probably choose map size in room window
   const hexList = useMemo(() => {
     const newHexList = [];
-    const N = 3;
+    const N = 2 ;
     for (let q = -N; q <= N; q++) {
       const r1 = Math.max(-N, -q - N);
       const r2 = Math.min(N, -q + N);

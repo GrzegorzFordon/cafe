@@ -59,18 +59,19 @@ function Unit({ unitID }) {
       <img draggable="false" className="select-none" src={sprite} />
 
       <motion.div
-        drag
-        dragSnapToOrigin
+        drag={myIntents.length == 0}
+        dragSnapToOrigin={myIntents.length == 0}
         onDragStart={() => handleDragStart()}
         onDragEnd={() => handleDragEnd()}
         className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl"
+        style={{ filter: myIntents.length > 0 ? "brightness(0.4)" : "none" }}
       >
         <img
           className="pointer-events-none size-fit opacity-55 select-none"
           draggable="false"
           src={sprite}
         />
-        <h1>{id}</h1>
+        {/* <h1>{id}</h1> */}
         {/* <div className="absolute top-10 left-1/2 size-20 -translate-x-1/2 bg-amber-50">
           {Object.entries(getIntentsByID(id)).map((element) => {
             <p className="z-20">{JSON.stringify(element)}</p>;
@@ -78,7 +79,7 @@ function Unit({ unitID }) {
         </div> */}
         <div className="absolute top-1/2 left-1/2 size-fit -translate-1/2 bg-amber-50 text-sm">
           {/* {JSON.stringify(myIntents)} */}
-          {myIntents.length}
+          {/* {myIntents.length} */}
         </div>
       </motion.div>
       {/* <svg>

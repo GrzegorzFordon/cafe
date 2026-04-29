@@ -70,6 +70,11 @@ class Hex {
     }
     return results;
   }
+
+  isEqual(b) {
+    const res = this.q == b.q && this.r == b.r && this.s == b.s;
+    return res;
+  }
 }
 Hex.directions = [
   new Hex(1, 0, -1),

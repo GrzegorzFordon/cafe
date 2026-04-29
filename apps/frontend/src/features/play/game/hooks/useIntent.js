@@ -38,7 +38,8 @@ const useIntent = () => {
   };
 
   const getIntentsByTarget = (target) => {
-    return intents.filter((val) => val.target == target);
+    // console.log(target, intents);
+    return intents.filter((val) => val.target?.isEqual(target));
   };
 
   return {

@@ -57,15 +57,6 @@ function Card({ cardID, orderItem }) {
         cursor: "grabbing",
       }}
       whileHover={{ scale: myIntents.length > 0 ? 1.0 : 1.2 }}
-      // onDragStart={() => {
-      //   const rect = ref.current.getBoundingClientRect();
-      //   const cardPos = { x: rect.left, y: rect.top };
-      //   const cardSize = { width: rect.width, height: rect.height };
-      //   offset.set({
-      //     x: mousePos.x - cardPos.x + cardSize.width * 0.5,
-      //     y: mousePos.y - cardPos.y + cardSize.height * 0.5,
-      //   });
-      // }}
       onDrag={(e, i) => {
         const rect = ref.current.getBoundingClientRect();
         // const cardPos = { x: rect.left, y: rect.top };
