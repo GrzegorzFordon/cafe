@@ -44,7 +44,7 @@ function Board() {
         <img draggable={false} className="select-none" src={table} alt="" />
       </div>
       <Tiles />
-      {/* <Units /> */}
+      <Units />
       <input
         className="absolute -top-30 -left-50"
         type="checkbox"

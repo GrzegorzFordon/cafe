@@ -9,6 +9,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Unit from "../units/Unit";
 import useIntent from "../hooks/useIntent";
 import useCardList from "../hooks/useCardList";
+
+import arrowSprite from "../assets/arrow_down.png";
 /**
  * Client Tile component
  * Handles display based on props (different types, different status effects)
@@ -84,7 +86,11 @@ function Tile({ coords }) {
           // style={{ zIndex: intentCardZIndex }}
           className="absolute top-0 left-1/2 flex -translate-1/2 scale-200 items-center justify-center bg-green-400 select-none"
         >
-          <CardVisual cardID={myIntents[0].cardID} />
+          {myIntents[0].unitID ? (
+            <img src={arrowSprite} />
+          ) : (
+            <CardVisual cardID={myIntents[0].cardID} />
+          )}
         </motion.div>
       )}
     </div>

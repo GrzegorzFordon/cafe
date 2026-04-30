@@ -5,8 +5,8 @@ class FakeGameModel {
     this.count = 0;
   }
 
-  add() {
-    this.count += 1;
+  add(amount) {
+    this.count += amount;
     //replace with immer??
     return _.clone(this);
   }
