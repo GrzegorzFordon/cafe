@@ -1,8 +1,24 @@
+import { useEffect, useState } from "react";
+import { eventEmitter } from "../../../util/eventEmitter";
 import FakeGameController from "./fakegame/game.controller.fake";
 import useFakeGame from "./useFakeGame";
 
 function FakeGamePage() {
-  const { addAdditionEvent, processEvents, count, intents } = useFakeGame();
+  const { addAdditionEvent, processEvents, intents } = useFakeGame();
+
+  const [count, setCount] = useState(0);
+
+  const handleAdditionSideEffectA = async (val) => {
+    setCount(val);
+  };
+
+  useEffect(() => {
+    eventEmitter.on("fake:addition", async (v) => handleAdditionSideEffectA(v));
+    return () =>
+      eventEmitter.off("fake:addition", async (v) =>
+        handleAdditionSideEffectA(v),
+      );
+  });
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">

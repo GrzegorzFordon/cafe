@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const GameData = z.object({});
+// export const GameData = z.object({});
 
 class GameModel {
   constructor(data) {

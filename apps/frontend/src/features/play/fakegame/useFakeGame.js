@@ -7,36 +7,37 @@ const useFakeGame = () => {
     (state) => state.fakeGameController,
   );
 
-  const fakeGameModel = useFakeGameStore((state) => state.fakeGameModel);
-  const setGameModel = useFakeGameStore((state) => state.setGameModel);
-  const addIntent = useFakeGameStore((state) => state.addIntent);
-  const intents = useFakeGameStore((state) => state.intents);
-  // const intents = useFakeGameStore((state) => state.addIntent);
-
-  const addToState = (amount) => {
-    console.log("adding ",amount)
-    const res = fakeGameController.addToModel(fakeGameModel,amount);
-    setGameModel(res);
+  //handle for the add intent?
+  const addToState = async (amount) => {
+    fakeGameController.addToModel(amount);
+    await new Promise((resolve) => setTimeout(resolve, 300));
   };
 
+
+  /**
+   * INTENTS (the actions sent to the sim)
+   */
+
+  const addIntent = useFakeGameStore((state) => state.addIntent);
+  const intents = useFakeGameStore((state) => state.intents);
+  const getNextIntent = useFakeGameStore((state) => state.getNextIntent);
+
+  //push event
   const addAdditionEvent = () => {
     const newaction = new FakeAction(Math.round(Math.random() * 100) / 1);
     addIntent(newaction);
   };
 
+  //process events
   const processEvents = async () => {
-    // const nextAction = TODO get next action from store
     while (intents.length > 0) {
-      const nextIntent = intents?.shift();
-      console.log(nextIntent.amount);
-      addToState(nextIntent.amount);
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      const nextIntent = getNextIntent();
+      if (!nextIntent) return;
+      await addToState(nextIntent.amount);
     }
   };
 
-  const count = fakeGameModel?.count;
-
-  return { addToState, count, addAdditionEvent, processEvents, intents };
+  return { addToState, addAdditionEvent, processEvents, intents };
 };
 
 export default useFakeGame;

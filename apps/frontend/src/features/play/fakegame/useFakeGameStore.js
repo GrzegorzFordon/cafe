@@ -7,22 +7,15 @@ import FakeGameModel from "./fakegame/game.model.fake";
 const useFakeGameStore = create(
   devtools((set, get) => ({
     fakeGameController: new FakeGameController(),
-    fakeGameModel: new FakeGameModel(),
-
-    setGameModel: (fakeGameModel) => {
-      set({ fakeGameModel: fakeGameModel });
-    },
-
+    intents: [],
     setGameController: (fakeGameController) => {
       set({ fakeGameController: fakeGameController });
     },
 
-    intents: [],
     addIntent: (intent) => {
       set((state) => ({
         intents: [...state.intents, intent],
       }));
-      console.log(get().intents.length);
     },
 
     getNextIntent: () => {
@@ -30,6 +23,7 @@ const useFakeGameStore = create(
       set((state) => ({
         intents: state.intents.filter((val) => val != nextIntent),
       }));
+      return nextIntent;
     },
   })),
 );

@@ -1,11 +1,12 @@
 import FakeGameModel from "./game.model.fake";
 
 class FakeGameController {
-  constructor() {}
+  constructor() {
+    this.model = new FakeGameModel();
+  }
 
-  addToModel(model,amount) {
-    const res = model.add(amount);
-    return res;
+  addToModel(amount) {
+    this.model.add(amount);
   }
 }
 

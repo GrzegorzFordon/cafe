@@ -66,9 +66,9 @@ function Tile({ coords }) {
         alt=""
       />
 
-      {/* <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
+      <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
         {coords.q == coords.r && <Unit unitID={1} />}
-      </div> */}
+      </div>
       {/* <div className="absolute top-1/2 left-1/2 -translate-1/2">
         {!isactive && <Unit />}
       </div> */}

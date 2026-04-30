@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { eventEmitter } from "../../../../util/eventEmitter";
 
 class FakeGameModel {
   constructor() {
@@ -7,8 +7,7 @@ class FakeGameModel {
 
   add(amount) {
     this.count += amount;
-    //replace with immer??
-    return _.clone(this);
+    eventEmitter.emit("fake:addition", this.count);
   }
 }
 
