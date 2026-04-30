@@ -18,6 +18,11 @@ function Board() {
 
   const [locked, setLocked] = useState(false);
 
+
+  /**
+   * get board data from gamestate!!
+   */
+
   return (
     <motion.div
       drag={!locked}

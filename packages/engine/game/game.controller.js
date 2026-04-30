@@ -7,13 +7,14 @@
  * state machine for phases (+start/end states)?
  */
 
-import Board from "../board/board.manager.js";
+import Board from "../board/board.controller.js";
 import { GAME_PHASES } from "../config.js";
-import gameState from "./game.state.js";
+import GameModel from "./game.model.js";
+import { nanoid } from "zod";
 
-class GameManager {
+class GameController {
   constructor(options) {
-    this.id = options.id;
+    this.id = nanoid(); // ??
     // this.state = gameState;
     this.board = new Board();
     this.players = new Map();
@@ -23,15 +24,21 @@ class GameManager {
   init() {
     //init all child systems
     //tell phase manager to start the game
-    console.log(`GameManager is initialized`);
+    console.log(`GameController is initialized`);
   }
 
+  startGame() {
+    let gameState = new GameModel();
+  }
+
+  finishGame() {}
+
   serialize() {
-    //TODO turn all needed info into a game(state?)DTO (schemas)
+    //TODO turn all needed info into a game(state?)DTO (schemas) actually not needed cause we only send back actions?
   }
 }
 
-export default GameManager;
+export default GameController;
 
 /**
  * states the game can be in

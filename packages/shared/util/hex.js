@@ -92,7 +92,7 @@ Hex.diagonals = [
   new Hex(-1, 2, -1),
   new Hex(1, 1, -2),
 ];
-//also fractional hex class (for some algs that need fractional)
+
 export { Hex };
 
 /**

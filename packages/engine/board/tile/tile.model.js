@@ -16,6 +16,5 @@ class Tile {
       s: 0,
     };
   }
-
 }
 export default Tile;

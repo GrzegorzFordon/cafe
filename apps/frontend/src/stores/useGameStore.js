@@ -1,13 +1,15 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import GameManager from "../../../../packages/engine/game/game.manager";
+import GameManager from "../../../../packages/engine/game/game.controller";
+import FakeGameController from "../features/play/fakegame/fakegame/game.controller.fake";
 
 const useGameStore = create(
-  devtools((set, get) => ({
-    gameManager: new GameManager("fakeID"),
-    gameState: undefined, //this will be the gamestate from engine??
+  devtools((set) => ({
+    gameManager: new GameManager(),
+    // gameState: new GameModel(), //this will be the gamestate from engine??
 
     intents: [],
+
 
     setGameManager: (gameManager) => {
       set({ gameManager: gameManager });

@@ -4,14 +4,12 @@ player is the avatar in the game, but not the client!
 see client for actually dispatching input events.
  */
 
-class PlayerManager {
+import { PlayerModel } from "./player.model";
+
+class PlayerController {
   constructor() {
     this.id = "id";
-    this.heroID = "heroID";
-    this.deck = ["cardID_01", "cardID_02"];
-    this.hand = [];
-    this.discard = [];
-    this.units = [];
+    this.model = PlayerModel(); // ??
   }
 
   //hand, deck, pawns
@@ -25,11 +23,9 @@ class PlayerManager {
   draw(amount) {}
   discard(cardID) {}
 
-  playCard(cardID,options){}
-
-
+  playCard(cardID, options) {}
 
   validateDeck(deck) {} //??
 }
 
-export default PlayerManager;
+export default PlayerController;

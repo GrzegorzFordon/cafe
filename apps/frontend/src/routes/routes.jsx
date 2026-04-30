@@ -15,6 +15,7 @@ import SoloRun from "../common/pages/SoloRun/SoloRun.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Lobby from "../features/play/lobby/LobbyPage.jsx";
 import PlayPage from "../features/play/PlayPage.jsx";
+import FakeGamePage from "../features/play/fakegame/FakeGamePage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "/heroes", element: <HeroBios /> },
       { path: "/rules", element: <HowTo /> },
       { path: "/play", element: <PlayPage /> },
+      { path: "/fakeplay", element: <FakeGamePage /> },
 
       {
         element: <ProtectedRoute />,
