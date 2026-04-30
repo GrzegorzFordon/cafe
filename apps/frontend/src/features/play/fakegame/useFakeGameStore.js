@@ -12,7 +12,7 @@ const useFakeGameStore = create(
     setGameModel: (fakeGameModel) => {
       set({ fakeGameModel: fakeGameModel });
     },
-    
+
     setGameController: (fakeGameController) => {
       set({ fakeGameController: fakeGameController });
     },

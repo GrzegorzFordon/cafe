@@ -7,6 +7,7 @@ class FakeGameModel {
 
   add() {
     this.count += 1;
+    //replace with immer??
     return _.clone(this);
   }
 }
