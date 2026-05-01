@@ -5,8 +5,9 @@ class FakeGameController {
     this.model = new FakeGameModel();
   }
 
-  addToModel(amount) {
-    this.model.add(amount);
+  //business logic is in the actions themselves!
+  handleAction(action) {
+    action.impl(this.model);
   }
 }
 
