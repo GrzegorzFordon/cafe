@@ -72,7 +72,9 @@ function Tile({ coords }) {
       {/* <div className="absolute top-1/2 left-1/2 -translate-1/2">
         {!isactive && <Unit />}
       </div> */}
-
+      <h1 className="absolute top-1/2 left-1/2 -translate-1/2 bg-amber-50 text-sm">
+        {coords.q}/{coords.r}
+      </h1>
       {myIntents.length > 0 && (
         <motion.div
           animate={{ y: [0, -2, 0] }}

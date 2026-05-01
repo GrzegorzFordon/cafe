@@ -4,44 +4,35 @@ export const UnitData = z.object({});
 
 class UnitModel {
   constructor(data) {
-    this.data = data;
+    // this.id =
+    // this.data = data;
+    this.playerID = data.playerID;
+    this.cardID = data.cardID;
+    this.coords = data.coords;
+    this.hp = data.maxHP;
   }
 
   get remainingHealth() {
     return 5;
   }
 
-  init() {}
-  move() {}
-  takeDamage() {}
-  die() {}
+  // init() {}
+
+  move(coords) {
+    //move unit to new coords
+    this.coords = coords;
+  }
+
+  takeDamage(amount) {
+    this.hp -= amount;
+    //take_damage event
+    if (this.hp <= 0) this.die();
+  }
+
+  die() {
+    //die
+    //unit:die event
+  }
 }
 
 export default UnitModel;
-
-/**
- * /**
- * pawn state, actions, object
-
-state
-*card
-*tile
-*player
- */
-
-// class Unit {
-//   constructor(id) {
-//     // this.id = id;
-//     this.playerID = "PlayerID";
-//     this.coords = {
-//       q: 0,
-//       r: 0,
-//       s: 0,
-//     };
-//   }
-
-//   moveTo(coords) {
-//     this.coords = coords;
-//   }
-// }
-// export default Unit;

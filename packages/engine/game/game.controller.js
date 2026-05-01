@@ -7,6 +7,7 @@
  * state machine for phases (+start/end states)?
  */
 
+import ActionController from "../action/action.controller.js";
 import BoardController from "../board/board.controller.js";
 import CardController from "../cards/card.controller.js";
 import PlayerController from "../player/player.controller.js";
@@ -16,7 +17,7 @@ import { nanoid } from "zod";
 class GameController {
   constructor(options) {
     // this.id = nanoid(); // ??
-    
+    this.options = options;
     //game model
     this.model = new GameModel(options);
 
@@ -24,19 +25,25 @@ class GameController {
     this.boardController = new BoardController();
     this.playerController = new PlayerController();
     this.cardController = new CardController();
-  }
-
-  init() {
-    //init all child systems
-    //tell phase manager to start the game
-    console.log(`GameController is initialized`);
+    this.actionController = new ActionController();
   }
 
   startGame() {
-    // let gameState = new GameModel();
+    this.boardController.init(this.options);
+    this.playerController.init(this.options);
+    this.cardController.init(this.options);
+    this.actionController.init(this.options);
+    //TODO state machine init
+    console.log(`GameController is initialized`);
   }
 
-  finishGame() {}
+  advanceGame() {
+    // TODO state machine advance
+  }
+
+  finishGame() {
+    // TODO state machine set to game end with info
+  }
 
   serialize() {
     //TODO turn all needed info into a game(state?)DTO (schemas)

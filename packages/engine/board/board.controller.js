@@ -5,13 +5,27 @@
  * moveUnit(player,unit,target)
  **/
 
-class BoardController {
+import UnitModel from "../unit/unit.model.js";
+
+class BoardController extends Controller {
   constructor() {
-    // this.tiles = [];
-    // this.units = [];
+    this.tiles = [];
+    this.units = [];
   }
 
-  spawnUnit(unitID,coords) {}
+  init(options){
+    //setup, options come from game controller
+  }
+
+  spawnUnit(unitID, coords) {
+    const newUnit = new UnitModel();
+    this.units.push(newUnit);
+  }
+
+  moveUnit(unitID, coords) {
+    const unit = this.units.find((val) => val.unitID == unitID);
+  }
+
 }
 
 export default BoardController;

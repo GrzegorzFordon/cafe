@@ -12,6 +12,7 @@ side effects
 unit:spawn (unit, tile)
 unit:move (unit, target, move_type(base,teleport,pushed,...))
 unit:use (unit)
+unit:damage (unit, amount)
 unit:die (unit)
 
 player:card (player,card,target)
@@ -21,3 +22,5 @@ player:burn (player,card)
 game:phase(phase)
 game:combat(units,outcome)
 game:end (winner)
+
+effect:?? (think wave that moves each turn)
