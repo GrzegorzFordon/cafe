@@ -5,13 +5,13 @@
  * moveUnit(player,unit,target)
  **/
 
-class Board {
+class BoardController {
   constructor() {
-    this.tiles = [];
-    this.units = [];
+    // this.tiles = [];
+    // this.units = [];
   }
 
   spawnUnit(unitID,coords) {}
 }
 
-export default Board;
+export default BoardController;

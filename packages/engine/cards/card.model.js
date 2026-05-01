@@ -4,12 +4,14 @@
 
 class Card {
   constructor() {
-    this.id = 0;
+    this.id = 0; //??
     this.name = "card_name";
     this.art = undefined;
   }
 
-  spawnUnit() {}
+  play() {}
+
+  // spawnUnit() {}
 }
 
 export default Card;

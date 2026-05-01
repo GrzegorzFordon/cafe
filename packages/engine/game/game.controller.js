@@ -7,18 +7,23 @@
  * state machine for phases (+start/end states)?
  */
 
-import Board from "../board/board.controller.js";
-import { GAME_PHASES } from "../config.js";
+import BoardController from "../board/board.controller.js";
+import CardController from "../cards/card.controller.js";
+import PlayerController from "../player/player.controller.js";
 import GameModel from "./game.model.js";
 import { nanoid } from "zod";
 
 class GameController {
   constructor(options) {
-    this.id = nanoid(); // ??
-    // this.state = gameState;
-    this.board = new Board();
-    this.players = new Map();
-    this.activePhase = GAME_PHASES.START;
+    // this.id = nanoid(); // ??
+    
+    //game model
+    this.model = new GameModel(options);
+
+    //other controllers
+    this.boardController = new BoardController();
+    this.playerController = new PlayerController();
+    this.cardController = new CardController();
   }
 
   init() {
@@ -28,13 +33,14 @@ class GameController {
   }
 
   startGame() {
-    let gameState = new GameModel();
+    // let gameState = new GameModel();
   }
 
   finishGame() {}
 
   serialize() {
-    //TODO turn all needed info into a game(state?)DTO (schemas) actually not needed cause we only send back actions?
+    //TODO turn all needed info into a game(state?)DTO (schemas)
+    //actually not needed cause we only send back actions?
   }
 }
 
