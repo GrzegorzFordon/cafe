@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import Layout from "../util/layout";
-import Point from "../../../../../../../packages/shared/util/point";
-import { Hex } from "../../../../../../../packages/shared/util/hex";
+import Point from "@cafe/shared/util/point";
+import { Hex } from "@cafe/shared/util/hex";
 import useMousePos from "../hooks/useMousePos";
 import useBoardStore from "../../../../stores/useBoardStore";
 

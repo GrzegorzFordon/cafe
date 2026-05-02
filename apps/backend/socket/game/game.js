@@ -1,4 +1,4 @@
-import GameManager from "../../../../packages/engine/game/game.manager";
+import GameManager from "@cafe/engine/game/game.manager";
 import Socket from "../socket";
 
 class Game {

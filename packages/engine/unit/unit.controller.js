@@ -1,6 +1,6 @@
 //maybe not needed? no actually we need init, die, stats
 
-import { eventEmitter } from "../../../apps/frontend/src/util/eventEmitter.js";
+import { eventEmitter } from "../../shared/eventEmitter.js";
 import { BASE_COORDS } from "../config.js";
 import UnitSpawnedEffect from "../effect/effects/unitSpawned.effect.js";
 import UnitModel from "./unit.model.js";

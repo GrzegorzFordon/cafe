@@ -3,7 +3,7 @@ import Room, { roomStatus } from "./room.js";
 import {
   PlayerDTO,
   RoomDTO,
-} from "../../../../packages/shared/schemas/schemas.js";
+} from "@cafe/shared/schemas/schemas.js";
 
 class Lobby {
   constructor() {

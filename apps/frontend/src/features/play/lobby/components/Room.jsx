@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 // import { useCallback } from "react";
 // import { subscribe, unsubscribe } from "../../../../util/events";
 // import { useCallback, useEffect, useState } from "react";
-import {RoomDTO} from "../../../../../../../packages/shared/schemas/schemas.js";
+import {RoomDTO} from "@cafe/shared/schemas/schemas.js";
 
 function Room() {
   const { leaveRoom, startGame } = useSocket();

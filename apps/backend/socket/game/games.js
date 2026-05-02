@@ -1,4 +1,4 @@
-import GameManager from "../../../../packages/engine/game/game.controller.js";
+import GameManager from "@cafe/engine/game/game.controller.js";
 
 class Games {
   constructor() {

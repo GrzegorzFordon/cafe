@@ -24,7 +24,9 @@
     "nanoid": "^5.1.9",
     "nodemon": "^3.1.14",
     "socket.io": "^4.8.3",
-    "uuid": "^14.0.0"
+    "uuid": "^14.0.0",
+    "@cafe/engine": "*",
+    "@cafe/shared": "*"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"

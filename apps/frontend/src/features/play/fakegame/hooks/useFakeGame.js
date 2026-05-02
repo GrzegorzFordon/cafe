@@ -2,7 +2,7 @@ import useFakeGameStore from "../stores/useFakeGameStore";
 import FakeGameModel from "../fakegame/game.model.fake";
 import FakeAction from "../fakegame/action.fake";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { eventEmitter } from "../../../../util/eventEmitter";
+import { eventEmitter } from "@cafe/shared/eventEmitter";
 
 const useFakeGame = () => {
   const fakeGameController = useFakeGameStore(

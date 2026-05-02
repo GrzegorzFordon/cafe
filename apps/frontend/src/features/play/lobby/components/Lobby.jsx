@@ -2,7 +2,7 @@ import Room from "./Room";
 import RoomsCard from "./RoomsCard";
 import LobbyMenu from "./LobbyMenu";
 import { useCallback, useEffect, useState } from "react";
-import { eventEmitter } from "../../../../util/eventEmitter.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter";
 
 function Lobby() {
   const [rooms, setRooms] = useState([]);

@@ -1,4 +1,4 @@
-import { eventEmitter } from "../../../apps/frontend/src/util/eventEmitter.js";
+import { eventEmitter } from "../../shared/eventEmitter.js";
 import ActionController from "../action/action.controller.js";
 import BoardController from "../board/board.controller.js";
 import CardController from "../cards/card.controller.js";

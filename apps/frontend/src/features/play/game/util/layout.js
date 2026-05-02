@@ -1,6 +1,6 @@
-import { Hex } from "../../../../../../../packages/shared/util/hex";
-import Orientation from "../../../../../../../packages/shared/util/orientation";
-import Point from "../../../../../../../packages/shared/util/point";
+import { Hex } from "@cafe/shared/util/hex";
+import Orientation from "@cafe/shared/util/orientation";
+import Point from "@cafe/shared/util/point";
 
 
 class Layout {

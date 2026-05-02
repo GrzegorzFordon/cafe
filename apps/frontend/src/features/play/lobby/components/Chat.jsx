@@ -4,7 +4,7 @@ import useAuthStore from "../../../../stores/useAuthStore";
 // import { ServerToClientEvents } from "../../../../../shared/protocol";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
-import { eventEmitter } from "../../../../util/eventEmitter.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter";
 
 function Chat() {
   const { sendMessage } = useSocket();

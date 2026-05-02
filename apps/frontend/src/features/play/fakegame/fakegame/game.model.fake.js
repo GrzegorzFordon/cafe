@@ -1,4 +1,4 @@
-import { eventEmitter } from "../../../../util/eventEmitter";
+import { eventEmitter } from "@cafe/shared/eventEmitter";
 import FakeEffect from "../effect.fake";
 
 class FakeGameModel {

@@ -1,6 +1,6 @@
 import useGameStore from "../../../../stores/useGameStore";
 import { useCallback, useEffect } from "react";
-import { eventEmitter } from "../../../../util/eventEmitter";
+import { eventEmitter } from "@cafe/shared/eventEmitter";
 const useGame = () => {
   const gameController = useGameStore((state) => state.gameController);
   const getNextAction = useGameStore((state) => state.getNextAction);

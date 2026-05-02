@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import GameController from "../../../../packages/engine/game/game.controller";
+import GameController from "@cafe/engine/game/game.controller";
 import FakeGameController from "../features/play/fakegame/fakegame/game.controller.fake";
 
 const useGameStore = create(

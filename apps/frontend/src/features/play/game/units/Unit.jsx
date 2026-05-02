@@ -6,8 +6,9 @@ import unitSpriteA from "../assets/units/character_purple_front.png";
 import { useId, useMemo } from "react";
 import useBoard from "../hooks/useBoard";
 import useAction from "../hooks/useAction";
-import { eventEmitter } from "../../../../util/eventEmitter.js";
-import MoveAction from "../../../../../../../packages/engine/action/actions/move.action.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+
+import MoveAction from "@cafe/engine/action/actions/move.action.js";
 
 /**
  * Pawn component

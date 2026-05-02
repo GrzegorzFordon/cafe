@@ -1,6 +1,6 @@
 // import * as z from "zod";
 
-import { eventEmitter } from "../../../apps/frontend/src/util/eventEmitter.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import CardModel from "../cards/card.model.js";
 import CardDrawnEffect from "../effect/effects/cardDrawn.effect.js";
 
@@ -35,7 +35,7 @@ class PlayerModel {
 
   draw() {
     const cardID = this.deck.shift();
-    const card = new CardModel({cardID});
+    const card = new CardModel({ cardID });
     this.hand.push(card);
     eventEmitter.emit("sim:effect", new CardDrawnEffect(card));
   }

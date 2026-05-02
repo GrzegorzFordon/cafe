@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 import io from "socket.io-client";
-import { RoomDTO } from "../../../../packages/shared/schemas/schemas.js";
-import { eventEmitter } from "../util/eventEmitter";
+import { RoomDTO } from "@cafe/shared/schemas/schemas.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter";
 
 const SOCKET_URL = "http://localhost:3500";
 
@@ -21,7 +21,9 @@ const useSocketStore = create(
       /**
        * Chat Events
        */
-      socket?.on("chat:message", (val) => eventEmitter.emit("chat:message", val));
+      socket?.on("chat:message", (val) =>
+        eventEmitter.emit("chat:message", val),
+      );
 
       /**
        * Lobby Events

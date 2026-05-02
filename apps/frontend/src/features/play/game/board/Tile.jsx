@@ -12,7 +12,7 @@ import arrowSprite from "../assets/arrow_down.png";
 import {
   BASE_COORDS,
   OP_BASE_COORDS,
-} from "../../../../../../../packages/engine/config";
+} from "@cafe/engine/config";
 import { useRef } from "react";
 
 function Tile({ coords }) {

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import GameManager from "../../../../../../../packages/engine/game/game.controller";
+import GameManager from "@cafe/engine/game/game.controller";
 import FakeGameController from "../fakegame/game.controller.fake";
 import FakeGameModel from "../fakegame/game.model.fake";
 

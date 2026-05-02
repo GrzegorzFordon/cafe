@@ -4,9 +4,9 @@ import {
   GameDTO,
   RoomDTO,
   PlayerDTO,
-} from "../../../packages/shared/schemas/schemas.js";
+} from "@cafe/shared/schemas/schemas.js";
 import Games from "./game/games.js";
-import { GAME_PHASES } from "../../../packages/engine/config.js";
+import { GAME_PHASES } from "@cafe/engine/config.js";
 
 class Socket {
   constructor(httpServer) {
