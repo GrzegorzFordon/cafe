@@ -31,7 +31,7 @@ class GameController {
     this.unitController.init(this.options);
     // this.cardController.init(this.options);
     // this.actionController.init(this.options);
-    eventEmitter.emit("game:start");
+    eventEmitter.emit("sim:start");
     //TODO state machine init
   }
 

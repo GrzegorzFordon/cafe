@@ -1,12 +1,9 @@
 import Tile from "./Tile";
-// import useBoard from "../hooks/useBoard";
 import { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, Reorder } from "motion/react";
-import useBoardStore from "../stores/useBoardStore.js";
-// import Units from "../units/Units.jsx";
+import { motion } from "motion/react";
+import useBoardStore from "../stores/useBoardStore";
 import Tiles from "./Tiles.jsx";
-import table from "../assets/table.webp";
 
 function Board() {
   const setBoardRef = useBoardStore((state) => state.setBoardRef);
@@ -17,10 +14,6 @@ function Board() {
   }, [setBoardRef, ref]);
 
   const [locked, setLocked] = useState(false);
-
-  /**
-   * get board data from gamestate!!
-   */
 
   return (
     <motion.div

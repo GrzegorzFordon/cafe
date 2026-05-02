@@ -15,15 +15,15 @@ import MoveAction from "@cafe/engine/action/actions/move.action.js";
  * TODO Pass sprite as prop
  */
 
-function Unit({ unitID }) {
+function Unit({ unit }) {
   // const id = useRef(nanoid());
   const id = useId();
   const { addMoveUnitAction, getActionsByID, addActionObject } = useAction();
   const { mousedOverHex } = useBoard();
 
   const sprite = useMemo(
-    () => (unitID == 0 ? unitSprite : unitSpriteA),
-    [unitID],
+    () => (unit?.unitID == 0 ? unitSprite : unitSpriteA),
+    [unit],
   );
   // const [yPos, setYPos] = useState(100);
   // const ref = useRef();

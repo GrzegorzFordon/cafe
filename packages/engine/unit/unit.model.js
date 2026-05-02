@@ -1,7 +1,8 @@
 // import * as z from "zod";
 
 // export const UnitData = z.object({});
-import { nanoid } from 'nanoid'
+import { Hex } from "@cafe/shared/util/hex.js";
+import { nanoid } from "nanoid";
 
 class UnitModel {
   constructor(data) {
@@ -9,8 +10,9 @@ class UnitModel {
     // this.data = data;
     this.playerID = data.playerID;
     // this.cardID = data.cardID;
-    this.cardID = "LEADER"
-    this.coords = data.coords;
+    this.unitID = 1;
+    this.cardID = "LEADER";
+    this.coords = new Hex(data.coords.q, data.coords.r, data.coords.s);
     this.hp = data.maxHP;
   }
 

@@ -9,13 +9,10 @@ import { motion, useMotionValue } from "motion/react";
 import Unit from "../units/Unit";
 import useAction from "../hooks/useAction.js";
 import arrowSprite from "../assets/arrow_down.png";
-import {
-  BASE_COORDS,
-  OP_BASE_COORDS,
-} from "@cafe/engine/config";
+import { BASE_COORDS, OP_BASE_COORDS } from "@cafe/engine/config";
 import { useRef } from "react";
 
-function Tile({ coords }) {
+function Tile({ coords, unit }) {
   const { mousedOverHex } = useBoard();
 
   const ref = useRef();
@@ -79,7 +76,9 @@ function Tile({ coords }) {
       {/* <h1 className="absolute top-1/2 left-1/2 -translate-1/2 bg-amber-50 text-sm">
         {coords.q}/{coords.r}
       </h1> */}
-
+      <div className="absolute top-1/2 left-1/2 -translate-1/2">
+        {unit && <Unit unitID={unit} />}
+      </div>
       {myActions.length > 0 && (
         <motion.div
           animate={{ y: [0, -2, 0] }}

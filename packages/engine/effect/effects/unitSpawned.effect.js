@@ -1,4 +1,4 @@
-import Effect from "../effect";
+import Effect from "../effect.js";
 
 class UnitSpawnedEffect extends Effect {
   name = "Unit Spawned Effect";
