@@ -1,12 +1,14 @@
 /**
  * general card entity
  */
+import { nanoid } from "nanoid";
 
-class Card {
-  constructor() {
-    this.id = 0; //??
-    this.name = "card_name";
-    this.art = undefined;
+class CardModel {
+  constructor(options) {
+    this.id = nanoid();
+    this.cardID = options.cardID;
+    // this.name = "card_name";
+    // this.art = undefined;
   }
 
   play() {}
@@ -14,4 +16,4 @@ class Card {
   // spawnUnit() {}
 }
 
-export default Card;
+export default CardModel;

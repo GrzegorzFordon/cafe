@@ -2,6 +2,7 @@
 
 import { eventEmitter } from "../../../apps/frontend/src/util/eventEmitter.js";
 import { BASE_COORDS } from "../config.js";
+import UnitSpawnedEffect from "../effect/effects/unitSpawned.effect.js";
 import UnitModel from "./unit.model.js";
 
 class UnitController {
@@ -18,7 +19,7 @@ class UnitController {
     const unit = new UnitModel({ unitID, coords });
     this.units.push(unit);
     // console.log("Unit Controller spawned Unit", unit);
-    eventEmitter.emit("unit:spawn", unit);
+    eventEmitter.emit("sim:effect", new UnitSpawnedEffect(unit));
   }
 
   moveUnit(unitID, coords) {

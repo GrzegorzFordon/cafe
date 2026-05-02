@@ -1,21 +1,24 @@
-// class MoveAction extends Action {
-//   constructor(unitID, coords) {
-//     this.unitID = unitID;
-//     this.coords = coords;
-//   }
+import Action from "../action.model";
 
-//   execute() {
-//     //get unit, move it
-//   }
-// }
-// export default MoveAction;
+class MoveAction extends Action {
+  constructor(unitID, coords) {
+    super();
+    this.unitID = unitID;
+    this.coords = coords;
+  }
 
-const MoveAction = (unitID, coords) => {
-  const lastx, lasty;
-  const execute = () => {};
-  const undo = () => {};
-
-  return { execute, undo };
-};
-
+  execute() {
+    //get unit, move it
+  }
+}
 export default MoveAction;
+
+// const MoveAction = (unitID, coords) => {
+//   const lastx, lasty;
+//   const execute = () => {};
+//   const undo = () => {};
+
+//   return { execute, undo };
+// };
+
+// export default MoveAction;

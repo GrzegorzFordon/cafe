@@ -12,16 +12,25 @@ const useGame = () => {
 
   const handleSideEffect = useCallback(
     (e) => {
-      console.log("Caught Sim Effect", e);
+      // console.log("Caught Sim Effect", e);
       addEffect(e);
     },
     [addEffect],
   );
 
+  const handleGameStartedSideEffect = useCallback(() => {
+    // processEffects();
+    // console.log("Caught Game Starting");
+  }, []);
+
   useEffect(() => {
-    eventEmitter.on("unit:spawn", handleSideEffect);
-    return () => eventEmitter.off("unit:spawn", handleSideEffect);
-  }, [handleSideEffect]);
+    eventEmitter.on("game:start", handleGameStartedSideEffect);
+    eventEmitter.on("sim:effect", handleSideEffect);
+    return () => {
+      eventEmitter.off("game:start", handleGameStartedSideEffect);
+      eventEmitter.off("sim:effect", handleSideEffect);
+    };
+  }, [handleGameStartedSideEffect, handleSideEffect]);
 
   const startGame = () => {
     gameController.start();
@@ -34,32 +43,30 @@ const useGame = () => {
   const submitActions = () => {
     // sendActions(actions);
     // resetActions();
-
     //local version has actions stored already so we send them to the sim immediately for now
     console.log("submitting events");
     processActions();
   };
 
   const processActions = async () => {
-    console.log("processing actions");
+    console.log("Processing Actions");
     while (actions.length > 0) {
       const nextAction = getNextAction();
       if (!nextAction) break;
       //   fakeGameController.handleAction(nextAction);
     }
-
     //Then process the Side Effects
     await processEffects();
   };
 
   const processEffects = async () => {
-    console.log("processing effects");
+    console.log("Processing Effects");
     while (effects.length > 0) {
       const nextEffect = getNextEffect();
       if (!nextEffect) break;
       // await notifyObserversOfGameEffects(nextEffect);
-      console.log(nextEffect);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("Next Effect", nextEffect);
+      await new Promise((resolve) => setTimeout(resolve, 300));
     }
 
     // console.log("TIME TO ADVANCE GAME");
@@ -70,6 +77,7 @@ const useGame = () => {
     startGame,
     advanceGame,
     submitActions,
+    processEffects,
   };
 };
 

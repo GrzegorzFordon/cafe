@@ -4,6 +4,7 @@ player is the avatar in the game, but not the client!
 see client for actually dispatching input events.
  */
 
+import { BASE_HAND_SIZE } from "../config.js";
 import Controller from "../controller.js";
 import PlayerModel from "./player.model.js";
 
@@ -18,12 +19,12 @@ class PlayerController extends Controller {
   init(options) {
     //TODO set actual model
     this.model = new PlayerModel(options);
+    this.model.shuffle();
+    this.draw(BASE_HAND_SIZE);
   }
 
-  //actions - engine stuff, have that player draw a card, stuff like that
-
   draw(amount) {
-    //draw card
+    for (let n = 0; n < amount; n++) this.model.draw();
   }
   discard(cardID) {
     //discard card

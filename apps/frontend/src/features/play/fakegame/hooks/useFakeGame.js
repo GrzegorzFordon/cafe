@@ -21,18 +21,8 @@ const useFakeGame = () => {
   const subscribeToGameEffects = (newSub) => {
     setObservers([...observers, newSub]);
   };
-  const unsubscribeToGameEffects = (newSub) => {
-    setObservers(observers.filter((val) => val != newSub));
-  };
-
-  const processEffects = async () => {
-    while (effects.current.length > 0) {
-      console.log("effects left", effects.current.length);
-      const nextEffect = effects.current.shift();
-      await notifyObserversOfGameEffects(nextEffect);
-    }
-
-    console.log("TIME TO ADVANCE GAME");
+  const unsubscribeToGameEffects = (sub) => {
+    setObservers(observers.filter((val) => val != sub));
   };
 
   /**
@@ -73,6 +63,16 @@ const useFakeGame = () => {
       fakeGameController.handleAction(nextAction);
     }
     await processEffects();
+  };
+
+  const processEffects = async () => {
+    while (effects.current.length > 0) {
+      console.log("effects left", effects.current.length);
+      const nextEffect = effects.current.shift();
+      await notifyObserversOfGameEffects(nextEffect);
+    }
+
+    console.log("TIME TO ADVANCE GAME");
   };
 
   return {

@@ -13,6 +13,10 @@ const useAction = () => {
    * Actions (Replace with actions from Engine!)
    */
 
+  const addActionObject = (action) => {
+    addAction(action);
+  };
+
   const addPlayCardAction = (ID, cardID, target) => {
     const action = { type: "card:play", ID, cardID, target };
     addAction(action);
@@ -59,6 +63,7 @@ const useAction = () => {
     addMoveUnitAction,
     // addUseAbilityAction,
     // processActions,
+    addActionObject,
   };
 };
 export default useAction;

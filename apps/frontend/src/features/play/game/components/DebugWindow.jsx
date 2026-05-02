@@ -3,15 +3,16 @@ import useGame from "../hooks/useGame";
 import { motion } from "motion/react";
 import GameButton from "../ui/GameButton";
 function DebugWindow() {
-  const { startGame } = useGame();
+  const { startGame, processEffects } = useGame();
 
   return (
     <motion.div
       drag
       dragMomentum={false}
-      className="absolute top-2/3 left-10 flex h-20 w-sm rounded-sm items-center justify-center bg-amber-50 p-2"
+      className="absolute top-2/3 left-10 flex flex-col h-fit w-fit items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
     >
       <GameButton callback={() => startGame()} text={"START GAME"} />
+      <GameButton callback={() => processEffects()} text={"PROCESS EFFECTS"} />
     </motion.div>
   );
 }

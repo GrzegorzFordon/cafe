@@ -1,3 +1,4 @@
+import { eventEmitter } from "../../../apps/frontend/src/util/eventEmitter.js";
 import ActionController from "../action/action.controller.js";
 import BoardController from "../board/board.controller.js";
 import CardController from "../cards/card.controller.js";
@@ -30,6 +31,7 @@ class GameController {
     this.unitController.init(this.options);
     // this.cardController.init(this.options);
     // this.actionController.init(this.options);
+    eventEmitter.emit("game:start");
     //TODO state machine init
   }
 

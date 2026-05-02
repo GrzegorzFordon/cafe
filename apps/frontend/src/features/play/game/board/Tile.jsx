@@ -8,18 +8,12 @@ import CardVisual from "../card/CardVisual";
 import { motion, useMotionValue } from "motion/react";
 import Unit from "../units/Unit";
 import useAction from "../hooks/useAction.js";
-// import useCardList from "../hooks/useCardList";
-
 import arrowSprite from "../assets/arrow_down.png";
 import {
   BASE_COORDS,
   OP_BASE_COORDS,
 } from "../../../../../../../packages/engine/config";
 import { useRef } from "react";
-/**
- * Client Tile component
- * Handles display based on props (different types, different status effects)
- */
 
 function Tile({ coords }) {
   const { mousedOverHex } = useBoard();
@@ -60,7 +54,6 @@ function Tile({ coords }) {
           draggable="false"
           className="absolute scale-170 scale-y-117 opacity-70"
           src={spriteBaseZone}
-          // src={sprite}
           alt=""
         />
       )}
@@ -76,6 +69,7 @@ function Tile({ coords }) {
         }
         alt=""
       />
+
       {/* <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
         {coords.q == coords.r && <Unit unitID={1} />}
       </div> */}
@@ -86,7 +80,6 @@ function Tile({ coords }) {
         {coords.q}/{coords.r}
       </h1> */}
 
-      
       {myActions.length > 0 && (
         <motion.div
           animate={{ y: [0, -2, 0] }}

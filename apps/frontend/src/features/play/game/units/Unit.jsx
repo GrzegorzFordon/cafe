@@ -7,6 +7,7 @@ import { useId, useMemo } from "react";
 import useBoard from "../hooks/useBoard";
 import useAction from "../hooks/useAction";
 import { eventEmitter } from "../../../../util/eventEmitter.js";
+import MoveAction from "../../../../../../../packages/engine/action/actions/move.action.js";
 
 /**
  * Pawn component
@@ -16,7 +17,7 @@ import { eventEmitter } from "../../../../util/eventEmitter.js";
 function Unit({ unitID }) {
   // const id = useRef(nanoid());
   const id = useId();
-  const { addMoveUnitAction, getActionByID } = useAction();
+  const { addMoveUnitAction, getActionsByID, addActionObject } = useAction();
   const { mousedOverHex } = useBoard();
 
   const sprite = useMemo(
@@ -30,7 +31,7 @@ function Unit({ unitID }) {
   //   setYPos(ref.current.getBoundingClientRect().y);
   // }, []);
 
-  const myAction = useMemo(() => getActionByID(id), [getActionByID, id]);
+  const myAction = useMemo(() => getActionsByID(id), [getActionsByID, id]);
 
   const handleDragStart = () => {
     eventEmitter.emit("unit:dragStart", id, unitID);
@@ -43,6 +44,7 @@ function Unit({ unitID }) {
       Math.abs(mousedOverHex.r) < 4 &&
       Math.abs(mousedOverHex.s) < 4;
     if (isWithinBoard) addMoveUnitAction(id, unitID, mousedOverHex);
+    // if (isWithinBoard) addActionObject(new MoveAction(unitID, mousedOverHex));
   };
 
   /**

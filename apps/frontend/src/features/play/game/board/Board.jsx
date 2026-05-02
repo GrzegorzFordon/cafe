@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, Reorder } from "motion/react";
 import useBoardStore from "../../../../stores/useBoardStore";
-import Units from "../units/Units.jsx";
+// import Units from "../units/Units.jsx";
 import Tiles from "./Tiles.jsx";
 import table from "../assets/table.webp";
 
@@ -18,7 +18,6 @@ function Board() {
 
   const [locked, setLocked] = useState(false);
 
-
   /**
    * get board data from gamestate!!
    */
@@ -31,12 +30,7 @@ function Board() {
       ref={ref}
       className="absolute top-1/2 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded text-2xl font-black text-black select-none"
     >
-      {/* <div
-          draggable="false"
-          className="absolute -z-20 size-150 max-h-72 rounded-2xl bg-amber-50"
-        /> */}
       <div
-        // src={table}
         draggable="false"
         className="TABLEIMAGE absolute top-1/2 left-1/2 size-140 -translate-1/2 scale-y-75 select-none"
         alt=""
@@ -44,7 +38,6 @@ function Board() {
         <img draggable={false} className="select-none" src={table} alt="" />
       </div>
       <Tiles />
-      {/* <Units /> */}
       <input
         className="absolute -top-30 -left-50"
         type="checkbox"
