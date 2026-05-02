@@ -3,7 +3,7 @@ import Layout from "../util/layout";
 import Point from "@cafe/shared/util/point";
 import { Hex } from "@cafe/shared/util/hex";
 import useMousePos from "../hooks/useMousePos";
-import useBoardStore from "../../../../stores/useBoardStore";
+import useBoardStore from "../stores/useBoardStore";
 
 export const Y_SQUASH = 0.7;
 

@@ -1,4 +1,4 @@
-import useGameStore from "../../../../stores/useGameStore";
+import useGameStore from "../stores/useGameStore";
 import { useCallback, useEffect } from "react";
 import { eventEmitter } from "@cafe/shared/eventEmitter";
 const useGame = () => {

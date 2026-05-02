@@ -1,4 +1,4 @@
-import useBoardStore from "../../../../stores/useBoardStore.js";
+import useBoardStore from "../stores/useBoardStore";
 import useBoard from "../hooks/useBoard.js";
 import Tile from "./Tile.jsx";
 

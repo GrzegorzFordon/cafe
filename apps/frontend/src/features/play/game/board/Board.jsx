@@ -3,7 +3,7 @@ import Tile from "./Tile";
 import { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, Reorder } from "motion/react";
-import useBoardStore from "../../../../stores/useBoardStore";
+import useBoardStore from "../stores/useBoardStore.js";
 // import Units from "../units/Units.jsx";
 import Tiles from "./Tiles.jsx";
 import table from "../assets/table.webp";
