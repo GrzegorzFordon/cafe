@@ -23,6 +23,7 @@ class GameController {
   }
 
   start() {
+    console.log(`Game Started`, this.model.id);
     this.model = new GameModel(this.options);
     this.boardController.init(this.options);
     this.playerController.init(this.options); //TODO Handle both players
@@ -30,7 +31,6 @@ class GameController {
     // this.cardController.init(this.options);
     // this.actionController.init(this.options);
     //TODO state machine init
-    console.log(`Game Started`, this.model.id);
   }
 
   advance() {

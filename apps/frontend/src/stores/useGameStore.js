@@ -4,7 +4,7 @@ import GameController from "../../../../packages/engine/game/game.controller";
 import FakeGameController from "../features/play/fakegame/fakegame/game.controller.fake";
 
 const useGameStore = create(
-  devtools((set) => ({
+  devtools((set, get) => ({
     gameController: new GameController(),
     actions: [],
     effects: [],
@@ -21,12 +21,30 @@ const useGameStore = create(
       set({ actions: [] });
     },
 
+    getNextAction: () => {
+      const nextAction = get().actions.shift();
+      set((state) => ({
+        actions: state.actions.filter((val) => val != nextAction),
+        // actions: state.actions.slice(1),
+      }));
+      return nextAction;
+    },
+
     addEffect: (effect) => {
       set((state) => ({ effects: [...state.effects, effect] }));
     },
 
     resetEffects: () => {
       set({ effects: [] });
+    },
+
+    getNextEffect: () => {
+      const nextEffect = get().effects.shift();
+      set((state) => ({
+        effects: state.effects.filter((val) => val != nextEffect),
+        // effects: state.effects.slice(1),
+      }));
+      return nextEffect;
     },
   })),
 );

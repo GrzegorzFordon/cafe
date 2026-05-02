@@ -20,11 +20,11 @@ const useAction = () => {
     return true;
   };
 
-  const addBurnCardAction = (ID, cardID) => {
-    const action = { type: "card:burn", cardID };
-    addAction(action);
-    console.log("Burn Card: ", cardID);
-  };
+  // const addBurnCardAction = (ID, cardID) => {
+  //   const action = { type: "card:burn", cardID };
+  //   addAction(action);
+  //   console.log("Burn Card: ", cardID);
+  // };
 
   const addMoveUnitAction = (ID, unitID, target) => {
     const action = { type: "unit:move", ID, unitID, target };
@@ -32,10 +32,10 @@ const useAction = () => {
     // console.log("Move Unit: ", unitID, target);
   };
 
-  const addUseAbilityAction = (ID, unitID) => {
-    const action = { type: "card:ability", unitID };
-    addAction(action);
-  };
+  // const addUseAbilityAction = (ID, unitID) => {
+  //   const action = { type: "card:ability", unitID };
+  //   addAction(action);
+  // };
 
   /**
    * Getters for views displaying Actions
@@ -50,18 +50,15 @@ const useAction = () => {
     return actions.filter((val) => val.target?.isEqual(target));
   };
 
-  /**
-   * TODO - DOES PROCESS ACTIONS GO HERE? AS IN SENT TO SIM? OR ARE ACTIONS USED BY USEGAME HOOK
-   */
-
   return {
     getActionsByID,
     getActionsByTarget,
     resetActions,
     addPlayCardAction,
-    addBurnCardAction,
+    // addBurnCardAction,
     addMoveUnitAction,
-    addUseAbilityAction,
+    // addUseAbilityAction,
+    // processActions,
   };
 };
 export default useAction;
