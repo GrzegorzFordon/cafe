@@ -64,7 +64,6 @@ function Tile({ coords }) {
           alt=""
         />
       )}
-
       <img
         draggable="false"
         className="scale-220 scale-y-154 opacity-70"
@@ -75,10 +74,8 @@ function Tile({ coords }) {
               ? spriteActioned
               : sprite
         }
-        // src={sprite}
         alt=""
       />
-
       {/* <div className="absolute top-1/2 left-1/2 flex -translate-1/2 items-center justify-center">
         {coords.q == coords.r && <Unit unitID={1} />}
       </div> */}
@@ -88,6 +85,8 @@ function Tile({ coords }) {
       {/* <h1 className="absolute top-1/2 left-1/2 -translate-1/2 bg-amber-50 text-sm">
         {coords.q}/{coords.r}
       </h1> */}
+
+      
       {myActions.length > 0 && (
         <motion.div
           animate={{ y: [0, -2, 0] }}

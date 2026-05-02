@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { eventEmitter } from "../../../../util/eventEmitter";
 const useGame = () => {
   const gameController = useGameStore((state) => state.gameController);
-  // const gameState = useGameStore((state) => state.gameState);
+
   // const sendActions = useSocket();
   const handleSideEffect = (e) => console.log("Unit Spawned", e);
 
@@ -11,6 +11,7 @@ const useGame = () => {
     eventEmitter.on("unit:spawn", handleSideEffect);
     return () => eventEmitter.off("unit:spawn", handleSideEffect);
   }, []);
+
   const startGame = () => {
     gameController.start();
   };

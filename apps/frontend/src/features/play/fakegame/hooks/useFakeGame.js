@@ -10,6 +10,32 @@ const useFakeGame = () => {
   );
 
   /**
+   * OBSERVERS
+   */
+  const [observers, setObservers] = useState([]);
+
+  const notifyObserversOfGameEffects = async (effect) => {
+    await Promise.all(observers.map((o) => o(effect)));
+  };
+
+  const subscribeToGameEffects = (newSub) => {
+    setObservers([...observers, newSub]);
+  };
+  const unsubscribeToGameEffects = (newSub) => {
+    setObservers(observers.filter((val) => val != newSub));
+  };
+
+  const processEffects = async () => {
+    while (effects.current.length > 0) {
+      console.log("effects left", effects.current.length);
+      const nextEffect = effects.current.shift();
+      await notifyObserversOfGameEffects(nextEffect);
+    }
+
+    console.log("TIME TO ADVANCE GAME");
+  };
+
+  /**
    * EFFECTS (catching the sim outputs)
    */
 
@@ -24,11 +50,6 @@ const useFakeGame = () => {
     eventEmitter.on("sim:effect", handleSimEffect);
     return () => eventEmitter.off("sim:effect", handleSimEffect);
   }, [handleSimEffect]);
-
-
-
-
-
 
   /**
    * ACTIONS (sim inputs)
@@ -53,44 +74,6 @@ const useFakeGame = () => {
     }
     await processEffects();
   };
-
-
-
-
-
-  /**
-   * OBSERVERS
-   */
-  const [observers, setObservers] = useState([]);
-
-  const notifyObserversOfGameEffects = async (effect) => {
-    await Promise.all(observers.map((o) => o(effect)));
-  };
-
-  const subscribeToGameEffects = (newSub) => {
-    setObservers([...observers, newSub]);
-  };
-  const unsubscribeToGameEffects = (newSub) => {
-    setObservers(observers.filter((val) => val != newSub));
-  };
-
-
-
-
-  const processEffects = async () => {
-    while (effects.current.length > 0) {
-      console.log("effects left", effects.current.length);
-      const nextEffect = effects.current.shift();
-      await notifyObserversOfGameEffects(nextEffect);
-    }
-
-    console.log("TIME TO ADVANCE GAME");
-  };
-
-
-
-
-  
 
   return {
     addAdditionEvent: addFakeAction,

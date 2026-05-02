@@ -24,9 +24,9 @@ function Hand() {
         alt=""
         className="absolute top-1/2 left-1/2 -translate-1/2 scale-x-175"
       /> */}
-      {/* {handOrder.map((item) => (
+      {handOrder.map((item) => (
         <Card key={item} cardID={item} orderItem={item} />
-      ))} */}
+      ))}
     </Reorder.Group>
   );
 }

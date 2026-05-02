@@ -1,12 +1,16 @@
 import useGameStore from "../../../../stores/useGameStore";
 
+/**
+ * Custom hook for selecting actions (sim inputs)
+ */
+
 const useAction = () => {
   const actions = useGameStore((state) => state.actions);
   const addAction = useGameStore((state) => state.addAction);
   const resetActions = useGameStore((state) => state.resetActions);
 
   /**
-   * Action Actions
+   * Actions (Replace with actions from Engine!)
    */
 
   const addPlayCardAction = (ID, cardID, target) => {
@@ -33,6 +37,10 @@ const useAction = () => {
     addAction(action);
   };
 
+  /**
+   * Getters for views displaying Actions
+   */
+
   const getActionsByID = (ID) => {
     return actions.filter((val) => val?.ID?.includes(ID));
   };
@@ -42,8 +50,11 @@ const useAction = () => {
     return actions.filter((val) => val.target?.isEqual(target));
   };
 
+  /**
+   * TODO - DOES PROCESS ACTIONS GO HERE? AS IN SENT TO SIM? OR ARE ACTIONS USED BY USEGAME HOOK
+   */
+
   return {
-    actions,
     getActionsByID,
     getActionsByTarget,
     resetActions,
