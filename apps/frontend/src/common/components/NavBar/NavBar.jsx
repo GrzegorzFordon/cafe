@@ -31,7 +31,7 @@ function NavBar() {
         <Link to={"/rules"}>Rules</Link>
         <Link to={"/about"}>The Team</Link>
         <Link to={"/play"}>Play</Link>
-        <Link to={"/fakeplay"}>fakePlay</Link>
+        <Link to={"/sandbox"}>Sandbox</Link>
       </div>
       {accessTokenData && (
         <div className="flex items-center gap-8">

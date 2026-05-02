@@ -5,7 +5,7 @@ import unitSprite from "../assets/units/character_yellow_front.png";
 import unitSpriteA from "../assets/units/character_purple_front.png";
 import { useId, useMemo } from "react";
 import useBoard from "../hooks/useBoard";
-import useIntent from "../hooks/useIntent";
+import useAction from "../hooks/useAction";
 import { eventEmitter } from "../../../../util/eventEmitter.js";
 
 /**
@@ -16,7 +16,7 @@ import { eventEmitter } from "../../../../util/eventEmitter.js";
 function Unit({ unitID }) {
   // const id = useRef(nanoid());
   const id = useId();
-  const { addMoveUnitIntent, getIntentsByID } = useIntent();
+  const { addMoveUnitAction, getActionByID } = useAction();
   const { mousedOverHex } = useBoard();
 
   const sprite = useMemo(
@@ -30,7 +30,7 @@ function Unit({ unitID }) {
   //   setYPos(ref.current.getBoundingClientRect().y);
   // }, []);
 
-  const myIntents = useMemo(() => getIntentsByID(id), [getIntentsByID, id]);
+  const myAction = useMemo(() => getActionByID(id), [getActionByID, id]);
 
   const handleDragStart = () => {
     eventEmitter.emit("unit:dragStart", id, unitID);
@@ -42,11 +42,11 @@ function Unit({ unitID }) {
       Math.abs(mousedOverHex.q) < 4 &&
       Math.abs(mousedOverHex.r) < 4 &&
       Math.abs(mousedOverHex.s) < 4;
-    if (isWithinBoard) addMoveUnitIntent(id, unitID, mousedOverHex);
+    if (isWithinBoard) addMoveUnitAction(id, unitID, mousedOverHex);
   };
 
   /**
-   * instead of setting a "set intented" flag, have the useintents hook return info about intents of specific type AND specific ID
+   * instead of setting a "set actioned" flag, have the useaction hook return info about action of specific type AND specific ID
    * then components can simply check if they are on it
    */
 
@@ -59,12 +59,12 @@ function Unit({ unitID }) {
       <img draggable="false" className="select-none" src={sprite} />
 
       <motion.div
-        drag={myIntents.length == 0}
-        dragSnapToOrigin={myIntents.length == 0}
+        drag={myAction.length == 0}
+        dragSnapToOrigin={myAction.length == 0}
         onDragStart={() => handleDragStart()}
         onDragEnd={() => handleDragEnd()}
         className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl"
-        style={{ filter: myIntents.length > 0 ? "brightness(0.4)" : "none" }}
+        style={{ filter: myAction.length > 0 ? "brightness(0.4)" : "none" }}
       >
         <img
           className="pointer-events-none size-fit opacity-55 select-none"
@@ -73,13 +73,13 @@ function Unit({ unitID }) {
         />
         {/* <h1>{id}</h1> */}
         {/* <div className="absolute top-10 left-1/2 size-20 -translate-x-1/2 bg-amber-50">
-          {Object.entries(getIntentsByID(id)).map((element) => {
+          {Object.entries(getActionByID(id)).map((element) => {
             <p className="z-20">{JSON.stringify(element)}</p>;
           })}
         </div> */}
         <div className="absolute top-1/2 left-1/2 size-fit -translate-1/2 bg-amber-50 text-sm">
-          {/* {JSON.stringify(myIntents)} */}
-          {/* {myIntents.length} */}
+          {/* {JSON.stringify(myAction)} */}
+          {/* {myAction.length} */}
         </div>
       </motion.div>
       {/* <svg>

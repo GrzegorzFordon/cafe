@@ -19,3 +19,6 @@ export const ZONES = {
   DISCARD: "DISCARD",
   DECK: "DECK",
 };
+
+export const BASE_COORDS = { q: 0, r: 2, s: -2 };
+export const OP_BASE_COORDS = { q: 0, r: -2, s: 2 };

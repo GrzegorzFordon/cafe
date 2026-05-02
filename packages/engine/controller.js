@@ -5,3 +5,4 @@ class Controller {
   }
   init() {}
 }
+export default Controller;

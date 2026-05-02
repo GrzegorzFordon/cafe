@@ -43,8 +43,8 @@ const useSocketStore = create(
       /**
        * Game Events
        */
-      socket?.on("game:start", (val) => eventEmitter.emit("game:start", val));
-      socket?.on("game:phase", (val) => eventEmitter.emit("game:change", val));
+      socket?.on("room:start", (val) => eventEmitter.emit("room:start", val));
+      // socket?.on("game:phase", (val) => eventEmitter.emit("game:change", val));
 
       set({ socket });
     },

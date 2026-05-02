@@ -11,9 +11,11 @@ import BurnZone from "./components/BurnZone";
 import FinishGameButton from "./ui/FinishGameButton";
 import Units from "./units/Units";
 import Unit from "./units/Unit";
-import IntentDisplay from "./components/IntentDisplay";
+import ActionDisplay from "./components/ActionDisplay";
 import { useEffect } from "react";
 import { eventEmitter } from "../../../util/eventEmitter";
+import GameButton from "./ui/GameButton";
+import DebugWindow from "./components/DebugWindow";
 
 function GamePage() {
   const roomData = useSocketStore((state) => state.roomData);
@@ -33,6 +35,7 @@ function GamePage() {
   });
 
   const { finishGame } = useSocket();
+
   return (
     <div className="relative flex size-full items-center justify-center overflow-hidden p-2">
       <Board />
@@ -40,8 +43,9 @@ function GamePage() {
       {/* <BurnZone /> */}
       {/* <Timer /> */}
       {/* <Units /> */}
-      <IntentDisplay />
+      <ActionDisplay />
       <FinishGameButton callback={() => finishGame({ roomID: roomData.id })} />
+      <DebugWindow />
       {/* <Unit/> */}
     </div>
   );

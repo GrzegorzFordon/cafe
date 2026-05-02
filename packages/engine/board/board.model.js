@@ -1,5 +1,5 @@
-import { eventEmitter } from "../../../../util/eventEmitter";
-import FakeEffect from "../effect.fake";
+// import { eventEmitter } from "../../../../util/eventEmitter.js";
+// import FakeEffect from "../effect.fake";
 
 class BoardModel {
   constructor() {
@@ -7,10 +7,14 @@ class BoardModel {
     this.units = [];
   }
 
-  setupBoard() {
+  setupBoard(options) {
+    this.tiles = options.tiles;
+
     //takes in size?
     //populate tiles array
   }
+
+  // spawnUnit()
 }
 
 export default BoardModel;

@@ -1,5 +1,11 @@
+import Controller from "../controller.js";
+
 class ActionController extends Controller {
-  constructor() {}
+  constructor() {
+    super();
+  }
+
+  init() {}
 
   resolveAction(action) {
     //TODO - resolve action

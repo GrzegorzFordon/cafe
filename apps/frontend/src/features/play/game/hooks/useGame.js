@@ -1,9 +1,19 @@
 import useGameStore from "../../../../stores/useGameStore";
-
+import { useEffect } from "react";
+import { eventEmitter } from "../../../../util/eventEmitter";
 const useGame = () => {
-  const gameManager = useGameStore((state) => state.gameManager);
-  const gameState = useGameStore((state) => state.gameState);
+  const gameController = useGameStore((state) => state.gameController);
+  // const gameState = useGameStore((state) => state.gameState);
   // const sendActions = useSocket();
+  const handleSideEffect = (e) => console.log("Unit Spawned", e);
+
+  useEffect(() => {
+    eventEmitter.on("unit:spawn", handleSideEffect);
+    return () => eventEmitter.off("unit:spawn", handleSideEffect);
+  }, []);
+  const startGame = () => {
+    gameController.start();
+  };
 
   const submitActions = () => {
     // sendActions(actions);
@@ -11,19 +21,9 @@ const useGame = () => {
   };
 
   return {
+    startGame,
     submitActions,
-    gameManager, //todo
-    gameState, //todo
   };
 };
 
 export default useGame;
-
-/**
- * capture active game state here by listening to game:change events?
- * this might also need to capture the sideeffects?
-
- * where does validation happen?
- * the client does need to ask the engine if what they want to do is legal?
- * illegal options should not be allowed in the first place
- */

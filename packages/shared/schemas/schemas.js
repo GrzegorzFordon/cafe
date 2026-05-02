@@ -3,7 +3,7 @@ import { roomStatus } from "../../../apps/backend/socket/lobby/room.js";
 
 export const PlayerDTO = z.object({
   id: z.string(),
-  //do we send hand, deck, discard, pawns
+  // do we send hand, deck, discard, pawns
 });
 
 export const GameDTO = z.object({

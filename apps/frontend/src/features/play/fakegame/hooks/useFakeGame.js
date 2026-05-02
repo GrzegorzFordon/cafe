@@ -10,7 +10,7 @@ const useFakeGame = () => {
   );
 
   /**
-   * EFFECTS (sim outputs)
+   * EFFECTS (catching the sim outputs)
    */
 
   const effects = useRef([]);
@@ -25,6 +25,11 @@ const useFakeGame = () => {
     return () => eventEmitter.off("sim:effect", handleSimEffect);
   }, [handleSimEffect]);
 
+
+
+
+
+
   /**
    * ACTIONS (sim inputs)
    */
@@ -33,13 +38,13 @@ const useFakeGame = () => {
   const actions = useFakeGameStore((state) => state.actions);
   const getNextAction = useFakeGameStore((state) => state.getNextAction);
 
-  //push event
+  //push Actions
   const addFakeAction = () => {
     const newaction = new FakeAction(Math.round(Math.random() * 100));
     addAction(newaction);
   };
 
-  //process events
+  //process Actions
   const processActions = async () => {
     while (actions.length > 0) {
       const nextAction = getNextAction();
@@ -48,6 +53,10 @@ const useFakeGame = () => {
     }
     await processEffects();
   };
+
+
+
+
 
   /**
    * OBSERVERS
@@ -65,6 +74,9 @@ const useFakeGame = () => {
     setObservers(observers.filter((val) => val != newSub));
   };
 
+
+
+
   const processEffects = async () => {
     while (effects.current.length > 0) {
       console.log("effects left", effects.current.length);
@@ -74,6 +86,11 @@ const useFakeGame = () => {
 
     console.log("TIME TO ADVANCE GAME");
   };
+
+
+
+
+  
 
   return {
     addAdditionEvent: addFakeAction,

@@ -4,28 +4,19 @@
  * getLegalMoveTargets(player,unit)
  * moveUnit(player,unit,target)
  **/
-
-import UnitModel from "../unit/unit.model.js";
+import Controller from "../controller.js";
+import BoardModel from "./board.model.js";
 
 class BoardController extends Controller {
   constructor() {
-    this.tiles = [];
-    this.units = [];
+    super();
+    this.model = new BoardModel();
   }
 
-  init(options){
-    //setup, options come from game controller
+  init(options) {
+    this.model = new BoardModel(options);
+    // console.log("Board Controller running", this.model);
   }
-
-  spawnUnit(unitID, coords) {
-    const newUnit = new UnitModel();
-    this.units.push(newUnit);
-  }
-
-  moveUnit(unitID, coords) {
-    const unit = this.units.find((val) => val.unitID == unitID);
-  }
-
 }
 
 export default BoardController;

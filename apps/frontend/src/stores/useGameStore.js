@@ -1,32 +1,31 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import GameManager from "../../../../packages/engine/game/game.controller";
+import GameController from "../../../../packages/engine/game/game.controller";
 import FakeGameController from "../features/play/fakegame/fakegame/game.controller.fake";
 
 const useGameStore = create(
   devtools((set) => ({
-    gameManager: new GameManager(),
+    gameController: new GameController(),
     // gameState: new GameModel(), //this will be the gamestate from engine??
 
-    intents: [],
+    actions: [],
 
-
-    setGameManager: (gameManager) => {
-      set({ gameManager: gameManager });
+    setGameController: (gameController) => {
+      set({ gameController: gameController });
     },
 
     setGameState: (gameState) => {
       set({ gameState: gameState });
     },
 
-    addIntent: (intent) => {
-      // console.log("Adding intent: ", intent);
-      set((state) => ({ intents: [...state.intents, intent] }));
-      // console.log("new intents: ", get().intents);
+    addAction: (action) => {
+      // console.log("Adding action: ", action);
+      set((state) => ({ actions: [...state.actions, action] }));
+      // console.log("new action: ", get().action);
     },
 
-    resetIntents: () => {
-      set({ intents: [] });
+    resetActions: () => {
+      set({ action: [] });
     },
   })),
 );

@@ -5,7 +5,7 @@ import useBoard from "../hooks/useBoard.js";
 import useGame from "../hooks/useGame.js";
 import { useState, useRef, useId, useMemo } from "react";
 import useMousePos from "../hooks/useMousePos.js";
-import useIntent from "../hooks/useIntent.js";
+import useAction from "../hooks/useAction.js";
 
 /**
  * Client side Card component
@@ -16,7 +16,7 @@ function Card({ cardID, orderItem }) {
   const id = useId();
   const ref = useRef();
   // const { tryPlayCard, tryBurnCard } = useGame();
-  const { addPlayCardIntent, addBurnCardIntent, getIntentsByID } = useIntent();
+  const { addPlayCardAction, addBurnCardAction, getActionsByID } = useAction();
   const mousePos = useMousePos();
   const { mousedOverHex } = useBoard();
   const isBurn = useMotionValue(0);
@@ -27,7 +27,7 @@ function Card({ cardID, orderItem }) {
   // });
 
   const offset = useMotionValue();
-  const myIntents = useMemo(() => getIntentsByID(id), [getIntentsByID, id]);
+  const myActions = useMemo(() => getActionsByID(id), [getActionsByID, id]);
 
   //const cardData = useCardCatalog(cardID);
 
@@ -37,8 +37,8 @@ function Card({ cardID, orderItem }) {
       Math.abs(mousedOverHex.r) < 4 &&
       Math.abs(mousedOverHex.s) < 4;
     if (isWithinBoard) {
-      addPlayCardIntent(id, cardID, mousedOverHex);
-    } else if (isBurn.get()) addBurnCardIntent(cardID);
+      addPlayCardAction(id, cardID, mousedOverHex);
+    } else if (isBurn.get()) addBurnCardAction(cardID);
   };
 
   return (
@@ -46,7 +46,7 @@ function Card({ cardID, orderItem }) {
       ref={ref}
       item={orderItem}
       as="div"
-      drag={myIntents.length == 0}
+      drag={myActions.length == 0}
       // dragElastic={0.1}
       // dragSnapToOrigin
       whileDrag={{
@@ -56,7 +56,7 @@ function Card({ cardID, orderItem }) {
         filter: isBurn.get() == 1 ? "brightness(0.4)" : "none",
         cursor: "grabbing",
       }}
-      whileHover={{ scale: myIntents.length > 0 ? 1.0 : 1.2 }}
+      whileHover={{ scale: myActions.length > 0 ? 1.0 : 1.2 }}
       onDrag={(e, i) => {
         const rect = ref.current.getBoundingClientRect();
         // const cardPos = { x: rect.left, y: rect.top };
@@ -74,7 +74,7 @@ function Card({ cardID, orderItem }) {
       key={orderItem}
       value={orderItem}
       className="relative size-fit rounded-md select-none"
-      style={{ filter: myIntents.length > 0 ? "brightness(0.4)" : "none" }}
+      style={{ filter: myActions.length > 0 ? "brightness(0.4)" : "none" }}
       // style={{
       //   // transformOrigin: `${dragStartMouseOffset.x}px ${dragStartMouseOffset.y}px`,
       //   transformOrigin: offset.get()
@@ -83,7 +83,7 @@ function Card({ cardID, orderItem }) {
       // }}
     >
       <CardVisual cardID={cardID} />
-      <p className="absolute top-0 left-0 bg-black">{id}</p>
+      {/* <p className="absolute top-0 left-0 bg-black">{id}</p> */}
     </Reorder.Item>
   );
 }
