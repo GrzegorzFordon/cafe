@@ -1,9 +1,9 @@
 import Action from "../action.model";
 
 class MoveAction extends Action {
-  constructor(unitID, coords) {
+  constructor(unit, coords) {
     super();
-    this.unitID = unitID;
+    this.unit = unit;
     this.coords = coords;
   }
 

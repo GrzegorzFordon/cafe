@@ -11,6 +11,7 @@ export const GAME_PHASES = {
   UPKEEP: "UPKEEP",
   PLAN: "PLAN",
   RESOLVE: "RESOLVE",
+  END: "END",
 };
 
 export const ZONES = {

@@ -1,3 +1,5 @@
+import { GAME_PHASES } from "@cafe/engine/config";
+import GameAdvancedEffect from "@cafe/engine/effect/effects/gameAdvanced.effect";
 import { eventEmitter } from "@cafe/shared/eventEmitter";
 
 class EventBus {
@@ -27,18 +29,26 @@ class EventBus {
       await EventBus.instance.notifyObserversOfGameEffects(nextEffect);
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    // advanceGame();
-    console.log("TIME TO ADVANCE GAME");
+
+    console.log("Event Bus is emitting GameAdvanceEffect");
+    await EventBus.instance.notifyObserversOfGameEffects(
+      new GameAdvancedEffect(GAME_PHASES.START),
+    );
   }
 
   handleSimEffect(e) {
-    console.log("Event Bus caught Event", e);
+    // console.log("Event Bus caught Event", e);
     EventBus.instance.effects.push(e);
   }
 
   handleGameStart() {
     console.log("Event Bus caught Game Start");
     EventBus.instance.processEffects();
+  }
+  async handleGameAdvance(e) {
+    console.log("Event Bus caught Game Advance", e);
+    // EventBus.instance.processEffects();
+    await EventBus.instance.notifyObserversOfGameEffects(e);
   }
 
   connect() {
@@ -47,11 +57,13 @@ class EventBus {
     console.log("Event Bus Connecting");
     eventEmitter.on("sim:effect", EventBus.instance.handleSimEffect);
     eventEmitter.on("sim:start", EventBus.instance.handleGameStart);
+    eventEmitter.on("sim:advance", EventBus.instance.handleGameAdvance);
   }
 
   disconnect() {
     eventEmitter.off("sim:effect", EventBus.instance.handleSimEffect);
     eventEmitter.off("sim:start", EventBus.instance.handleGameStart);
+    eventEmitter.off("sim:advance", EventBus.instance.handleGameAdvance);
   }
 
   /**
@@ -59,9 +71,11 @@ class EventBus {
    */
 
   observers = [];
+  observersPerEvent = {};
 
   async notifyObserversOfGameEffects(effect) {
     await Promise.all(EventBus.instance.observers.map((o) => o(effect)));
+    // await Promise.all(EventBus.instance.observersPerEvent[effect])
   }
 
   subscribeToGameEffects(newSub) {
@@ -70,5 +84,11 @@ class EventBus {
   unsubscribeToGameEffects(sub) {
     EventBus.instance.observers.filter((val) => val != sub);
   }
+
+  // subToSpecificEventTypeOnly(sub, type) {
+  //   const hasType = this.observersPerEvent.has(type);
+  //   if (!hasType) EventBus.instance.observersPerEvent[type] = [];
+  //   EventBus.instance.observersPerEvent[type].push(sub);
+  // }
 }
 export default EventBus.getInstance();

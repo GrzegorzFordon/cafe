@@ -49,7 +49,7 @@ function Card({ cardID, index }) {
     <motion.div
       className="aspect-2.5/3.5 h-full w-full select-none"
       style={{ rotate: `${angle}deg` }}
-      whileHover={{ scale: 1.1, rotate: "0deg" }}
+      whileHover={{ scale: 1.1, rotate: `${angle*0.2}deg` }}
     >
       <CardVisual cardID={cardID} />
     </motion.div>

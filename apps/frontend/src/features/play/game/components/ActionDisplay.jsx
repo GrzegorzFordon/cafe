@@ -6,20 +6,19 @@ import { motion } from "motion/react";
 import useGame from "../hooks/useGame";
 
 function ActionDisplay() {
-  const { resetActions, getActionsByID } = useAction();
+  const { resetActions, getActionsByID, actions } = useAction();
   const { submitActions } = useGame();
 
   const [text, setText] = useState("");
 
-  const filteredActions = getActionsByID(text);
+  // const filteredActions = getActionsByID(text);
+  const filteredActions = actions;
 
   return (
-    <motion.div
-      drag
-      dragMomentum={false}
-      className="absolute top-1/3 left-10 flex size-fit w-md flex-col items-center justify-between gap-2 rounded-sm bg-amber-50 p-2 text-sm text-black"
-    >
-      ActionDisplay (Commands)
+    <motion.div className="absolute top-1/7 right-10 flex size-fit w-44 flex-col items-center justify-between gap-2 rounded-sm bg-amber-50 p-2 text-sm text-black">
+      <h1 className="flex items-center justify-center font-black text-black">
+        Actions
+      </h1>
       {filteredActions.map((action) => (
         <p>{JSON.stringify(action)}</p>
       ))}

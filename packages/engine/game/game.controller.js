@@ -6,16 +6,16 @@ import PlayerController from "../player/player.controller.js";
 import UnitController from "../unit/unit.controller.js";
 import GameModel from "./game.model.js";
 import { nanoid } from "nanoid";
+import StateMachine from "./states/stateMachine.js";
 
 class GameController {
   //options are: player decks, player heroes
   constructor(options) {
-    // this.id = nanoid(); // ??
     this.options = options;
-    //game model
     this.model = new GameModel(options);
+    this.stateMachine = new StateMachine();
 
-    //other controllers
+    //controllers
     this.boardController = new BoardController();
     this.playerController = new PlayerController();
     this.unitController = new UnitController();
@@ -26,24 +26,19 @@ class GameController {
   start() {
     console.log(`Game Started`, this.model.id);
     this.model = new GameModel(this.options);
-    this.boardController.init(this.options);
-    this.playerController.init(this.options); //TODO Handle both players
-    this.unitController.init(this.options);
+    this.stateMachine.init(this);
+    // this.boardController.init(this.options);
+    // this.playerController.init(this.options); //TODO Handle both players
+    // this.unitController.init(this.options);
     // this.cardController.init(this.options);
     // this.actionController.init(this.options);
-    eventEmitter.emit("sim:start");
+    // eventEmitter.emit("sim:start");
     //TODO state machine init
   }
 
   advance() {
     // TODO state machine advance
-    /**
-     * game-start (room called start)
-     ** game-upkeep (draw up to hand size, onUpkeep() on units)
-     ** game-plan (this is where players get to send in actions for the turn)
-     ** game-resolve (sort actions, resolve, save new state, send back actions (and state?))
-     * game-end (wincondition achieved)
-     */
+    this.stateMachine.advance(this);
   }
 
   finish() {

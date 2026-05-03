@@ -15,7 +15,7 @@ function Hand() {
 
   const handleCardDrawn = useCallback(async (e) => {
     if (e.name != "Card Drawn Effect") return;
-    console.log("Hand hears new card", e);
+    // console.log("Hand hears new card", e);
     setCards((p) => [...p, e.card]);
     await new Promise((resolve) => setTimeout(resolve, 100));
   }, []);

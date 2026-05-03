@@ -1,0 +1,20 @@
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+import State from "./state.js";
+import StateMachine, { states } from "./stateMachine.js";
+import { GAME_PHASES } from "../../config.js";
+import GameAdvancedEffect from "../../effect/effects/gameAdvanced.effect.js";
+
+class PlanState extends State {
+  constructor() {
+    super();
+    this.name = "PlanState";
+    this.next = states.RESOLVE;
+  }
+
+  onEnter(controller) {
+    console.log("State Machine is entering", this.name);
+    const effect = new GameAdvancedEffect(GAME_PHASES.PLAN);
+    eventEmitter.emit("sim:advance", effect);
+  }
+}
+export default PlanState;

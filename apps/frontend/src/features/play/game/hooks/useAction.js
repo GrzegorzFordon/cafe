@@ -55,6 +55,7 @@ const useAction = () => {
   };
 
   return {
+    actions,
     getActionsByID,
     getActionsByTarget,
     resetActions,

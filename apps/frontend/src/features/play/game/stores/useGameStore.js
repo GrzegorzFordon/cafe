@@ -1,14 +1,10 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import GameController from "@cafe/engine/game/game.controller";
-// import eventBus from "../util/eventBus.js";
-// import eventBus from "../util/eventBus";
 
 const useGameStore = create(
   devtools((set, get) => ({
     gameController: new GameController(),
-    // eventBus: eventBus,
-    // eventBus: EventBusFN,
     actions: [],
     effects: [],
 
