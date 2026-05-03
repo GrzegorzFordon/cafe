@@ -29,25 +29,24 @@ class EventBus {
       await EventBus.instance.notifyObserversOfGameEffects(nextEffect);
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
-
-    console.log("Event Bus is emitting GameAdvanceEffect");
-    await EventBus.instance.notifyObserversOfGameEffects(
-      new GameAdvancedEffect(GAME_PHASES.START),
-    );
   }
 
   handleSimEffect(e) {
-    // console.log("Event Bus caught Event", e);
     EventBus.instance.effects.push(e);
   }
 
-  handleGameStart() {
-    console.log("Event Bus caught Game Start");
-    EventBus.instance.processEffects();
-  }
+  // async handleGameStart() {
+  //   console.log("Event Bus caught Game Start");
+  //   await EventBus.instance.processEffects();
+
+  //   console.log("Event Bus is emitting GameAdvanceEffect");
+  //   await EventBus.instance.notifyObserversOfGameEffects(
+  //     new GameAdvancedEffect(GAME_PHASES.START),
+  //   );
+  // }
   async handleGameAdvance(e) {
     console.log("Event Bus caught Game Advance", e);
-    // EventBus.instance.processEffects();
+    await EventBus.instance.processEffects();
     await EventBus.instance.notifyObserversOfGameEffects(e);
   }
 
@@ -56,13 +55,13 @@ class EventBus {
     EventBus.instance.disconnect();
     console.log("Event Bus Connecting");
     eventEmitter.on("sim:effect", EventBus.instance.handleSimEffect);
-    eventEmitter.on("sim:start", EventBus.instance.handleGameStart);
+    // eventEmitter.on("sim:start", EventBus.instance.handleGameStart);
     eventEmitter.on("sim:advance", EventBus.instance.handleGameAdvance);
   }
 
   disconnect() {
     eventEmitter.off("sim:effect", EventBus.instance.handleSimEffect);
-    eventEmitter.off("sim:start", EventBus.instance.handleGameStart);
+    // eventEmitter.off("sim:start", EventBus.instance.handleGameStart);
     eventEmitter.off("sim:advance", EventBus.instance.handleGameAdvance);
   }
 

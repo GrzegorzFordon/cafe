@@ -46,6 +46,10 @@ const useBoard = () => {
     return newPosList;
   }, [hexList, layout]);
 
+  const getPositionForHex = (hex) => {
+    return layout.hexToPixel(hex);
+  };
+
   const mousedOverHex = useMemo(() => {
     const rect = boardRef && boardRef.getBoundingClientRect();
     const left = rect ? rect.left : 0;
@@ -58,7 +62,7 @@ const useBoard = () => {
     return hex;
   }, [layout, mousePos, boardRef]);
 
-  return { layout, positions, mousedOverHex };
+  return { layout, hexList, positions, mousedOverHex, getPositionForHex };
 };
 
 export default useBoard;

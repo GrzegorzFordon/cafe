@@ -15,7 +15,7 @@ function ActionDisplay() {
   const filteredActions = actions;
 
   return (
-    <motion.div className="absolute top-1/7 right-10 flex size-fit w-44 flex-col items-center justify-between gap-2 rounded-sm bg-amber-50 p-2 text-sm text-black">
+    <motion.div className="absolute top-1/7 right-10 flex size-fit flex-col items-center justify-between gap-2 rounded-sm bg-amber-50 p-2 text-sm text-black">
       <h1 className="flex items-center justify-center font-black text-black">
         Actions
       </h1>

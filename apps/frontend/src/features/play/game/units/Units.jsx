@@ -1,13 +1,24 @@
-// import Unit from "./Unit";
+import { useCallback, useEffect, useState } from "react";
+import eventBus from "../util/eventBus.js";
+import Unit from "./Unit";
 
-// function Units() {
-//   // const figs = Array("1").map((v) => <Unit key={v} isEven={v % 2 == 0} />);
+function Units() {
+  const [units, setUnits] = useState([]);
 
-//   return (
-//     // <div className="absolute top-1/2 left-1/2 flex size-25 w-full -translate-1/2 justify-center">
-//     <div className="UNITS absolute top-1/2 left-1/2 -translate-1/2 bg-green-500">
-//       <Unit key={1} unitID={1} />
-//     </div>
-//   );
-// }
-// export default Units;
+  const handleUnitSpawn = useCallback(async (e) => {
+    if (e.name != "Unit Spawned Effect") return;
+    setUnits((p) => [...p, e.unit]);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }, []);
+
+  useEffect(() => {
+    eventBus.subscribeToGameEffects(handleUnitSpawn);
+    return () => eventBus.unsubscribeToGameEffects(handleUnitSpawn);
+  }, [handleUnitSpawn]);
+
+  const list = units.map((val) => <Unit key={val.id} unit={val} unitID={1} />);
+  return (
+    <div className="UNITS absolute top-1/2 left-1/2 -translate-1/2">{list}</div>
+  );
+}
+export default Units;

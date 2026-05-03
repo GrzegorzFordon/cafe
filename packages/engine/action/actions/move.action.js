@@ -7,18 +7,10 @@ class MoveAction extends Action {
     this.coords = coords;
   }
 
-  execute() {
+  name = "Move";
+
+  execute(controller) {
     //get unit, move it
   }
 }
 export default MoveAction;
-
-// const MoveAction = (unitID, coords) => {
-//   const lastx, lasty;
-//   const execute = () => {};
-//   const undo = () => {};
-
-//   return { execute, undo };
-// };
-
-// export default MoveAction;

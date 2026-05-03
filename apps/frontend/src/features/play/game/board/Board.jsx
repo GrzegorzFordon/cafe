@@ -1,10 +1,11 @@
-import Tile from "./Tile";
+import Tile from "../tile/Tile.jsx";
 import { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import useBoardStore from "../stores/useBoardStore";
-import Tiles from "./Tiles.jsx";
+import Tiles from "../tile/Tiles.jsx";
 import table from "../assets/table.webp";
+import Units from "../units/Units.jsx";
 
 function Board() {
   const setBoardRef = useBoardStore((state) => state.setBoardRef);
@@ -14,11 +15,8 @@ function Board() {
     setBoardRef(ref.current);
   }, [setBoardRef, ref]);
 
-  const [locked, setLocked] = useState(false);
-
   return (
     <motion.div
-      // drag={!locked}
       dragMomentum={false}
       draggable="false"
       ref={ref}
@@ -32,12 +30,7 @@ function Board() {
         <img draggable={false} className="select-none" src={table} alt="" />
       </div>
       <Tiles />
-      {/* <input
-        className="absolute -top-30 -left-50"
-        type="checkbox"
-        checked={locked}
-        onChange={() => setLocked(!locked)}
-      /> */}
+      <Units />
     </motion.div>
   );
 }

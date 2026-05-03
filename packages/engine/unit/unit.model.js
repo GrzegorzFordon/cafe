@@ -12,7 +12,7 @@ class UnitModel {
     // this.cardID = data.cardID;
     this.unitID = 1;
     this.cardID = "LEADER";
-    this.coords = new Hex(data.coords.q, data.coords.r, data.coords.s);
+    this.hex = new Hex(data.coords.q, data.coords.r, data.coords.s);
     this.hp = data.maxHP;
   }
 
@@ -28,7 +28,7 @@ class UnitModel {
 
   move(coords) {
     //move unit to new coords
-    this.coords = coords;
+    this.hex = coords;
   }
 
   takeDamage(amount) {

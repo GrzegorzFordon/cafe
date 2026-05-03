@@ -36,7 +36,7 @@ function DebugWindow() {
       className="absolute top-1/6 left-10 flex h-24 w-44 flex-col items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
     >
       <h1 className="flex items-center justify-center font-black text-black select-none">
-        {phase}
+        {phase} Phase
       </h1>
       {children}
     </motion.div>

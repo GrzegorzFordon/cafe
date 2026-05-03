@@ -1,11 +1,16 @@
-//play card action
+import Action from "../action.model";
 
-const PlayAction = (unitID, coords) => {
-  const lastx, lasty;
-  const execute = () => {};
-  const undo = () => {};
+class PlayAction extends Action {
+  constructor(card, target) {
+    super();
+    this.card = card;
+    this.target = target;
+  }
 
-  return { execute, undo };
-};
+  name = "Play";
 
+  execute(controller) {
+    //get unit, move it
+  }
+}
 export default PlayAction;

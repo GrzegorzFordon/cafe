@@ -2,6 +2,7 @@ import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import State from "./state.js";
 import StateMachine, { states } from "./stateMachine.js";
 import { GAME_PHASES } from "../../config.js";
+import GameAdvancedEffect from "../../effect/effects/gameAdvanced.effect.js";
 
 class StartState extends State {
   constructor() {
@@ -16,7 +17,8 @@ class StartState extends State {
     controller.boardController.init(controller.options);
     controller.playerController.init(controller.options); //TODO Handle both players
     controller.unitController.init(controller.options);
-    eventEmitter.emit("sim:start", GAME_PHASES.START);
+    const effect = new GameAdvancedEffect(GAME_PHASES.START);
+    eventEmitter.emit("sim:advance", effect);
   }
 }
 export default StartState;

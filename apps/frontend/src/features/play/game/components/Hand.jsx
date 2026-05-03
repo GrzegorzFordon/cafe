@@ -36,7 +36,7 @@ function Hand() {
           value={val}
           className="aspect-2.5/3.5 h-full w-full select-none"
         >
-          <Card cardID={cards[val]?.cardID} index={i / (cards.length - 1)} />
+          <Card key={val} cardID={cards[val]?.cardID} index={i / (cards.length - 1)} />
         </Reorder.Item>
       )
     );
