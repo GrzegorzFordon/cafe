@@ -12,7 +12,9 @@ import useAction from "../hooks/useAction.js";
  * Handles Display and Drag Events (play card, burn card)
  */
 
-function Card({ cardID, orderItem }) {
+const MAX_HAND_FAN_ANGLE_DEGREES = 15;
+
+function Card({ cardID, index }) {
   const id = useId();
   const ref = useRef();
   // const { tryPlayCard, tryBurnCard } = useGame();
@@ -31,6 +33,8 @@ function Card({ cardID, orderItem }) {
 
   //const cardData = useCardCatalog(cardID);
 
+  const angle = MAX_HAND_FAN_ANGLE_DEGREES * (index - 0.5);
+
   const handlePlay = () => {
     const isWithinBoard =
       Math.abs(mousedOverHex.q) < 4 &&
@@ -42,51 +46,62 @@ function Card({ cardID, orderItem }) {
   };
 
   return (
-    <Reorder.Item
-      ref={ref}
-      item={orderItem}
-      as="div"
-      drag={myActions.length == 0}
-      // dragElastic={0.1}
-      // dragSnapToOrigin
-      whileDrag={{
-        scale: isBurn.get() == 1 ? 0.3 : 0.5,
-        opacity: 0.5,
-        // transformOrigin: dragStartMouseOffset,
-        filter: isBurn.get() == 1 ? "brightness(0.4)" : "none",
-        cursor: "grabbing",
-      }}
-      whileHover={{ scale: myActions.length > 0 ? 1.0 : 1.2 }}
-      onDrag={(e, i) => {
-        const rect = ref.current.getBoundingClientRect();
-        // const cardPos = { x: rect.left, y: rect.top };
-        // const cardSize = { width: rect.width, height: rect.height };
-        offset.set({
-          x: mousePos.x - rect.left + rect.width * 0.5,
-          y: mousePos.y - rect.top + rect.height * 0.5,
-        });
-        isBurn.set(Math.abs(i.point.x) < 200 ? 1 : 0);
-      }}
-      onDragEnd={() => {
-        handlePlay();
-        isBurn.set(false);
-      }}
-      key={orderItem}
-      value={orderItem}
-      className="relative size-fit rounded-md select-none"
-      style={{ filter: myActions.length > 0 ? "brightness(0.4)" : "none" }}
-      // style={{
-      //   // transformOrigin: `${dragStartMouseOffset.x}px ${dragStartMouseOffset.y}px`,
-      //   transformOrigin: offset.get()
-      //     ? `${offset.get().x}px ${offset.get().y}px`
-      //     : "50% 50%",
-      // }}
+    <motion.div
+      className="aspect-2.5/3.5 h-full w-full select-none"
+      style={{ rotate: `${angle}deg` }}
+      whileHover={{ scale: 1.1, rotate: "0deg" }}
     >
       <CardVisual cardID={cardID} />
-      {/* <p className="absolute top-0 left-0 bg-black">{id}</p> */}
-    </Reorder.Item>
+    </motion.div>
+    // <Reorder.Item
+    //   ref={ref}
+    //   // item={orderItem}
+    //   as="div"
+    //   drag={myActions.length == 0}
+    //   // dragElastic={0.1}
+    //   // dragSnapToOrigin
+    //   whileDrag={{
+    //     scale: isBurn.get() == 1 ? 0.3 : 0.5,
+    //     opacity: 0.5,
+    //     // transformOrigin: dragStartMouseOffset,
+    //     filter: isBurn.get() == 1 ? "brightness(0.4)" : "none",
+    //     cursor: "grabbing",
+    //   }}
+    //   whileHover={{ scale: myActions.length > 0 ? 1.0 : 1.1, rotate: "0deg" }}
+    //   // onDrag={(e, i) => {
+    //   //   const rect = ref.current.getBoundingClientRect();
+    //   //   // const cardPos = { x: rect.left, y: rect.top };
+    //   //   // const cardSize = { width: rect.width, height: rect.height };
+    //   //   offset.set({
+    //   //     x: mousePos.x - rect.left + rect.width * 0.5,
+    //   //     y: mousePos.y - rect.top + rect.height * 0.5,
+    //   //   });
+    //   //   isBurn.set(Math.abs(i.point.x) < 200 ? 1 : 0);
+    //   // }}
+    //   onDragEnd={() => {
+    //     handlePlay();
+    //     isBurn.set(false);
+    //   }}
+    //   key={orderItem}
+    //   value={orderItem}
+    //   className="aspect-2.5/3.5 h-full w-full select-none"
+    //   style={{
+    //     filter: myActions.length > 0 ? "brightness(0.4)" : "none",
+    //     rotate: `${angle}deg`,
+    //     // marginLeft: "-2em",
+    //     // zIndex: 5,
+    //   }}
+    //   // style={{
+    //   //   // transformOrigin: `${dragStartMouseOffset.x}px ${dragStartMouseOffset.y}px`,
+    //   //   transformOrigin: offset.get()
+    //   //     ? `${offset.get().x}px ${offset.get().y}px`
+    //   //     : "50% 50%",
+    //   // }}
+    // >
+    //   <CardVisual cardID={cardID} />
+    //   {/* <h1 className="bg-red-500">{index}</h1> */}
+    // </Reorder.Item>
   );
 }
 export default Card;
 
-//transform: "translateY(-10px)"

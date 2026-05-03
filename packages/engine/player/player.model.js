@@ -16,7 +16,7 @@ class PlayerModel {
   constructor(options) {
     // this.id =
     this.hand = [];
-    this.deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    this.deck = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
     this.discard = [];
   }
 

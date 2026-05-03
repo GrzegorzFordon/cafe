@@ -1,7 +1,7 @@
 //maybe not needed? no actually we need init, die, stats
 
 import { eventEmitter } from "../../shared/eventEmitter.js";
-import { BASE_COORDS } from "../config.js";
+import { BASE_COORDS, OP_BASE_COORDS } from "../config.js";
 import UnitSpawnedEffect from "../effect/effects/unitSpawned.effect.js";
 import UnitModel from "./unit.model.js";
 
@@ -12,6 +12,7 @@ class UnitController {
 
   init(options) {
     this.spawnUnit(options?.leader, BASE_COORDS);
+    this.spawnUnit(options?.leader, OP_BASE_COORDS);
     // console.log("Unit Controller is running", this.units);
   }
 

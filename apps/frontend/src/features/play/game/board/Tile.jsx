@@ -81,6 +81,7 @@ function Tile({ coords, unit }) {
       </div>
       {myActions.length > 0 && (
         <motion.div
+          draggable={false}
           animate={{ y: [0, -2, 0] }}
           transition={{
             duration: 2,
@@ -90,7 +91,7 @@ function Tile({ coords, unit }) {
             repeatDelay: 0,
           }}
           // style={{ zIndex: actionCardZIndex }}
-          className="absolute top-0 left-1/2 flex -translate-1/2 scale-200 items-center justify-center bg-green-400 select-none"
+          className="absolute top-0 left-1/2 flex -translate-1/2 scale-200 items-center justify-center select-none"
         >
           {myActions[0].unitID ? (
             <img src={arrowSprite} />

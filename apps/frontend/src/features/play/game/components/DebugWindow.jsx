@@ -7,12 +7,12 @@ function DebugWindow() {
 
   return (
     <motion.div
-      drag
+      // drag
       dragMomentum={false}
-      className="absolute top-2/3 left-10 flex flex-col h-fit w-fit items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
+      className="absolute top-1/6 left-10 flex flex-col h-fit w-fit items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
     >
       <GameButton callback={() => startGame()} text={"START GAME"} />
-      <GameButton callback={() => processEffects()} text={"PROCESS EFFECTS"} />
+      {/* <GameButton callback={() => processEffects()} text={"PROCESS EFFECTS"} /> */}
     </motion.div>
   );
 }

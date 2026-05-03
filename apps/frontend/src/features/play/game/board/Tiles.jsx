@@ -10,10 +10,11 @@ function Tiles() {
 
   const [units, setUnits] = useState([]);
 
-  const handleUnitSpawn = useCallback((e) => {
+  const handleUnitSpawn = useCallback(async (e) => {
     if (e.name != "Unit Spawned Effect") return;
     console.log("Tiles hear new unit", e);
     setUnits((p) => [...p, e.unit]);
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }, []);
 
   useEffect(() => {

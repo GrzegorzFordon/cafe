@@ -8,7 +8,7 @@ function GamePage() {
     <div className="GAME-PAGE relative flex size-full items-center justify-center overflow-hidden p-2">
       <Board />
       <Hand />
-      <ActionDisplay />
+      {/* <ActionDisplay /> */}
       <DebugWindow />
     </div>
   );

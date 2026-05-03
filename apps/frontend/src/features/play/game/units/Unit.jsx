@@ -17,7 +17,7 @@ import MoveAction from "@cafe/engine/action/actions/move.action.js";
 
 function Unit({ unit }) {
   // const id = useRef(nanoid());
-  const id = useId();
+  // const id = useId();
   const { addMoveUnitAction, getActionsByID, addActionObject } = useAction();
   const { mousedOverHex } = useBoard();
 
@@ -32,19 +32,22 @@ function Unit({ unit }) {
   //   setYPos(ref.current.getBoundingClientRect().y);
   // }, []);
 
-  const myAction = useMemo(() => getActionsByID(id), [getActionsByID, id]);
+  const myAction = useMemo(
+    () => getActionsByID(unit?.id),
+    [getActionsByID, unit?.id],
+  );
 
   const handleDragStart = () => {
-    eventEmitter.emit("unit:dragStart", id, unitID);
+    eventEmitter.emit("unit:dragStart", unit?.id, unit?.unitID);
   };
   const handleDragEnd = () => {
-    eventEmitter.emit("unit:dragEnd", id, unitID, mousedOverHex);
+    eventEmitter.emit("unit:dragEnd", unit?.id, unit?.unitID, mousedOverHex);
 
     const isWithinBoard =
       Math.abs(mousedOverHex.q) < 4 &&
       Math.abs(mousedOverHex.r) < 4 &&
       Math.abs(mousedOverHex.s) < 4;
-    if (isWithinBoard) addMoveUnitAction(id, unitID, mousedOverHex);
+    if (isWithinBoard) addMoveUnitAction(unit?.id, unit?.unitID, mousedOverHex);
     // if (isWithinBoard) addActionObject(new MoveAction(unitID, mousedOverHex));
   };
 
@@ -59,7 +62,13 @@ function Unit({ unit }) {
       className="UNIT absolute -top-7 left-0 size-15 -translate-1/2 select-none"
       // style={{ zIndex: Math.round(yPos) + 5000 }}
     >
-      <img draggable="false" className="select-none" src={sprite} />
+      <motion.img
+        animate={{ scale: 1 }}
+        initial={{ scale: 0 }}
+        draggable="false"
+        className="select-none"
+        src={sprite}
+      />
 
       <motion.div
         drag={myAction.length == 0}
@@ -69,7 +78,7 @@ function Unit({ unit }) {
         className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl"
         style={{ filter: myAction.length > 0 ? "brightness(0.4)" : "none" }}
       >
-        <img
+        <motion.img
           className="pointer-events-none size-fit opacity-55 select-none"
           draggable="false"
           src={sprite}
@@ -80,10 +89,10 @@ function Unit({ unit }) {
             <p className="z-20">{JSON.stringify(element)}</p>;
           })}
         </div> */}
-        <div className="absolute top-1/2 left-1/2 size-fit -translate-1/2 bg-amber-50 text-sm">
-          {/* {JSON.stringify(myAction)} */}
-          {/* {myAction.length} */}
-        </div>
+        {/* <div className="absolute top-1/2 left-1/2 size-fit -translate-1/2 bg-amber-50 text-sm">
+          {JSON.stringify(myAction)}
+          {myAction.length}
+        </div> */}
       </motion.div>
       {/* <svg>
         <line

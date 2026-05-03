@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import useBoardStore from "../stores/useBoardStore";
 import Tiles from "./Tiles.jsx";
+import table from "../assets/table.webp";
 
 function Board() {
   const setBoardRef = useBoardStore((state) => state.setBoardRef);
@@ -17,11 +18,11 @@ function Board() {
 
   return (
     <motion.div
-      drag={!locked}
+      // drag={!locked}
       dragMomentum={false}
       draggable="false"
       ref={ref}
-      className="absolute top-1/2 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded text-2xl font-black text-black select-none"
+      className="absolute top-2/5 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded text-2xl font-black text-black select-none"
     >
       <div
         draggable="false"
@@ -31,12 +32,12 @@ function Board() {
         <img draggable={false} className="select-none" src={table} alt="" />
       </div>
       <Tiles />
-      <input
+      {/* <input
         className="absolute -top-30 -left-50"
         type="checkbox"
         checked={locked}
         onChange={() => setLocked(!locked)}
-      />
+      /> */}
     </motion.div>
   );
 }

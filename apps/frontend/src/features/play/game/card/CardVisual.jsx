@@ -6,7 +6,7 @@
 // import swarm_intelligence from "../assets/cards/swarm_intelligence.png";
 // import { useMemo } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, Reorder } from "motion/react";
+import { easeOut, motion, Reorder } from "motion/react";
 // import { transform } from "zod";
 import useCardList from "../hooks/useCardList";
 
@@ -107,20 +107,6 @@ import useCardList from "../hooks/useCardList";
 // `;
 
 function CardVisual({ cardID }) {
-  // const sprite = useMemo(
-  //   () =>
-  //     cardID == 1
-  //       ? bolt
-  //       : cardID == 2
-  //         ? golgari_guildmage
-  //         : cardID == 3
-  //           ? grixis_panorama
-  //           : cardID == 4
-  //             ? reanimate
-  //             : swarm_intelligence,
-  //   [cardID],
-  // );
-
   const sprite = useCardList(cardID);
 
   return (
@@ -133,11 +119,14 @@ function CardVisual({ cardID }) {
     // />
     //
     <motion.img
+      animate={{ scale: 1 }}
+      initial={{ scale: 0 }}
+      transition={easeOut}
       draggable="false"
-      // whileHover={{ scale: 1.15, transform: "translateY(-10px)" }}
+      whileHover={{ scale: 1.15, transform: "translateY(-10px)" }}
       src={sprite}
       alt=""
-      className="size-full select-none"
+      className="select-none size-fit object-scale-down"
     />
   );
 }

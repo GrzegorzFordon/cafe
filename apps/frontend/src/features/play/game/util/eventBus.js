@@ -21,12 +21,10 @@ class EventBus {
   async processEffects() {
     console.log("Processing Effects");
     while (EventBus.instance.effects.length > 0) {
-      // const nextEffect = getNextEffect();
       const nextEffect = EventBus.instance.effects.shift();
       if (!nextEffect) break;
-      // await notifyObserversOfGameEffects(nextEffect);
       console.log("Next Effect", nextEffect);
-      EventBus.instance.notifyObserversOfGameEffects(nextEffect);
+      await EventBus.instance.notifyObserversOfGameEffects(nextEffect);
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
     // advanceGame();
