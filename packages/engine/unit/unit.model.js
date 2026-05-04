@@ -31,7 +31,7 @@ class UnitModel {
   move(hex) {
     //move unit to new hex
     this.hex = hex;
-    const effect = new UnitMovedEffect(this.id, this.hex);
+    const effect = new UnitMovedEffect(this.id, hex);
     eventEmitter.emit("sim:effect", effect);
   }
 

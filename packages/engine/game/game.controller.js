@@ -26,7 +26,7 @@ class GameController {
   }
 
   start() {
-    console.log(`[Game Controller] Started`);
+    // console.log(`[Game Controller] Started`);
     this.model = new GameModel(this.options);
     this.stateMachine.init(this);
     this.boardController.init(this.options);

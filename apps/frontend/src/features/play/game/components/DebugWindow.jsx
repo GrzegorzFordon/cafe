@@ -2,23 +2,24 @@ import useGame from "../hooks/useGame";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 import GameButton from "../ui/GameButton";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GAME_PHASES } from "@cafe/engine/config";
 import eventBus from "../util/eventBus";
 function DebugWindow() {
-  const { startGame, submitActions, advanceGame } = useGame();
+  const { startGame, submitActions } = useGame();
 
   const [phase, setPhase] = useState("PRE");
 
-  const handleEvent = (e) => {
+  const handleEffectsDEBUG = useCallback((e) => {
     if (e.name != "Game Advanced Effect") return;
     // console.log(e);
     setPhase(e.phase);
-  };
+  }, []);
+
   useEffect(() => {
-    eventBus.subscribeToGameEffects(handleEvent);
-    return () => eventBus.unsubscribeToGameEffects(handleEvent);
-  });
+    eventBus.subscribeToGameEffects(handleEffectsDEBUG);
+    return () => eventBus.unsubscribeToGameEffects(handleEffectsDEBUG);
+  }, [handleEffectsDEBUG]);
 
   const children =
     phase == "PRE" ? (

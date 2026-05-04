@@ -3,7 +3,9 @@ import Tile from "./Tile.jsx";
 
 function Tiles() {
   const { hexList } = useBoard();
-  const list = hexList.map((hex) => <Tile hex={hex} />);
+  const list = hexList.map((hex) => (
+    <Tile key={JSON.stringify(hex)} hex={hex} />
+  ));
 
   return (
     <div className="TILES absolute top-1/2 left-1/2 -translate-1/2">{list}</div>

@@ -1,4 +1,8 @@
+import { nanoid } from "nanoid";
+
 class Effect {
-  constructor() {}
+  constructor() {
+    this.id = nanoid();
+  }
 }
 export default Effect;

@@ -8,9 +8,9 @@ import { motion } from "motion/react";
 function Hand() {
   const [cards, setCards] = useState([]);
 
-  const handleCardEffect = useCallback(async (e) => {
+  const handleEffectCARDS = useCallback(async (e) => {
     if (e.name == "Card Drawn Effect") {
-      console.log("[Hand] Caught: ", e);
+      // console.log("[Hand] Caught: ", e);
       setCards((p) => [...p, e.card]);
       await new Promise((resolve) => setTimeout(resolve, 100));
     } else if (e.name == "Card Discarded Effect") {
@@ -21,9 +21,9 @@ function Hand() {
   }, []);
 
   useEffect(() => {
-    eventBus.subscribeToGameEffects(handleCardEffect);
-    return () => eventBus.unsubscribeToGameEffects(handleCardEffect);
-  }, [handleCardEffect]);
+    eventBus.subscribeToGameEffects(handleEffectCARDS);
+    return () => eventBus.unsubscribeToGameEffects(handleEffectCARDS);
+  }, [handleEffectCARDS]);
 
   const list = (
     <AnimatePresence>

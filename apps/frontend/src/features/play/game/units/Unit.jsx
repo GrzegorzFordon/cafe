@@ -2,7 +2,7 @@
 import { motion } from "motion/react";
 import unitSprite from "../assets/units/character_yellow_front.png";
 import unitSpriteA from "../assets/units/character_purple_front.png";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import useBoard from "../hooks/useBoard";
 import useAction from "../hooks/useAction";
 
@@ -29,6 +29,10 @@ function Unit({ unit }) {
     () => getActionsByID(unit?.id),
     [getActionsByID, unit?.id],
   );
+
+  // useEffect(() => {
+  //   console.log("UNIT VIEW", unit);
+  // }, [unit]);
 
   const handleDragStart = () => {
     // console.log("Handle Drag", unit);

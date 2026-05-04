@@ -11,15 +11,15 @@ class UnitController {
   }
 
   init(options) {
-    this.spawnUnit(options?.leader, BASE_COORDS);
     this.spawnUnit(options?.leader, OP_BASE_COORDS);
+    this.spawnUnit(options?.leader, BASE_COORDS);
     // console.log("Unit Controller is running", this.units);
   }
 
   spawnUnit(unitID, hex) {
     const unit = new UnitModel({ unitID, hex });
     this.units.push(unit);
-    // console.log("Unit Controller spawned Unit", unit);
+    console.log("Unit Controller spawned Unit", unit);
     eventEmitter.emit("sim:effect", new UnitSpawnedEffect(unit));
   }
 

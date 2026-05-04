@@ -2,9 +2,9 @@ import Effect from "../effect.js";
 
 class UnitMovedEffect extends Effect {
   name = "Unit Moved Effect";
-  constructor(unit, hex) {
+  constructor(unitID, hex) {
     super();
-    this.unit = unit;
+    this.unitID = unitID;
     this.hex = hex;
   }
 }
