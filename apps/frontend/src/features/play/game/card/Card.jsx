@@ -54,9 +54,13 @@ function Card({ order, card, index }) {
       key={card}
       value={order}
       onDragEnd={handlePlay}
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      exit={{ scale: 0, transition: { duration: 0.3 } }}
+      initial={{ scale: 0, translateY: "5em" }}
+      animate={{ scale: 1, translateY: 0 }}
+      exit={{
+        scale: 0,
+        opacity: 0,
+        transition: { duration: 0.3 },
+      }}
       transition={easeOut}
       className="aspect-2.5/3.5 h-full w-full select-none"
     >
