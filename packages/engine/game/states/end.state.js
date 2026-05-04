@@ -6,7 +6,7 @@ import { GAME_PHASES } from "../../config.js";
 class EndState extends State {
   constructor() {
     super();
-    this.name = "EndState";
+    this.name = "End State";
     this.next = undefined;
   }
 

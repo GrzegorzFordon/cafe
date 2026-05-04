@@ -1,7 +1,8 @@
 import { GAME_PHASES } from "@cafe/engine/config";
 import GameAdvancedEffect from "@cafe/engine/effect/effects/gameAdvanced.effect";
 import { eventEmitter } from "@cafe/shared/eventEmitter";
-
+import { nanoid } from "nanoid";
+import _ from "lodash";
 class EventBus {
   static instance = null;
   effects = [];
@@ -14,31 +15,34 @@ class EventBus {
   }
 
   async processEffects() {
-    console.log("[EventBus] Processing");
-    while (EventBus.instance.effects.length > 0) {
-      const nextEffect = EventBus.instance.effects.shift();
+    const id = nanoid().substring(0, 4);
+    const eCache = [...this.effects];
+    this.effects = [];
+    console.log(`[EventBus] Processing`, id, eCache);
+    while (eCache.length > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      const nextEffect = eCache.shift();
       if (!nextEffect) break;
-      console.log("[EventBus] Next: ", nextEffect.name);
+      console.log(`[EventBus] Next:`, id, nextEffect);
       await EventBus.instance.notifyObserversOfGameEffects(nextEffect);
-      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 
   handleSimEffect(e) {
-    console.log("[EventBus] Caught: ", e.name);
+    console.log(`[EventBus] Caught:`, e.name);
     EventBus.instance.effects.push(e);
   }
 
   async handleGameAdvance(e) {
-    console.log("[EventBus] Caught Game Advance: ", e.phase);
+    console.log(`[EventBus] Caught Game Advance:`, e.phase);
     EventBus.instance.effects.push(e);
-    await EventBus.instance.processEffects();
+    _.defer(() => EventBus.instance.processEffects());
   }
 
   connect() {
     EventBus.instance.effects = [];
     EventBus.instance.disconnect();
-    console.log("[EventBus] Connecting");
+    console.log(`[EventBus] Connecting`);
     eventEmitter.on("sim:effect", EventBus.instance.handleSimEffect);
     eventEmitter.on("sim:advance", EventBus.instance.handleGameAdvance);
   }
@@ -53,7 +57,6 @@ class EventBus {
    */
 
   observers = [];
-  observersPerEvent = {};
 
   async notifyObserversOfGameEffects(effect) {
     await Promise.all(EventBus.instance.observers.map((o) => o(effect)));

@@ -7,14 +7,15 @@ import GameAdvancedEffect from "../../effect/effects/gameAdvanced.effect.js";
 class UpkeepState extends State {
   constructor() {
     super();
-    this.name = "UpkeepState";
+    this.name = "Upkeep State";
     this.next = states.PLAN;
   }
 
   onEnter(controller) {
     const effect = new GameAdvancedEffect(GAME_PHASES.UPKEEP);
     eventEmitter.emit("sim:advance", effect);
-    // controller.playerController.draw(2)
+    controller.playerController.draw(1);
+    controller.advance();
   }
 }
 export default UpkeepState;

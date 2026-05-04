@@ -7,7 +7,7 @@ import GameAdvancedEffect from "../../effect/effects/gameAdvanced.effect.js";
 class PlanState extends State {
   constructor() {
     super();
-    this.name = "PlanState";
+    this.name = "Plan State";
     this.next = states.RESOLVE;
   }
 

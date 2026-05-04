@@ -25,7 +25,7 @@ class StateMachine {
   advance(controller) {
     if (this.state) this.state.onExit(controller);
     this.state = new this.state.next();
-    console.log("State Machine is entering ", this.state.name);
+    console.log("[StateMachine] Entering:", this.state.name);
 
     this.state.onEnter(controller);
   }

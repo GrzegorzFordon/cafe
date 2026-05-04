@@ -6,13 +6,12 @@ function Units() {
   const [units, setUnits] = useState([]);
 
   const handleGameEffect = useCallback(async (e) => {
-    console.log("[Units] Caught: ", e);
     if (e.name == "Unit Spawned Effect") {
-      // console.log("[Units] Spawn", e);
+      // console.log("[Units] Caught: ", e.name);
       setUnits((p) => [...p, structuredClone(e.unit)]);
       await new Promise((resolve) => setTimeout(resolve, 500));
     } else if (e.name == "Unit Moved Effect") {
-      // console.log("[Units] Move", e);
+      // console.log("[Units] Caught: ", e.name);
       const unit = units.find((val) => val == unit);
       unit.hex = e.hex;
       await new Promise((resolve) => setTimeout(resolve, 500));

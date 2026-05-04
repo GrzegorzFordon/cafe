@@ -14,9 +14,11 @@ function Hand() {
 
   const handleCardEffect = useCallback(async (e) => {
     if (e.name == "Card Drawn Effect") {
+      // console.log("[Hand] Caught: ", e.name);
       setCards((p) => [...p, e.card]);
       await new Promise((resolve) => setTimeout(resolve, 100));
     } else if (e.name == "Card Discarded Effect") {
+      // console.log("[Hand] Caught: ", e.name);
       setCards((p) => p.filter((val) => val != e.card));
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }

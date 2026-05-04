@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { GAME_PHASES } from "@cafe/engine/config";
 import eventBus from "../util/eventBus";
 function DebugWindow() {
-  const { startGame, submitActions } = useGame();
+  const { startGame, submitActions, advanceGame } = useGame();
 
-  const [phase, setPhase] = useState(GAME_PHASES.START);
+  const [phase, setPhase] = useState("PRE");
 
   const handleEvent = (e) => {
     if (e.name != "Game Advanced Effect") return;
@@ -21,8 +21,10 @@ function DebugWindow() {
   });
 
   const children =
-    phase == GAME_PHASES.START ? (
+    phase == "PRE" ? (
       <GameButton callback={() => startGame()} text={"START GAME"} />
+    ) : phase == GAME_PHASES.START ? (
+      <h1>GAME STARTING</h1>
     ) : phase == GAME_PHASES.PLAN ? (
       <GameButton callback={() => submitActions()} text={"SUBMIT ACTIONS"} />
     ) : (
@@ -33,11 +35,13 @@ function DebugWindow() {
     <motion.div
       // drag
       dragMomentum={false}
-      className="absolute top-1/6 left-10 flex h-24 w-44 flex-col items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
+      className="absolute top-1/6 right-10 flex h-fit w-44 flex-col items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
     >
       <h1 className="flex items-center justify-center font-black text-black select-none">
         {phase} Phase
       </h1>
+      <GameButton callback={() => advanceGame()} text={"(advance)"} />
+
       {children}
     </motion.div>
   );

@@ -9,7 +9,7 @@ import { nanoid } from "nanoid";
 import StateMachine from "./states/stateMachine.js";
 import { GAME_PHASES } from "../config.js";
 import GameAdvancedEffect from "../effect/effects/gameAdvanced.effect.js";
-
+import _ from "lodash";
 class GameController {
   //options are: player decks, player heroes
   constructor(options) {
@@ -28,10 +28,11 @@ class GameController {
   start() {
     console.log(`[Game Controller] Started`);
     this.model = new GameModel(this.options);
+    this.stateMachine.init(this);
     this.boardController.init(this.options);
     this.playerController.init(this.options); //TODO Handle both players
     this.unitController.init(this.options);
-    this.stateMachine.init(this);
+    this.advance();
   }
 
   advance() {
@@ -43,12 +44,18 @@ class GameController {
   }
 
   handleActions(actions) {
-    // this.advance();
-    while (actions.length > 0) {
-      const nextAction = actions.shift();
-      nextAction.execute(this);
-    }
     this.advance();
+
+    _.defer(() => {
+      while (actions.length > 0) {
+        const nextAction = actions.shift();
+        console.log("[Game Controller] Handling:", nextAction);
+        nextAction.execute(this);
+      }
+    });
+    _.defer(() => {
+      this.advance();
+    });
   }
 }
 
