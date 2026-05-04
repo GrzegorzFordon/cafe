@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import {
   AnimatePresence,
+  easeOut,
   motion,
   Reorder,
   scale,
@@ -55,15 +56,13 @@ function Card({ order, card, index }) {
       onDragEnd={handlePlay}
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
-      exit={{ scale: 0 }}
+      exit={{ scale: 0, transition: { duration: 0.3 } }}
+      transition={easeOut}
       className="aspect-2.5/3.5 h-full w-full select-none"
     >
       <motion.div
         className="aspect-2.5/3.5 h-full w-full select-none"
         key={card}
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0 }}
         whileHover={
           isPlayed
             ? {}

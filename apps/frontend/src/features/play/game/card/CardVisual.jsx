@@ -7,19 +7,13 @@ function CardVisual({ card, order }) {
   const sprite = useCardList(card?.cardID);
 
   return (
-    <AnimatePresence>
-      <motion.img
-        key={order}
-        animate={{ scale: 1 }}
-        initial={{ scale: 0 }}
-        exit={{ scale: 0 }}
-        transition={easeOut}
-        draggable="false"
-        src={sprite}
-        alt=""
-        className="size-fit object-scale-down select-none"
-      />
-    </AnimatePresence>
+    <motion.img
+      key={order}
+      draggable="false"
+      src={sprite}
+      alt=""
+      className="size-fit object-scale-down select-none"
+    />
   );
 }
 export default CardVisual;
