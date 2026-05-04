@@ -2,10 +2,9 @@
 import { motion, Reorder, useMotionValue } from "motion/react";
 import CardVisual from "./CardVisual.jsx";
 import useBoard from "../hooks/useBoard.js";
-import useGame from "../hooks/useGame.js";
-import { useState, useRef, useId, useMemo } from "react";
-import useMousePos from "../hooks/useMousePos.js";
 import useAction from "../hooks/useAction.js";
+import PlayAction from "@cafe/engine/action/actions/play.action.js";
+import { useMemo } from "react";
 
 /**
  * Client side Card component
@@ -14,13 +13,12 @@ import useAction from "../hooks/useAction.js";
 
 const MAX_HAND_FAN_ANGLE_DEGREES = 15;
 
-function Card({ cardID, index }) {
-  const id = useId();
-  const ref = useRef();
-  // const { tryPlayCard, tryBurnCard } = useGame();
-  const { addPlayCardAction, addBurnCardAction, getActionsByID } = useAction();
-  const mousePos = useMousePos();
-  const { mousedOverHex } = useBoard();
+function Card({ order, card, index }) {
+  const { mousedOverHex, isHexWithinBoard } = useBoard();
+  // const ref = useRef();
+  // const mousePos = useMousePos();
+  // const offset = useMotionValue();
+  const { addActionObject, getActionsByCard } = useAction();
   const isBurn = useMotionValue(0);
 
   // const [dragStartMouseOffset, setDragStartMouseOffset] = useState({
@@ -28,80 +26,47 @@ function Card({ cardID, index }) {
   //   y: 0,
   // });
 
-  const offset = useMotionValue();
-  const myActions = useMemo(() => getActionsByID(id), [getActionsByID, id]);
-
-  //const cardData = useCardCatalog(cardID);
-
+  const actions = getActionsByCard(card);
+  const isPlayed = useMemo(() => actions.length != 0, [actions.length]);
   const angle = MAX_HAND_FAN_ANGLE_DEGREES * (index - 0.5);
 
   const handlePlay = () => {
-    const isWithinBoard =
-      Math.abs(mousedOverHex.q) < 4 &&
-      Math.abs(mousedOverHex.r) < 4 &&
-      Math.abs(mousedOverHex.s) < 4;
-    if (isWithinBoard) {
-      addPlayCardAction(id, cardID, mousedOverHex);
-    } else if (isBurn.get()) addBurnCardAction(cardID);
+    if (isHexWithinBoard(mousedOverHex)) {
+      const action = new PlayAction(card, mousedOverHex);
+      addActionObject(action);
+    } else if (isBurn.get()) {
+      // addBurnCardAction(cardID)
+    }
   };
 
   return (
-    <motion.div
+    <Reorder.Item
+      drag={!isPlayed}
+      as="div"
+      whileDrag={{ scale: 0.3, opacity: 0.7, cursor: "grabbing" }}
+      key={order}
+      value={order}
+      onDragEnd={handlePlay}
       className="aspect-2.5/3.5 h-full w-full select-none"
-      style={{ rotate: `${angle}deg` }}
-      whileHover={{ scale: 1.1, rotate: `${angle*0.2}deg` }}
     >
-      <CardVisual cardID={cardID} />
-    </motion.div>
-    // <Reorder.Item
-    //   ref={ref}
-    //   // item={orderItem}
-    //   as="div"
-    //   drag={myActions.length == 0}
-    //   // dragElastic={0.1}
-    //   // dragSnapToOrigin
-    //   whileDrag={{
-    //     scale: isBurn.get() == 1 ? 0.3 : 0.5,
-    //     opacity: 0.5,
-    //     // transformOrigin: dragStartMouseOffset,
-    //     filter: isBurn.get() == 1 ? "brightness(0.4)" : "none",
-    //     cursor: "grabbing",
-    //   }}
-    //   whileHover={{ scale: myActions.length > 0 ? 1.0 : 1.1, rotate: "0deg" }}
-    //   // onDrag={(e, i) => {
-    //   //   const rect = ref.current.getBoundingClientRect();
-    //   //   // const cardPos = { x: rect.left, y: rect.top };
-    //   //   // const cardSize = { width: rect.width, height: rect.height };
-    //   //   offset.set({
-    //   //     x: mousePos.x - rect.left + rect.width * 0.5,
-    //   //     y: mousePos.y - rect.top + rect.height * 0.5,
-    //   //   });
-    //   //   isBurn.set(Math.abs(i.point.x) < 200 ? 1 : 0);
-    //   // }}
-    //   onDragEnd={() => {
-    //     handlePlay();
-    //     isBurn.set(false);
-    //   }}
-    //   key={orderItem}
-    //   value={orderItem}
-    //   className="aspect-2.5/3.5 h-full w-full select-none"
-    //   style={{
-    //     filter: myActions.length > 0 ? "brightness(0.4)" : "none",
-    //     rotate: `${angle}deg`,
-    //     // marginLeft: "-2em",
-    //     // zIndex: 5,
-    //   }}
-    //   // style={{
-    //   //   // transformOrigin: `${dragStartMouseOffset.x}px ${dragStartMouseOffset.y}px`,
-    //   //   transformOrigin: offset.get()
-    //   //     ? `${offset.get().x}px ${offset.get().y}px`
-    //   //     : "50% 50%",
-    //   // }}
-    // >
-    //   <CardVisual cardID={cardID} />
-    //   {/* <h1 className="bg-red-500">{index}</h1> */}
-    // </Reorder.Item>
+      <motion.div
+        className="aspect-2.5/3.5 h-full w-full select-none"
+        whileHover={
+          isPlayed
+            ? {}
+            : {
+                scale: 1.15,
+                rotate: `${angle * 0.2}deg`,
+              }
+        }
+        style={{
+          rotate: `${angle}deg`,
+          filter: isPlayed ? "brightness(0.4)" : "none",
+        }}
+      >
+        <CardVisual cardID={card.cardID} />
+      </motion.div>
+    </Reorder.Item>
   );
 }
 export default Card;
-

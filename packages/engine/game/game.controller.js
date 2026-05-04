@@ -7,6 +7,8 @@ import UnitController from "../unit/unit.controller.js";
 import GameModel from "./game.model.js";
 import { nanoid } from "nanoid";
 import StateMachine from "./states/stateMachine.js";
+import { GAME_PHASES } from "../config.js";
+import GameAdvancedEffect from "../effect/effects/gameAdvanced.effect.js";
 
 class GameController {
   //options are: player decks, player heroes
@@ -24,31 +26,30 @@ class GameController {
   }
 
   start() {
-    console.log(`Game Started`, this.model.id);
+    console.log(`[Game Controller] Started`);
     this.model = new GameModel(this.options);
+    this.boardController.init(this.options);
+    this.playerController.init(this.options); //TODO Handle both players
+    this.unitController.init(this.options);
     this.stateMachine.init(this);
-    // this.boardController.init(this.options);
-    // this.playerController.init(this.options); //TODO Handle both players
-    // this.unitController.init(this.options);
-    // this.cardController.init(this.options);
-    // this.actionController.init(this.options);
-    // eventEmitter.emit("sim:start");
-    //TODO state machine init
   }
 
   advance() {
-    // TODO state machine advance
     this.stateMachine.advance(this);
   }
 
   finish() {
     // TODO state machine set to game end with info
   }
+
+  handleActions(actions) {
+    // this.advance();
+    while (actions.length > 0) {
+      const nextAction = actions.shift();
+      nextAction.execute(this);
+    }
+    this.advance();
+  }
 }
 
 export default GameController;
-
-// serialize() {
-//   //TODO turn all needed info into a game(state?)DTO (schemas)
-//   //actually not needed cause we only send back actions?
-// }

@@ -19,13 +19,14 @@ class StateMachine {
 
   init(controller) {
     this.state = new states.START();
-    console.log("State Machine initialized", this.state);
     this.state.onEnter(controller);
   }
 
   advance(controller) {
     if (this.state) this.state.onExit(controller);
     this.state = new this.state.next();
+    console.log("State Machine is entering ", this.state.name);
+
     this.state.onEnter(controller);
   }
 

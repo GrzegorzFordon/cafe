@@ -14,26 +14,15 @@ import { useRef } from "react";
 import useBoardStore from "../stores/useBoardStore.js";
 
 function Tile({ hex }) {
-  const { mousedOverHex, getPositionForHex } = useBoard(hex);
-  const { getActionsByTarget } = useAction();
+  const { mousedOverHex, pixelFromHex } = useBoard(hex);
+  const { getActionsByHex } = useAction();
 
   const ref = useRef();
 
-  const position = getPositionForHex(hex);
+  const position = pixelFromHex(hex);
   const tileSize = useBoardStore((state) => state.tileSize);
 
-  // const [actionCardZIndex, setActionCardZIndex] = useState(0);
-  // const [actionCardData, setActionData] = useState();
-
-  const myActions = getActionsByTarget(hex);
-
-  // const sprite = useCardList(myActions[0] ?? null);
-  // const cardIDFromFirstAction;
-
-  // useEffect(() => {
-  //   const y = ref.current.getBoundingClientRect().y;
-  //   setActionCardZIndex(y);
-  // }, [ref]);
+  const actions = getActionsByHex(hex);
 
   const isactive = hex.isEqual(mousedOverHex);
   const isBase = hex.isEqual(BASE_COORDS) || hex.isEqual(OP_BASE_COORDS);
@@ -49,6 +38,12 @@ function Tile({ hex }) {
         height: tileSize,
       }}
     >
+      <img
+        draggable="false"
+        className="scale-220 scale-y-154 opacity-70"
+        src={actions.length > 0 ? spriteActioned : sprite}
+        alt=""
+      />
       {isBase && (
         <img
           draggable="false"
@@ -57,21 +52,18 @@ function Tile({ hex }) {
           alt=""
         />
       )}
+      {isactive && (
+        <motion.img
+          animate={{ opacity: 1, transition: { duration: 0.05 } }}
+          initial={{ opacity: 0 }}
+          draggable="false"
+          className="absolute scale-220 scale-y-154 opacity-100"
+          src={spriteActive}
+          alt=""
+        />
+      )}
 
-      <img
-        draggable="false"
-        className="scale-220 scale-y-154 opacity-70"
-        src={
-          isactive
-            ? spriteActive
-            : myActions.length > 0
-              ? spriteActioned
-              : sprite
-        }
-        alt=""
-      />
-
-      {myActions.length > 0 && (
+      {actions.length > 0 && (
         <motion.div
           draggable={false}
           animate={{ y: [0, -2, 0] }}
@@ -85,10 +77,10 @@ function Tile({ hex }) {
           // style={{ zIndex: actionCardZIndex }}
           className="absolute top-0 left-1/2 flex -translate-1/2 scale-200 items-center justify-center select-none"
         >
-          {myActions[0].unitID ? (
+          {actions[0].unit ? (
             <img src={arrowSprite} />
           ) : (
-            <CardVisual cardID={myActions[0].cardID} />
+            <CardVisual cardID={actions[0].card.cardID} />
           )}
         </motion.div>
       )}
@@ -96,3 +88,14 @@ function Tile({ hex }) {
   );
 }
 export default Tile;
+
+// const sprite = useCardList(myActions[0] ?? null);
+// const cardIDFromFirstAction;
+
+// useEffect(() => {
+//   const y = ref.current.getBoundingClientRect().y;
+//   setActionCardZIndex(y);
+// }, [ref]);
+
+// const [actionCardZIndex, setActionCardZIndex] = useState(0);
+// const [actionCardData, setActionData] = useState();

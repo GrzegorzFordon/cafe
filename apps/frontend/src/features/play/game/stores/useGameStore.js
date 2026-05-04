@@ -20,15 +20,6 @@ const useGameStore = create(
       set({ actions: [] });
     },
 
-    getNextAction: () => {
-      const nextAction = get().actions.shift();
-      set((state) => ({
-        actions: state.actions.filter((val) => val != nextAction),
-        // actions: state.actions.slice(1),
-      }));
-      return nextAction;
-    },
-
     addEffect: (effect) => {
       set((state) => ({ effects: [...state.effects, effect] }));
     },
@@ -41,7 +32,6 @@ const useGameStore = create(
       const nextEffect = get().effects.shift();
       set((state) => ({
         effects: state.effects.filter((val) => val != nextEffect),
-        // effects: state.effects.slice(1),
       }));
       return nextEffect;
     },

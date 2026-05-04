@@ -6,6 +6,7 @@ import useMousePos from "../hooks/useMousePos";
 import useBoardStore from "../stores/useBoardStore";
 
 export const Y_SQUASH = 0.7;
+export const BOARD_SIZE = 2;
 
 const useBoard = () => {
   const mousePos = useMousePos();
@@ -22,11 +23,9 @@ const useBoard = () => {
     [tileSize],
   );
 
-  //use board size from game state (room state?) instead of N
-  //probably choose map size in room window
   const hexList = useMemo(() => {
     const newHexList = [];
-    const N = 2;
+    const N = BOARD_SIZE;
     for (let q = -N; q <= N; q++) {
       const r1 = Math.max(-N, -q - N);
       const r2 = Math.min(N, -q + N);
@@ -37,17 +36,15 @@ const useBoard = () => {
     return newHexList;
   }, []);
 
-  const positions = useMemo(() => {
-    const newPosList = [];
-    hexList.forEach((element) => {
-      const screenPos = layout.hexToPixel(element);
-      newPosList.push(screenPos);
-    });
-    return newPosList;
-  }, [hexList, layout]);
-
-  const getPositionForHex = (hex) => {
+  const pixelFromHex = (hex) => {
     return layout.hexToPixel(hex);
+  };
+  const isHexWithinBoard = (hex) => {
+    return (
+      Math.abs(hex.q) <= BOARD_SIZE &&
+      Math.abs(hex.r) <= BOARD_SIZE &&
+      Math.abs(hex.s) <= BOARD_SIZE
+    );
   };
 
   const mousedOverHex = useMemo(() => {
@@ -62,7 +59,7 @@ const useBoard = () => {
     return hex;
   }, [layout, mousePos, boardRef]);
 
-  return { layout, hexList, positions, mousedOverHex, getPositionForHex };
+  return { hexList, mousedOverHex, isHexWithinBoard, pixelFromHex };
 };
 
 export default useBoard;

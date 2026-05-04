@@ -12,7 +12,7 @@ function Unit({ unit }) {
   // const id = useRef(nanoid());
   // const id = useId();
   const { getActionsByID, addActionObject } = useAction();
-  const { mousedOverHex, getPositionForHex } = useBoard();
+  const { mousedOverHex, pixelFromHex } = useBoard();
 
   const sprite = useMemo(
     () => (unit?.unitID == 0 ? unitSprite : unitSpriteA),
@@ -31,7 +31,7 @@ function Unit({ unit }) {
   );
 
   const handleDragStart = () => {
-    console.log("Handle Drag", unit);
+    // console.log("Handle Drag", unit);
   };
   const handleDragEnd = () => {
     const isWithinBoard =
@@ -41,7 +41,7 @@ function Unit({ unit }) {
     if (isWithinBoard) addActionObject(new MoveAction(unit, mousedOverHex));
   };
 
-  const pos = getPositionForHex(unit.hex);
+  const pos = pixelFromHex(unit.hex);
 
   return (
     <div

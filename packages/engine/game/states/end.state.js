@@ -11,7 +11,6 @@ class EndState extends State {
   }
 
   onEnter(controller) {
-    console.log("State Machine is entering END State");
     // eventEmitter.emit("sim:advance", GAME_PHASES.END);
   }
 }

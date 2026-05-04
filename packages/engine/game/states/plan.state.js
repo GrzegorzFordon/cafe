@@ -12,7 +12,6 @@ class PlanState extends State {
   }
 
   onEnter(controller) {
-    console.log("State Machine is entering", this.name);
     const effect = new GameAdvancedEffect(GAME_PHASES.PLAN);
     eventEmitter.emit("sim:advance", effect);
   }

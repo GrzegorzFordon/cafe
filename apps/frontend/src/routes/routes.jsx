@@ -15,7 +15,6 @@ import SoloRun from "../common/pages/SoloRun/SoloRun.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import Lobby from "../features/play/lobby/LobbyPage.jsx";
 import PlayPage from "../features/play/PlayPage.jsx";
-import FakeGamePage from "../features/play/fakegame/FakeGamePage.jsx";
 import GamePage from "../features/play/game/GamePage.jsx";
 
 const router = createBrowserRouter([

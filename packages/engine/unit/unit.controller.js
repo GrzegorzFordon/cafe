@@ -16,15 +16,16 @@ class UnitController {
     // console.log("Unit Controller is running", this.units);
   }
 
-  spawnUnit(unitID, coords) {
-    const unit = new UnitModel({ unitID, coords });
+  spawnUnit(unitID, hex) {
+    const unit = new UnitModel({ unitID, hex });
     this.units.push(unit);
     // console.log("Unit Controller spawned Unit", unit);
     eventEmitter.emit("sim:effect", new UnitSpawnedEffect(unit));
   }
 
-  moveUnit(unitID, coords) {
-    const unit = this.units.find((val) => val.unitID == unitID);
+  moveUnit(unitID, hex) {
+    const unit = this.units.find((val) => val.id == unitID);
+    unit.move(hex);
   }
 
   /**

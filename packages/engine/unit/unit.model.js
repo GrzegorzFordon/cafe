@@ -1,19 +1,21 @@
 // import * as z from "zod";
 
 // export const UnitData = z.object({});
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import { Hex } from "@cafe/shared/util/hex.js";
 import { nanoid } from "nanoid";
+import UnitMovedEffect from "../effect/effects/unitMoved.effect.js";
 
 class UnitModel {
   constructor(data) {
     this.id = nanoid();
     // this.data = data;
-    this.playerID = data.playerID;
+    // this.playerID = data.playerID;
     // this.cardID = data.cardID;
     this.unitID = 1;
-    this.cardID = "LEADER";
-    this.hex = new Hex(data.coords.q, data.coords.r, data.coords.s);
-    this.hp = data.maxHP;
+    // this.cardID = "LEADER";
+    this.hex = data.hex;
+    // this.hp = data.maxHP;
   }
 
   // get remainingHealth() {
@@ -26,9 +28,11 @@ class UnitModel {
     // ??
   }
 
-  move(coords) {
-    //move unit to new coords
-    this.hex = coords;
+  move(hex) {
+    //move unit to new hex
+    this.hex = hex;
+    const effect = new UnitMovedEffect(this.id, this.hex);
+    eventEmitter.emit("sim:effect", effect);
   }
 
   takeDamage(amount) {

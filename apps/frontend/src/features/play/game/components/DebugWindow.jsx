@@ -21,12 +21,12 @@ function DebugWindow() {
   });
 
   const children =
-    phase == "START" ? (
+    phase == GAME_PHASES.START ? (
       <GameButton callback={() => startGame()} text={"START GAME"} />
-    ) : phase == "PLAN" ? (
+    ) : phase == GAME_PHASES.PLAN ? (
       <GameButton callback={() => submitActions()} text={"SUBMIT ACTIONS"} />
     ) : (
-      <h1>NOT IMPLEMENTED YET</h1>
+      <h1>NOT IMPLEMENTED</h1>
     );
 
   return (

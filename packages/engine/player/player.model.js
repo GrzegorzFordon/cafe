@@ -3,14 +3,7 @@
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import CardModel from "../cards/card.model.js";
 import CardDrawnEffect from "../effect/effects/cardDrawn.effect.js";
-
-// export const PlayerModel = z.object({
-//   heroID: z.string(),
-//   deck: z.array(),
-//   hand: z.array(),
-//   discard: z.array(),
-//   units: z.array(),
-// });
+import CardDiscardedEffect from "../effect/effects/cardDiscarded.effect.js";
 
 class PlayerModel {
   constructor(options) {
@@ -38,6 +31,17 @@ class PlayerModel {
     const card = new CardModel({ cardID });
     this.hand.push(card);
     eventEmitter.emit("sim:effect", new CardDrawnEffect(card));
+  }
+
+  discardCard(id) {
+    const card = this.hand.find((val) => val.id == id);
+    if (!card) {
+      console.log("CARD NOT FOUND");
+      return;
+    }
+    this.discard.push(card);
+    this.hand.filter((val) => val.id != id);
+    eventEmitter.emit("sim:effect", new CardDiscardedEffect(card));
   }
 }
 

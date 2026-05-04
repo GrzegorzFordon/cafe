@@ -1,16 +1,16 @@
 import Action from "../action.model";
 
 class PlayAction extends Action {
-  constructor(card, target) {
+  constructor(card, hex) {
     super();
     this.card = card;
-    this.target = target;
+    this.hex = hex;
   }
 
   name = "Play";
 
   execute(controller) {
-    //get unit, move it
+    controller.playerController.discardCard(this.card.id);
   }
 }
 export default PlayAction;

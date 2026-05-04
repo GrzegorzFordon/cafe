@@ -12,11 +12,6 @@ class StartState extends State {
   }
 
   onEnter(controller) {
-    console.log("State Machine is entering Start State");
-    // this.stateMachine.init(this);
-    controller.boardController.init(controller.options);
-    controller.playerController.init(controller.options); //TODO Handle both players
-    controller.unitController.init(controller.options);
     const effect = new GameAdvancedEffect(GAME_PHASES.START);
     eventEmitter.emit("sim:advance", effect);
   }

@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Card from "../Card/Card.jsx";
 import { Reorder } from "motion/react";
 import eventBus from "../util/eventBus.js";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
-import CardVisual from "../Card/CardVisual.jsx";
 
 function Hand() {
   const [handOrder, setHandOrder] = useState([
@@ -13,31 +12,30 @@ function Hand() {
 
   const [cards, setCards] = useState([]);
 
-  const handleCardDrawn = useCallback(async (e) => {
-    if (e.name != "Card Drawn Effect") return;
-    // console.log("Hand hears new card", e);
-    setCards((p) => [...p, e.card]);
-    await new Promise((resolve) => setTimeout(resolve, 100));
+  const handleCardEffect = useCallback(async (e) => {
+    if (e.name == "Card Drawn Effect") {
+      setCards((p) => [...p, e.card]);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    } else if (e.name == "Card Discarded Effect") {
+      setCards((p) => p.filter((val) => val != e.card));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
   }, []);
 
   useEffect(() => {
-    eventBus.subscribeToGameEffects(handleCardDrawn);
-    return () => eventBus.unsubscribeToGameEffects(handleCardDrawn);
-  }, [handleCardDrawn]);
+    eventBus.subscribeToGameEffects(handleCardEffect);
+    return () => eventBus.unsubscribeToGameEffects(handleCardEffect);
+  }, [handleCardEffect]);
 
   const list = handOrder.map((val, i) => {
     return (
       cards.length > val && (
-        <Reorder.Item
-          as="div"
-          drag
-          whileDrag={{ scale: 0.5, opacity: 0.7, cursor: "grabbing" }}
+        <Card
           key={val}
-          value={val}
-          className="aspect-2.5/3.5 h-full w-full select-none"
-        >
-          <Card key={val} cardID={cards[val]?.cardID} index={i / (cards.length - 1)} />
-        </Reorder.Item>
+          order={val}
+          card={cards[val]}
+          index={i / (cards.length - 1)}
+        />
       )
     );
   });
@@ -57,28 +55,3 @@ function Hand() {
   );
 }
 export default Hand;
-
-/*
-
-
-/**
- *     <Reorder.Group
-      as="div"
-      className="absolute bottom-5 left-1/2 z-20 flex h-48 w-9/10 -translate-x-1/2 items-center justify-center gap-1 bg-amber-50 p-2"
-      axis="x"
-      values={list}
-      onReorder={setHandOrder}
-    >
-      {/* <img
-        src={handSprite}
-        draggable={false}
-        alt=""
-        className="absolute top-1/2 left-1/2 -translate-1/2 scale-x-175"
-      // /> 
-       {handOrder.map((item) => (
-        <Card key={item} cardID={item} orderItem={item} />
-      ))} 
-//       {list}
-//     </Reorder.Group>
-
-*/
