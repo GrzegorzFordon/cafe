@@ -1,5 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import { motion, Reorder, useMotionValue } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  Reorder,
+  scale,
+  useMotionValue,
+} from "motion/react";
 import CardVisual from "./CardVisual.jsx";
 import useBoard from "../hooks/useBoard.js";
 import useAction from "../hooks/useAction.js";
@@ -11,7 +17,7 @@ import { useMemo } from "react";
  * Handles Display and Drag Events (play card, burn card)
  */
 
-const MAX_HAND_FAN_ANGLE_DEGREES = 15;
+const MAX_HAND_FAN_ANGLE_DEGREES = 10;
 
 function Card({ order, card, index }) {
   const { mousedOverHex, isHexWithinBoard } = useBoard();
@@ -44,19 +50,27 @@ function Card({ order, card, index }) {
       drag={!isPlayed}
       as="div"
       whileDrag={{ scale: 0.3, opacity: 0.7, cursor: "grabbing" }}
-      key={order}
+      key={card}
       value={order}
       onDragEnd={handlePlay}
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      exit={{ scale: 0 }}
       className="aspect-2.5/3.5 h-full w-full select-none"
     >
       <motion.div
         className="aspect-2.5/3.5 h-full w-full select-none"
+        key={card}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
         whileHover={
           isPlayed
             ? {}
             : {
                 scale: 1.15,
                 rotate: `${angle * 0.2}deg`,
+                transition: { duration: 0.1 },
               }
         }
         style={{
@@ -64,7 +78,13 @@ function Card({ order, card, index }) {
           filter: isPlayed ? "brightness(0.4)" : "none",
         }}
       >
-        <CardVisual cardID={card.cardID} />
+        <CardVisual key={order} order={order} card={card} />
+
+        {/* <div className="absolute top-1/2 left-1/2 z-30 size-fit -translate-1/2 bg-amber-50 text-sm font-black text-black">
+          <h1>Order: {order.cardID}</h1>
+          <h1>Card: {card.cardID}</h1>
+          <h1>Index: {Math.round(index * 100) / 100}</h1>
+        </div> */}
       </motion.div>
     </Reorder.Item>
   );

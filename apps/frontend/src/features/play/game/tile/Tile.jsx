@@ -80,7 +80,7 @@ function Tile({ hex }) {
           {actions[0].unit ? (
             <img src={arrowSprite} />
           ) : (
-            <CardVisual cardID={actions[0].card.cardID} />
+            <CardVisual card={actions[0].card} />
           )}
         </motion.div>
       )}

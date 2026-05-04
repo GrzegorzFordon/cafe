@@ -3,12 +3,13 @@
 import { AnimatePresence, easeOut, motion, Reorder } from "motion/react";
 import useCardList from "../hooks/useCardList";
 
-function CardVisual({ cardID }) {
-  const sprite = useCardList(cardID);
+function CardVisual({ card, order }) {
+  const sprite = useCardList(card?.cardID);
 
   return (
     <AnimatePresence>
       <motion.img
+        key={order}
         animate={{ scale: 1 }}
         initial={{ scale: 0 }}
         exit={{ scale: 0 }}
