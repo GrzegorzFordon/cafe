@@ -21,7 +21,6 @@ const useGame = () => {
     console.log("[Hook] Submitting");
     resetActions();
     gameController.handleActions(actions);
-    // advanceGame();
   };
 
   return {

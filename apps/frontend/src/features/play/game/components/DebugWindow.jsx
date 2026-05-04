@@ -23,13 +23,9 @@ function DebugWindow() {
   const children =
     phase == "PRE" ? (
       <GameButton callback={() => startGame()} text={"START GAME"} />
-    ) : phase == GAME_PHASES.START ? (
-      <h1>GAME STARTING</h1>
     ) : phase == GAME_PHASES.PLAN ? (
       <GameButton callback={() => submitActions()} text={"SUBMIT ACTIONS"} />
-    ) : (
-      <h1>NOT IMPLEMENTED</h1>
-    );
+    ) : null;
 
   return (
     <motion.div
@@ -40,8 +36,6 @@ function DebugWindow() {
       <h1 className="flex items-center justify-center font-black text-black select-none">
         {phase} Phase
       </h1>
-      <GameButton callback={() => advanceGame()} text={"(advance)"} />
-
       {children}
     </motion.div>
   );

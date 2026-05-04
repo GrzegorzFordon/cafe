@@ -14,7 +14,7 @@ class UpkeepState extends State {
   onEnter(controller) {
     const effect = new GameAdvancedEffect(GAME_PHASES.UPKEEP);
     eventEmitter.emit("sim:advance", effect);
-    controller.playerController.draw(1);
+    controller.playerController.drawUpToHandSize();
     controller.advance();
   }
 }

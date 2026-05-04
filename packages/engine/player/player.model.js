@@ -40,7 +40,7 @@ class PlayerModel {
       return;
     }
     this.discard.push(card);
-    this.hand.filter((val) => val.id != id);
+    this.hand = this.hand.filter((val) => val.id != card.id);
     eventEmitter.emit("sim:effect", new CardDiscardedEffect(card));
   }
 }

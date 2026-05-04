@@ -49,7 +49,6 @@ class GameController {
     _.defer(() => {
       while (actions.length > 0) {
         const nextAction = actions.shift();
-        console.log("[Game Controller] Handling:", nextAction);
         nextAction.execute(this);
       }
     });

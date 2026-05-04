@@ -3,6 +3,7 @@ import GameAdvancedEffect from "@cafe/engine/effect/effects/gameAdvanced.effect"
 import { eventEmitter } from "@cafe/shared/eventEmitter";
 import { nanoid } from "nanoid";
 import _ from "lodash";
+
 class EventBus {
   static instance = null;
   effects = [];
@@ -15,21 +16,19 @@ class EventBus {
   }
 
   async processEffects() {
-    const id = nanoid().substring(0, 4);
     const eCache = [...this.effects];
     this.effects = [];
-    console.log(`[EventBus] Processing`, id, eCache);
+    console.log(`[EventBus] Processing`);
     while (eCache.length > 0) {
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       const nextEffect = eCache.shift();
       if (!nextEffect) break;
-      console.log(`[EventBus] Next:`, id, nextEffect);
       await EventBus.instance.notifyObserversOfGameEffects(nextEffect);
     }
   }
 
   handleSimEffect(e) {
-    console.log(`[EventBus] Caught:`, e.name);
+    // console.log(`[EventBus] Caught:`, e.name);
     EventBus.instance.effects.push(e);
   }
 

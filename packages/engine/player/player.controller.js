@@ -26,6 +26,10 @@ class PlayerController extends Controller {
     for (let n = 0; n < amount; n++) this.model.draw();
   }
 
+  drawUpToHandSize() {
+    while (this.model.hand.length < BASE_HAND_SIZE) this.model.draw();
+  }
+
   discardCard(cardID) {
     this.model.discardCard(cardID);
   }

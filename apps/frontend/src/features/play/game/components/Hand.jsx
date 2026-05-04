@@ -20,7 +20,7 @@ function Hand() {
     } else if (e.name == "Card Discarded Effect") {
       // console.log("[Hand] Caught: ", e.name);
       setCards((p) => p.filter((val) => val != e.card));
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 400));
     }
   }, []);
 
