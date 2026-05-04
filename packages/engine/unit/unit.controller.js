@@ -11,8 +11,8 @@ class UnitController {
   }
 
   init(options) {
-    this.spawnUnit(options?.leader, OP_BASE_COORDS);
     this.spawnUnit(options?.leader, BASE_COORDS);
+    this.spawnUnit(2, OP_BASE_COORDS);
     // console.log("Unit Controller is running", this.units);
   }
 

@@ -12,10 +12,10 @@ function Unit({ unit }) {
   // const id = useRef(nanoid());
   // const id = useId();
   const { getActionsByID, addActionObject } = useAction();
-  const { mousedOverHex, pixelFromHex } = useBoard();
+  const { mousedOverHex, pixelFromHex, isHexWithinBoard } = useBoard();
 
   const sprite = useMemo(
-    () => (unit?.unitID == 0 ? unitSprite : unitSpriteA),
+    () => (unit?.unitID == 1 ? unitSprite : unitSpriteA),
     [unit],
   );
   // const [yPos, setYPos] = useState(100);
@@ -38,18 +38,16 @@ function Unit({ unit }) {
     // console.log("Handle Drag", unit);
   };
   const handleDragEnd = () => {
-    const isWithinBoard =
-      Math.abs(mousedOverHex.q) < 4 &&
-      Math.abs(mousedOverHex.r) < 4 &&
-      Math.abs(mousedOverHex.s) < 4;
-    if (isWithinBoard) addActionObject(new MoveAction(unit, mousedOverHex));
+    if (isHexWithinBoard(mousedOverHex))
+      addActionObject(new MoveAction(unit, mousedOverHex));
   };
 
   const pos = pixelFromHex(unit.hex);
 
   return (
-    <div
+    <motion.div
       // ref={ref}
+      layout
       className="UNIT absolute size-15 -translate-1/2 -translate-y-15 select-none"
       // style={{ zIndex: Math.round(yPos) + 5000 }}
       style={{ left: pos.x, top: pos.y }}
@@ -60,7 +58,7 @@ function Unit({ unit }) {
         draggable="false"
         className="select-none"
         src={sprite}
-      />{" "}
+      />
       <motion.div
         drag={myAction.length == 0}
         dragSnapToOrigin={myAction.length == 0}
@@ -84,7 +82,7 @@ function Unit({ unit }) {
           style={{ stroke: "red", strokeWidth: 2 }}
         />
       </svg> */}
-    </div>
+    </motion.div>
   );
 }
 export default Unit;

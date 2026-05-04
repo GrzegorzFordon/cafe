@@ -12,7 +12,7 @@ class UnitModel {
     // this.data = data;
     // this.playerID = data.playerID;
     // this.cardID = data.cardID;
-    this.unitID = 1;
+    this.unitID = data.unitID ?? 1;
     // this.cardID = "LEADER";
     this.hex = data.hex;
     // this.hp = data.maxHP;
