@@ -15,6 +15,13 @@ function Board() {
     setBoardRef(ref.current);
   }, [setBoardRef, ref]);
 
+  useEffect(() => {
+    const handleResize = () => setBoardRef(ref.current);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setBoardRef]);
+
   return (
     <motion.div
       dragMomentum={false}

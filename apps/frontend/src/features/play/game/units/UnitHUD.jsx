@@ -1,7 +1,7 @@
 function UnitHUD() {
   return (
-    <div className="">
-      <div className="absolute top-1/10 z-10 flex h-fit w-8/10 justify-center gap-px">
+    <div className="absolute top-1/2 left-1/2 -translate-1/2">
+      {/* <div className="absolute top-1/10 z-10 flex h-fit w-8/10 justify-center gap-px">
         <div className="rounded-1 top-0 h-3 w-full border border-gray-800 bg-green-400 opacity-60"></div>
         <div className="rounded-1 top-0 h-3 w-full border border-gray-800 bg-green-400 opacity-60"></div>
       </div>
@@ -11,7 +11,7 @@ function UnitHUD() {
         <p className="z-50 text-green-400">1</p>
       </div>
 
-      <div className="absolute bottom-1/50 left-1/2 z-20 size-2 -translate-1/2 rounded-full bg-amber-500"></div>
+      <div className="absolute bottom-1/50 left-1/2 z-20 size-2 -translate-1/2 rounded-full bg-amber-500"></div> */}
     </div>
   );
 }

@@ -6,11 +6,12 @@ import CardDrawnEffect from "../effect/effects/cardDrawn.effect.js";
 import CardDiscardedEffect from "../effect/effects/cardDiscarded.effect.js";
 
 class PlayerModel {
-  constructor(options) {
-    // this.id =
+  constructor(options, playerID) {
+    this.playerID = playerID;
     this.hand = [];
     this.deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     this.discard = [];
+    console.log(this);
   }
 
   shuffle() {
@@ -30,7 +31,7 @@ class PlayerModel {
     const cardID = this.deck.shift();
     const card = new CardModel({ cardID });
     this.hand.push(card);
-    eventEmitter.emit("sim:effect", new CardDrawnEffect(card));
+    eventEmitter.emit("sim:effect", new CardDrawnEffect(this.playerID, card));
   }
 
   discardCard(id) {
@@ -41,7 +42,7 @@ class PlayerModel {
     }
     this.discard.push(card);
     this.hand = this.hand.filter((val) => val.id != card.id);
-    eventEmitter.emit("sim:effect", new CardDiscardedEffect(card));
+    eventEmitter.emit("sim:effect", new CardDiscardedEffect(this.playerID, card));
   }
 }
 

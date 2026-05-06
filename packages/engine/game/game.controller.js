@@ -6,7 +6,7 @@ import PlayerController from "../player/player.controller.js";
 import UnitController from "../unit/unit.controller.js";
 import GameModel from "./game.model.js";
 import { nanoid } from "nanoid";
-import StateMachine from "./states/stateMachine.js";
+import StateMachine, { states } from "./states/stateMachine.js";
 import { GAME_PHASES } from "../config.js";
 import GameAdvancedEffect from "../effect/effects/gameAdvanced.effect.js";
 import _ from "lodash";
@@ -41,6 +41,7 @@ class GameController {
 
   finish() {
     // TODO state machine set to game end with info
+    this.stateMachine.changeState(states.END);
   }
 
   handleActions(actions) {
@@ -52,6 +53,7 @@ class GameController {
         nextAction.execute(this);
       }
     });
+
     _.defer(() => {
       this.advance();
     });

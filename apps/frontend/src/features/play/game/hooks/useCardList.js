@@ -10,22 +10,27 @@ import _08 from "../assets/cards/08.png";
 import _09 from "../assets/cards/09.png";
 import _10 from "../assets/cards/10.png";
 import _11 from "../assets/cards/11.png";
+import _12 from "../assets/cards/12.png";
+import _13 from "../assets/cards/13.png";
+import _14 from "../assets/cards/14.png";
+import _15 from "../assets/cards/15.png";
 import _def from "../assets/cards/def.png";
 
 const useCardList = (cardID) => {
   const sprite = useMemo(() => {
     if (!cardID) return _def;
+    // return cardID % 3 == 0 ? _13 : cardID % 2 == 0 ? _12 : _14;
     switch (cardID) {
       case 1:
         return _01;
       case 2:
-        return _02;
+        return _12;
       case 3:
-        return _03;
+        return _13;
       case 4:
-        return _04;
+        return _14;
       case 5:
-        return _05;
+        return _15;
       case 6:
         return _06;
       case 7:

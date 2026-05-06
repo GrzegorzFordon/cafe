@@ -59,7 +59,15 @@ const useBoard = () => {
     return hex;
   }, [layout, mousePos, boardRef]);
 
-  return { hexList, mousedOverHex, isHexWithinBoard, pixelFromHex };
+  const boardPos = useMemo(() => {
+    const rect = boardRef?.getBoundingClientRect();
+    if (!rect) return;
+    const x = Math.round(rect.left + rect.width * 0.5);
+    const y = Math.round(rect.top + rect.height * 0.5);
+    return { x: x, y: y };
+  }, [boardRef]);
+
+  return { hexList, boardPos, mousedOverHex, isHexWithinBoard, pixelFromHex };
 };
 
 export default useBoard;

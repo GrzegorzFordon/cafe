@@ -3,6 +3,8 @@ import GameAdvancedEffect from "@cafe/engine/effect/effects/gameAdvanced.effect"
 import { eventEmitter } from "@cafe/shared/eventEmitter";
 import _ from "lodash";
 
+const SEND_LOGS = false;
+
 class EventBus {
   static instance = null;
   effects = [];
@@ -22,13 +24,13 @@ class EventBus {
       await new Promise((resolve) => setTimeout(resolve, 100));
       const nextEffect = eCache.shift();
       if (!nextEffect) break;
-      console.log("[Event Bus] Next Effect", nextEffect);
+      if (SEND_LOGS) console.log("[Event Bus] Next Effect", nextEffect);
       await EventBus.instance.notifyObserversOfGameEffects(nextEffect);
     }
   }
 
   handleSimEffect(e) {
-    console.log(`[EventBus] Caught:`, e.name);
+    if (SEND_LOGS) console.log(`[EventBus] Caught:`, e.name);
     EventBus.instance.effects.push(e);
   }
 
@@ -60,11 +62,11 @@ class EventBus {
   }
 
   subscribeToGameEffects(sub) {
-    console.log("Subscribing",sub)
+    if (SEND_LOGS) console.log("Subscribing", sub);
     EventBus.instance.observers.push(sub);
   }
   unsubscribeToGameEffects(sub) {
-    console.log("Unsubscribing",sub)
+    if (SEND_LOGS) console.log("Unsubscribing", sub);
     EventBus.instance.observers.filter((val) => val !== sub);
   }
 }

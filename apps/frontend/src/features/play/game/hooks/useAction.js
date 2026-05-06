@@ -26,6 +26,9 @@ const useAction = () => {
   const getActionsByCard = (card) => {
     return actions.filter((val) => val.card?.id == card.id);
   };
+  const getActionsByUnit = (unit) => {
+    return actions.filter((val) => val.unit?.id == unit.id);
+  };
 
   return {
     actions,
@@ -33,6 +36,7 @@ const useAction = () => {
     getActionsByTarget,
     getActionsByHex,
     getActionsByCard,
+    getActionsByUnit,
     resetActions,
     addActionObject,
   };

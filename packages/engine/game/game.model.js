@@ -15,5 +15,5 @@ export default GameModel;
 
 /**
  * game model holds:
- * activePhase
+ * wincondition data (turns unit stood on base)
  */

@@ -9,25 +9,30 @@ import CardDiscardedEffect from "../effect/effects/cardDiscarded.effect.js";
 import PlayerModel from "./player.model.js";
 
 class PlayerController extends Controller {
-  constructor() {
+  constructor(options) {
     super();
     this.id = "id";
-    this.model = new PlayerModel();
+    this.models = [new PlayerModel(), new PlayerModel()]; //TODO change to map (id,playermodel)
+    this.modelsM = new Map();
   }
 
   init(options) {
-    //TODO set actual model
-    this.model = new PlayerModel(options);
-    this.model.shuffle();
-    this.draw(BASE_HAND_SIZE);
+    // this.models = [new PlayerModel(options), new PlayerModel(options)];
+    // this.modelsM = {{options.playerOneID:new PlayerModel(options)}};
+    this.modelsM.set(options?.playerOneID ?? 1, new PlayerModel(options,1));
+    this.modelsM.set(options?.playerTwoID ?? 2, new PlayerModel(options,2));
+    this.modelsM.forEach((m) => m.shuffle());
+    this.drawUpToHandSize();
   }
 
   draw(amount) {
-    for (let n = 0; n < amount; n++) this.model.draw();
+    for (let n = 0; n < amount; n++) this.modelsM.forEach((m) => m.shuffle());
   }
 
   drawUpToHandSize() {
-    while (this.model.hand.length < BASE_HAND_SIZE) this.model.draw();
+    this.modelsM.forEach((m) => {
+      while (m.hand.length < BASE_HAND_SIZE) m.draw();
+    });
   }
 
   discardCard(cardID) {

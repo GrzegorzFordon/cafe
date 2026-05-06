@@ -7,8 +7,7 @@ class CardModel {
   constructor(options) {
     this.id = nanoid();
     this.cardID = options.cardID;
-    // this.name = "card_name";
-    // this.art = undefined;
+    this.schema = options.schema;
   }
 
   play() {}

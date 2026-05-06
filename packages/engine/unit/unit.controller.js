@@ -31,7 +31,7 @@ class UnitController {
   /**
    * COMBAT
    */
-  combatStart(attackerUnitID, defenderUnitID, coords) {}
+  combatStart(attackerUnitID, defenderUnitID, hex) {}
 }
 
 export default UnitController;

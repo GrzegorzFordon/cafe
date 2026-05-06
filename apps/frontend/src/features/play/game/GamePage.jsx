@@ -4,6 +4,7 @@ import ActionDisplay from "./components/ActionDisplay";
 import DebugWindow from "./components/DebugWindow";
 import { useEffect } from "react";
 import useGame from "./hooks/useGame";
+import ActionPainter from "./components/ActionPainter";
 
 function GamePage() {
   const { startGame } = useGame();
@@ -17,6 +18,7 @@ function GamePage() {
       <Hand />
       <ActionDisplay />
       <DebugWindow />
+      <ActionPainter />
     </div>
   );
 }
