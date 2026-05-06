@@ -8,8 +8,10 @@ const useAction = () => {
   const actions = useGameStore((state) => state.actions);
   const addAction = useGameStore((state) => state.addAction);
   const resetActions = useGameStore((state) => state.resetActions);
+  const playerID = useGameStore((state) => state.playerID);
 
   const addActionObject = (action) => {
+    action.playerID = playerID;
     addAction(action);
   };
 
@@ -30,6 +32,13 @@ const useAction = () => {
     return actions.filter((val) => val.unit?.id == unit.id);
   };
 
+  const hasActionsOfType = (id, type) => {
+    return actions.some((val) => val.card?.id == id && val.name == type);
+  };
+
+
+
+
   return {
     actions,
     getActionsByID,
@@ -39,6 +48,7 @@ const useAction = () => {
     getActionsByUnit,
     resetActions,
     addActionObject,
+    hasActionsOfType,
   };
 };
 export default useAction;

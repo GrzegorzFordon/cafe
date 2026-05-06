@@ -15,7 +15,14 @@ class BoardController extends Controller {
 
   init(options) {
     this.model = new BoardModel(options);
+    this.model.setupBoard();
     // console.log("Board Controller running", this.model);
+  }
+
+  getLegalMoves(unit) {
+    // console.log(unit);
+    if (!unit) return undefined;
+    return this.model.getLegalMoves(unit.hex, unit.reach ?? 1, false);
   }
 }
 

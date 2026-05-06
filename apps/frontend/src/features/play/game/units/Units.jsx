@@ -9,7 +9,7 @@ function Units() {
     if (e.name != "Unit Spawned Effect") return;
     const clone = structuredClone(e.unit);
     setUnits((p) => [...p, clone]);
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }, []);
 
   const handleEffectMove = useCallback(

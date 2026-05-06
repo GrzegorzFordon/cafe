@@ -23,6 +23,7 @@ const useBoard = () => {
     [tileSize],
   );
 
+  //TODO - switch to hexList from gamestate
   const hexList = useMemo(() => {
     const newHexList = [];
     const N = BOARD_SIZE;
@@ -67,7 +68,17 @@ const useBoard = () => {
     return { x: x, y: y };
   }, [boardRef]);
 
-  return { hexList, boardPos, mousedOverHex, isHexWithinBoard, pixelFromHex };
+  const isMousedOverHexWithinBoard = isHexWithinBoard(mousedOverHex);
+
+
+  return {
+    hexList,
+    boardPos,
+    mousedOverHex,
+    isHexWithinBoard,
+    isMousedOverHexWithinBoard,
+    pixelFromHex,
+  };
 };
 
 export default useBoard;

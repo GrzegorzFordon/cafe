@@ -8,11 +8,13 @@ import useAction from "../hooks/useAction";
 
 import MoveAction from "@cafe/engine/action/actions/move.action.js";
 import UnitHUD from "./UnitHUD";
+import useValidate from "../hooks/useValidate";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 
 function Unit({ unit }) {
   const { getActionsByUnit, addActionObject } = useAction();
   const { mousedOverHex, pixelFromHex, isHexWithinBoard } = useBoard();
-
+  const { getLegalMoves } = useValidate();
   const sprite = useMemo(
     () => (unit?.unitID == 1 ? unitSprite : unitSpriteA),
     [unit],
@@ -28,16 +30,25 @@ function Unit({ unit }) {
 
   const hasActions = useMemo(() => myAction.length > 0, [myAction]);
 
-  const handleDragStart = () => {};
+  const handleDragStart = () => {
+    eventEmitter.emit("unit:drag:start", unit);
+    // getLegalMoves(unit);
+  };
 
   const handleDrag = () => {
     const yPos = Math.round(ref.current.getBoundingClientRect().y);
     zIndex.set(yPos);
+
+    // const mousedOverHexPosition = pixelFromHex(mousedOverHex);
+
   };
 
   const handleDragEnd = () => {
-    if (isHexWithinBoard(mousedOverHex))
-      addActionObject(new MoveAction(unit, mousedOverHex));
+    eventEmitter.emit("unit:drag:end", unit);
+    if (!isHexWithinBoard(mousedOverHex)) return;
+    if (mousedOverHex.isEqual(unit.hex)) return; //change to more general legal targets
+    if (!getLegalMoves(unit).some((val) => val.isEqual(mousedOverHex))) return;
+    addActionObject(new MoveAction(unit, mousedOverHex));
   };
 
   return (
@@ -70,7 +81,7 @@ function Unit({ unit }) {
           src={sprite}
         />
       </motion.div>
-      
+
       <UnitHUD />
     </motion.div>
   );

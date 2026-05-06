@@ -14,6 +14,7 @@ class PlanState extends State {
   onEnter(controller) {
     const effect = new GameAdvancedEffect(GAME_PHASES.PLAN);
     eventEmitter.emit("sim:advance", effect);
+    //TODO start timer
   }
 }
 export default PlanState;

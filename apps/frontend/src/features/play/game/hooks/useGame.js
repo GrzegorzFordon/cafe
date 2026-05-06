@@ -11,14 +11,13 @@ const useGame = () => {
   };
 
   const advanceGame = () => {
-    console.log("[Hook] Advancing");
     gameController.advance();
   };
 
   const submitActions = () => {
     // sendActions(actions);
     // local version has actions stored already so we send them to the sim immediately for now
-    console.log("[Hook] Submitting");
+    // console.log("[Hook] Submitting");
     resetActions();
     gameController.handleActions(actions);
   };

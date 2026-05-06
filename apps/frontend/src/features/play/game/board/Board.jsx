@@ -6,21 +6,43 @@ import useBoardStore from "../stores/useBoardStore";
 import Tiles from "../tile/Tiles.jsx";
 import table from "../assets/table.webp";
 import Units from "../units/Units.jsx";
+// import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+// import useValidate from "../hooks/useValidate.js";
 
 function Board() {
   const setBoardRef = useBoardStore((state) => state.setBoardRef);
   const ref = useRef();
-
+  // const { getLegalMoves } = useValidate();
   useEffect(() => {
     setBoardRef(ref.current);
   }, [setBoardRef, ref]);
 
-  useEffect(() => {
-    const handleResize = () => setBoardRef(ref.current);
+  // useEffect(() => {
+  //   const handleResize = () => setBoardRef(ref.current);
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, [setBoardRef]);
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [setBoardRef]);
+  // const [legalTiles, setLegalTiles] = useState([]);
+
+  // const handleUnitDragStart = (unit) => {
+  //   console.log(unit);
+  //   const result = getLegalMoves(unit);
+  //   setLegalTiles(result);
+  // };
+  // const handleUnitDragEnd = (unit) => {
+  //   console.log(unit);
+  //   setLegalTiles([]);
+  // };
+
+  // useEffect(() => {
+  //   eventEmitter.on("unit:drag:start", handleUnitDragStart);
+  //   eventEmitter.on("unit:drag:end", handleUnitDragEnd);
+  //   return () => {
+  //     eventEmitter.off("unit:drag:start", handleUnitDragStart);
+  //     eventEmitter.off("unit:drag:end", handleUnitDragEnd);
+  //   };
+  // });
 
   return (
     <motion.div

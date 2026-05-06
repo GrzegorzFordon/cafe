@@ -10,6 +10,7 @@ import StateMachine, { states } from "./states/stateMachine.js";
 import { GAME_PHASES } from "../config.js";
 import GameAdvancedEffect from "../effect/effects/gameAdvanced.effect.js";
 import _ from "lodash";
+
 class GameController {
   //options are: player decks, player heroes
   constructor(options) {
@@ -56,6 +57,21 @@ class GameController {
 
     _.defer(() => {
       this.advance();
+    });
+  }
+
+  handleWincon() {
+    /**
+     * for each player
+     * get base hex
+     * get unit on hex from board controller
+     * if unit AND unit.playerID same as playerID
+     * advance wincon in model
+     * then if wincon in model is wincon
+     * finish()
+     */
+    this.playerController.players.forEach((element) => {
+      // console.log("Checking wincon for Player", element.playerID);
     });
   }
 }

@@ -14,6 +14,7 @@ import _12 from "../assets/cards/12.png";
 import _13 from "../assets/cards/13.png";
 import _14 from "../assets/cards/14.png";
 import _15 from "../assets/cards/15.png";
+import _16 from "../assets/cards/16.png";
 import _def from "../assets/cards/def.png";
 
 const useCardList = (cardID) => {
@@ -32,7 +33,7 @@ const useCardList = (cardID) => {
       case 5:
         return _15;
       case 6:
-        return _06;
+        return _16;
       case 7:
         return _07;
       case 8:

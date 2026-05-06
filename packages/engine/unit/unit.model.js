@@ -5,6 +5,8 @@ import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import { Hex } from "@cafe/shared/util/hex.js";
 import { nanoid } from "nanoid";
 import UnitMovedEffect from "../effect/effects/unitMoved.effect.js";
+import UnitDamagedEffect from "../effect/effects/unitDamaged.effect.js";
+import UnitDiedEffect from "../effect/effects/unitDied.effect.js";
 
 class UnitModel {
   constructor(data) {
@@ -13,6 +15,9 @@ class UnitModel {
     // this.playerID = data.playerID;
     // this.cardID = data.cardID;
     this.unitID = data.unitID ?? 1;
+    this.reach = 2;
+    this.atk = Math.round(Math.random() * 10);
+    this.hp = 1;
     // this.cardID = "LEADER";
     this.hex = data.hex;
     // this.hp = data.maxHP;
@@ -29,7 +34,6 @@ class UnitModel {
   }
 
   move(hex) {
-    //move unit to new hex
     this.hex = hex;
     const effect = new UnitMovedEffect(this.id, hex);
     eventEmitter.emit("sim:effect", effect);
@@ -37,13 +41,14 @@ class UnitModel {
 
   takeDamage(amount) {
     this.hp -= amount;
-    //take_damage event
+    const effect = new UnitDamagedEffect(this.id);
+    eventEmitter.emit("sim:effect", effect);
     if (this.hp <= 0) this.die();
   }
 
   die() {
-    //die
-    //unit:die event
+    const effect = new UnitDiedEffect(this.id);
+    eventEmitter.emit("sim:effect", effect);
   }
 }
 

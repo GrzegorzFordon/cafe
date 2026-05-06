@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 class Action {
   constructor() {
     this.id = nanoid();
+    this.playerID = undefined;
   }
 
   execute(model) {

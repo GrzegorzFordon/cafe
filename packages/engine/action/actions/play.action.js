@@ -10,7 +10,7 @@ class PlayAction extends Action {
   name = "Play";
 
   execute(controller) {
-    controller.playerController.discardCard(this.card.id);
+    controller.playerController.discardCard(this.playerID, this.card.id);
   }
 }
 export default PlayAction;

@@ -1,10 +1,40 @@
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+import { useState, useEffect } from "react";
 import useBoard from "../hooks/useBoard.js";
 import Tile from "./Tile.jsx";
+import useValidate from "../hooks/useValidate.js";
 
 function Tiles() {
   const { hexList } = useBoard();
+  const { getLegalMoves } = useValidate();
+  const [legalTiles, setLegalTiles] = useState([]);
+
+  const handleUnitDragStart = (unit) => {
+    console.log(unit);
+    const result = getLegalMoves(unit);
+    console.log(result);
+    setLegalTiles(result);
+  };
+  const handleUnitDragEnd = (unit) => {
+    console.log(unit);
+    setLegalTiles([]);
+  };
+
+  useEffect(() => {
+    eventEmitter.on("unit:drag:start", handleUnitDragStart);
+    eventEmitter.on("unit:drag:end", handleUnitDragEnd);
+    return () => {
+      eventEmitter.off("unit:drag:start", handleUnitDragStart);
+      eventEmitter.off("unit:drag:end", handleUnitDragEnd);
+    };
+  });
+
   const list = hexList.map((hex) => (
-    <Tile key={JSON.stringify(hex)} hex={hex} />
+    <Tile
+      key={JSON.stringify(hex)}
+      hex={hex}
+      isActive={legalTiles.some((val) => val.isEqual(hex))}
+    />
   ));
 
   return (

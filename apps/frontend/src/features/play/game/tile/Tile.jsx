@@ -5,15 +5,15 @@ import spriteBaseZone from "../assets/hex_baseZone.png";
 import useBoard from "../hooks/useBoard.js";
 import CardVisual from "../card/CardVisual.jsx";
 // eslint-disable-next-line no-unused-vars
-import { motion, useMotionValue } from "motion/react";
+import { AnimatePresence, motion, useMotionValue } from "motion/react";
 import Unit from "../units/Unit.jsx";
 import useAction from "../hooks/useAction.js";
 import arrowSprite from "../assets/arrow_down.png";
-import { BASE_COORDS, OP_BASE_COORDS } from "@cafe/engine/config";
+import { BASE_HEX_MAP } from "@cafe/engine/config";
 import { useRef } from "react";
 import useBoardStore from "../stores/useBoardStore.js";
 
-function Tile({ hex }) {
+function Tile({ hex, isActive }) {
   const { mousedOverHex, pixelFromHex } = useBoard(hex);
   const { getActionsByHex } = useAction();
 
@@ -25,7 +25,8 @@ function Tile({ hex }) {
   const actions = getActionsByHex(hex);
 
   const isactive = hex.isEqual(mousedOverHex);
-  const isBase = hex.isEqual(BASE_COORDS) || hex.isEqual(OP_BASE_COORDS);
+  const isBase = BASE_HEX_MAP.values().some((v) => hex.isEqual(v));
+  // const isBase = false;
 
   return (
     <div
@@ -52,16 +53,20 @@ function Tile({ hex }) {
           alt=""
         />
       )}
-      {isactive && (
-        <motion.img
-          animate={{ opacity: 1, transition: { duration: 0.05 } }}
-          initial={{ opacity: 0 }}
-          draggable="false"
-          className="absolute scale-220 scale-y-154 opacity-100"
-          src={spriteActive}
-          alt=""
-        />
-      )}
+
+      <AnimatePresence>
+        {isActive && (
+          <motion.img
+            animate={{ opacity: 1, transition: { duration: 0.1 } }}
+            initial={{ opacity: 0, transition: { duration: 0.1 } }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+            draggable="false"
+            className="absolute scale-198 scale-y-139"
+            src={spriteActive}
+            alt=""
+          />
+        )}
+      </AnimatePresence>
 
       {actions.length > 0 && (
         <motion.div

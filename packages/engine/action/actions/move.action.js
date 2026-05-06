@@ -10,8 +10,16 @@ class MoveAction extends Action {
   name = "Move";
 
   execute(controller) {
-    //get unit, move it
+    //fist, check if this action represents a legal move
+    const legalMoves = controller.boardController.getLegalMoves(this.unit);
+    if (!legalMoves.find((v) => this.hex)) return;
+
+    //get unit, move it TODO change to move tile by tile
     controller.unitController.moveUnit(this.unit.id, this.hex);
   }
 }
 export default MoveAction;
+
+/**
+ * change to be direction + distance
+ */

@@ -5,6 +5,7 @@ import GameController from "@cafe/engine/game/game.controller";
 const useGameStore = create(
   devtools((set, get) => ({
     gameController: new GameController(),
+    playerID: 1,
     actions: [],
     effects: [],
 

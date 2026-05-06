@@ -5,9 +5,9 @@ import { nanoid } from "nanoid";
 // export const GameData = z.object({});
 
 class GameModel {
-  constructor(data) {
+  constructor(options) {
     this.id = nanoid();
-    this.data = data;
+    this.winCount = new Map();
   }
 }
 

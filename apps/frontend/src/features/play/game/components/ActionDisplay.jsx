@@ -11,7 +11,7 @@ function ActionDisplay() {
   const list = useMemo(
     () =>
       actions.map((action) => (
-        <p key={action}>{JSON.stringify(expand ? action : action.name)}</p>
+        <p key={action.id}>{JSON.stringify(expand ? action : action.name)}</p>
       )),
     [expand, actions],
   );
