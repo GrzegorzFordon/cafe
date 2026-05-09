@@ -1,15 +1,13 @@
-import Card from "./card";
+import CardModel from "../card.model";
 
-/**
- * general card entity
- */
-
-class Spell extends Card {
-  constructor() {
-    // this.id =
+class SpellCardModel extends CardModel {
+  constructor(options) {
+    super(options);
   }
 
-  // spawnUnit() {}
+  onPlay(controller, options) {
+    super.onPlay(controller, options);
+  }
 }
 
-export default Card;
+export default SpellCardModel;

@@ -49,7 +49,7 @@ function Board() {
       dragMomentum={false}
       draggable="false"
       ref={ref}
-      className="absolute top-2/5 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded text-2xl font-black text-black select-none"
+      className="absolute top-3/7 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded text-2xl font-black text-black select-none"
     >
       <div
         draggable="false"

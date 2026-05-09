@@ -1,7 +1,8 @@
 class Controller {
-  constructor() {
+  constructor(game) {
     if (this.constructor == Controller)
       throw new Error("Abstract classes can't be instantiated.");
+    this.game = game;
   }
   init() {}
 }

@@ -24,8 +24,9 @@ function Tile({ hex, isActive }) {
 
   const actions = getActionsByHex(hex);
 
-  const isactive = hex.isEqual(mousedOverHex);
+  const isHover = hex.isEqual(mousedOverHex);
   const isBase = BASE_HEX_MAP.values().some((v) => hex.isEqual(v));
+  // const isSpawn = BASE_HEX_MAP.values().some((v)=> )
   // const isBase = false;
 
   return (
@@ -67,6 +68,26 @@ function Tile({ hex, isActive }) {
           />
         )}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {isActive && isHover && (
+          <motion.img
+            animate={{ opacity: 1, transition: { duration: 0.1 } }}
+            initial={{ opacity: 0, transition: { duration: 0.1 } }}
+            exit={{ opacity: 0, transition: { duration: 0.1 } }}
+            draggable="false"
+            className="absolute scale-220 scale-y-154"
+            src={spriteActive}
+            alt=""
+          />
+        )}
+      </AnimatePresence>
+
+      {/* <div className="absolute size-fit rounded-sm bg-amber-50 text-sm">
+        {hex.q}|
+        {hex.r}|
+        {hex.s}
+      </div> */}
 
       {actions.length > 0 && (
         <motion.div

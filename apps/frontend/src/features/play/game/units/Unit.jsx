@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { motion, useMotionValue } from "motion/react";
+import { AnimatePresence, motion, useMotionValue } from "motion/react";
 import unitSprite from "../assets/units/character_yellow_front.png";
 import unitSpriteA from "../assets/units/character_purple_front.png";
 import { useMemo, useRef } from "react";
@@ -32,15 +32,11 @@ function Unit({ unit }) {
 
   const handleDragStart = () => {
     eventEmitter.emit("unit:drag:start", unit);
-    // getLegalMoves(unit);
   };
 
   const handleDrag = () => {
     const yPos = Math.round(ref.current.getBoundingClientRect().y);
     zIndex.set(yPos);
-
-    // const mousedOverHexPosition = pixelFromHex(mousedOverHex);
-
   };
 
   const handleDragEnd = () => {
@@ -55,22 +51,31 @@ function Unit({ unit }) {
     <motion.div
       ref={ref}
       layout
+      animate={{ scale: 1 }}
       onLayoutMeasure={() => handleDrag()}
       className="UNIT CONTAINER absolute size-15 -translate-1/2 -translate-y-15 select-none"
       style={{ left: pos.x, top: pos.y, zIndex: zIndex }}
     >
-      <motion.img
-        animate={{ scale: 1 }}
-        initial={{ scale: 0 }}
-        draggable="false"
-        className="UNIT select-none"
-        src={sprite}
-      />
+      <AnimatePresence>
+        <motion.img
+          animate={{ scale: 1 }}
+          initial={{ scale: 0 }}
+          exit={{ scale: 0 }}
+          draggable="false"
+          className="UNIT select-none"
+          src={sprite}
+        />
+      </AnimatePresence>
 
       <motion.div
         drag={!hasActions}
         dragSnapToOrigin={!hasActions}
+        onPointerDown={() => {
+          if (!hasActions) handleDragStart();
+        }}
+        onPointerUp={() => eventEmitter.emit("unit:drag:end", unit)}
         onDragStart={() => handleDragStart()}
+        onDrag={() => handleDrag()}
         onDragEnd={() => handleDragEnd()}
         className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl"
         style={{ filter: hasActions ? "brightness(0.4)" : "none" }}
@@ -82,7 +87,7 @@ function Unit({ unit }) {
         />
       </motion.div>
 
-      <UnitHUD />
+      <UnitHUD atk={unit.atk} speed={unit.speed} />
     </motion.div>
   );
 }

@@ -11,6 +11,9 @@ class PlayAction extends Action {
 
   execute(controller) {
     controller.playerController.discardCard(this.playerID, this.card.id);
+    const options = { hex: this.hex };
+    controller.cardController.resolveCard(this.playerID, this.card, options);
+    // this.card.play(controller);
   }
 }
 export default PlayAction;

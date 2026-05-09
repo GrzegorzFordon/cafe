@@ -8,8 +8,8 @@ import CardDiscardedEffect from "../effect/effects/cardDiscarded.effect.js";
 import PlayerModel from "./player.model.js";
 
 class PlayerController extends Controller {
-  constructor(options) {
-    super();
+  constructor(game) {
+    super(game);
     this.id = "id";
     this.models = new Map();
   }

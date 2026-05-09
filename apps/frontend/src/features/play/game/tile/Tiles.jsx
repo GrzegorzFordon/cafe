@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useBoard from "../hooks/useBoard.js";
 import Tile from "./Tile.jsx";
 import useValidate from "../hooks/useValidate.js";
+import { Hex } from "@cafe/shared/util/hex.js";
 
 function Tiles() {
   const { hexList } = useBoard();
@@ -10,13 +11,10 @@ function Tiles() {
   const [legalTiles, setLegalTiles] = useState([]);
 
   const handleUnitDragStart = (unit) => {
-    console.log(unit);
     const result = getLegalMoves(unit);
-    console.log(result);
     setLegalTiles(result);
   };
-  const handleUnitDragEnd = (unit) => {
-    console.log(unit);
+  const handleUnitDragEnd = () => {
     setLegalTiles([]);
   };
 
@@ -42,3 +40,4 @@ function Tiles() {
   );
 }
 export default Tiles;
+// !hex.isEqual(new Hex(0, 0, 0)) &&

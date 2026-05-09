@@ -1,3 +1,5 @@
+import { Hex } from "@cafe/shared/util/hex.js";
+
 export const PLAYER_COUNT = 2;
 
 export const BASE_HAND_SIZE = 5;
@@ -18,8 +20,8 @@ export const ZONES = {
 };
 
 export const BASE_HEX_MAP = new Map([
-  [0, { q: 0, r: 2, s: -2 }],
-  [1, { q: 0, r: -2, s: 2 }],
+  [0, new Hex(0, 2, -2)],
+  [1, new Hex(0, -2, 2)],
 ]);
 
 const BURN_TYPES = ["POWER", "SPEED", "SHORE", "PAY", "MOVE"];

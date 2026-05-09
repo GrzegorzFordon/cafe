@@ -6,6 +6,7 @@ import { Hex } from "@cafe/shared/util/hex.js";
 class BoardModel {
   constructor() {
     this.hexList = [];
+    this.structures = [];
   }
 
   setupBoard(options) {
@@ -20,10 +21,11 @@ class BoardModel {
   }
 
   getLegalMoves(hex, reach, isDiagonal) {
+    const dirs = isDiagonal ? Hex.diagonals : Hex.directions;
     const moves = [];
     const startHex = new Hex(hex.q, hex.r, hex.s);
     for (let i = 1; i < reach + 1; i++)
-      Hex.directions.forEach((val) => {
+      dirs.forEach((val) => {
         const nextHex = startHex.add(val.scale(i));
         if (this.hexList.some((h) => h.isEqual(nextHex))) moves.push(nextHex);
       });

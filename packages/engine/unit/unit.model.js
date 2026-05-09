@@ -12,15 +12,17 @@ class UnitModel {
   constructor(data) {
     this.id = nanoid();
     // this.data = data;
-    // this.playerID = data.playerID;
+    this.playerID = data.playerID;
     // this.cardID = data.cardID;
+    // this.cardID = "LEADER";
     this.unitID = data.unitID ?? 1;
     this.reach = 2;
-    this.atk = Math.round(Math.random() * 10);
+    const rnd = Math.round(Math.random() * 6);
+    this.atk = rnd;
+    this.speed = 6 - rnd;
     this.hp = 1;
-    // this.cardID = "LEADER";
-    this.hex = data.hex;
     // this.hp = data.maxHP;
+    this.hex = data.hex;
   }
 
   // get remainingHealth() {
@@ -28,6 +30,15 @@ class UnitModel {
   // }
 
   // init() {}
+
+  // onInit(){
+
+  // }
+
+  // onPlay(){
+
+  // }
+
 
   spawn() {
     // ??

@@ -16,36 +16,41 @@ import _14 from "../assets/cards/14.png";
 import _15 from "../assets/cards/15.png";
 import _16 from "../assets/cards/16.png";
 import _def from "../assets/cards/def.png";
+import _0S01 from "../assets/cards/0S01.png";
+// import useGameStore from "../stores/useGameStore";
 
 const useCardList = (cardID) => {
+  // const gameController = useGameStore((state) => state.gameController);
+
+  // const getCard = (cardID)=>{
+  //   const result = gameController.
+  // }
+
   const sprite = useMemo(() => {
     if (!cardID) return _def;
-    // return cardID % 3 == 0 ? _13 : cardID % 2 == 0 ? _12 : _14;
     switch (cardID) {
-      case 1:
+      case "0U01":
         return _01;
-      case 2:
+      case "0U02":
         return _12;
-      case 3:
+      case "0U03":
         return _13;
-      case 4:
+      case "0U04":
         return _14;
-      case 5:
+      case "0U05":
         return _15;
-      case 6:
+      case "0U06":
         return _16;
-      case 7:
+      case "0U07":
         return _07;
-      case 8:
+      case "0U08":
         return _08;
-      case 9:
+      case "0U09":
         return _09;
-      case 10:
-        return _10;
-      case 11:
-        return _11;
+      case "0S01":
+        return _0S01;
       default:
-        return _def.png;
+        return _def;
     }
   }, [cardID]);
 

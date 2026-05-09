@@ -8,8 +8,8 @@ import Controller from "../controller.js";
 import BoardModel from "./board.model.js";
 
 class BoardController extends Controller {
-  constructor() {
-    super();
+  constructor(game) {
+    super(game);
     this.model = new BoardModel();
   }
 

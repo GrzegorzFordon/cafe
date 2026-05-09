@@ -1,14 +1,14 @@
-/**
- * general card entity
- */
+import CardModel from "../card.model";
 
-class Unit extends Card {
-  constructor(tile) {
-    // this.id =
-    this.tile = tile;
+class UnitCardModel extends CardModel {
+  constructor(options) {
+    super(options);
+    // this.unitID; //or unit object?
   }
 
-  // spawnUnit() {}
+  play(controller, options) {
+    controller.unitController.spawnUnit(this.playerID, 1, options.hex);
+  }
 }
 
-export default Unit;
+export default UnitCardModel;

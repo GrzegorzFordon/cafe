@@ -19,11 +19,11 @@ class GameController {
     this.stateMachine = new StateMachine();
 
     //controllers
-    this.boardController = new BoardController();
-    this.playerController = new PlayerController();
-    this.unitController = new UnitController();
-    this.cardController = new CardController();
-    this.actionController = new ActionController();
+    this.boardController = new BoardController(this);
+    this.playerController = new PlayerController(this);
+    this.unitController = new UnitController(this);
+    this.cardController = new CardController(this);
+    this.actionController = new ActionController(this);
   }
 
   start() {

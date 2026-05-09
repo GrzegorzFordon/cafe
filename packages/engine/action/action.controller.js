@@ -1,8 +1,8 @@
 import Controller from "../controller.js";
 
 class ActionController extends Controller {
-  constructor() {
-    super();
+  constructor(game) {
+    super(game);
   }
 
   init() {}

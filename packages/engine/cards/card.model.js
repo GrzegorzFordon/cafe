@@ -1,19 +1,21 @@
-/**
- * general card entity
- */
 import { nanoid } from "nanoid";
+import CardResolvingEffect from "../effect/effects/cardResolving.effect.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 
 class CardModel {
   constructor(options) {
     this.id = nanoid();
-    this.cardID = options.cardID; //TODO move to schema
     this.playerID = options.playerID;
-    this.schema = options.schema;
+
+    // this.schema = options.schema;
+    this.cardID = options.cardID ?? "0000"; //TODO move to schema
   }
 
-  play(controller) {}
-
-  // spawnUnit() {}
+  onPlay(controller, options) {
+    // console.log("Playing", this);
+    const effect = new CardResolvingEffect(this.playerID, this);
+    eventEmitter.emit("sim:effect", effect);
+  }
 }
 
 export default CardModel;

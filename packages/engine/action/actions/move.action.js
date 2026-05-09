@@ -9,17 +9,32 @@ class MoveAction extends Action {
 
   name = "Move";
 
+  //TODO move some of the logic into board controller (getting path etc)
   execute(controller) {
-    //fist, check if this action represents a legal move
     const legalMoves = controller.boardController.getLegalMoves(this.unit);
     if (!legalMoves.find((v) => this.hex)) return;
 
-    //get unit, move it TODO change to move tile by tile
-    controller.unitController.moveUnit(this.unit.id, this.hex);
+    const dist = this.hex.distance(this.unit.hex);
+    let goalHex = this.unit.hex;
+
+    for (let i = 1; i <= dist; i++) {
+      const nextHex = this.unit.hex.lerp(this.hex, i / dist);
+
+      const occupant = controller.unitController.getUnitAtHex(nextHex);
+      if (occupant) {
+        if (this.unit.playerID === occupant.playerID) {
+          controller.unitController.moveUnit(this.unit.id, goalHex);
+          break;
+        }
+        controller.unitController.moveUnit(this.unit.id, goalHex);
+        controller.unitController.handleCombat(this.unit, occupant, nextHex);
+        break;
+      }
+      goalHex = nextHex;
+      // console.log(this.unit.id, nextHex, occupant?.id ?? "empty");
+    }
+    if (goalHex.isEqual(this.hex))
+      controller.unitController.moveUnit(this.unit.id, goalHex);
   }
 }
 export default MoveAction;
-
-/**
- * change to be direction + distance
- */

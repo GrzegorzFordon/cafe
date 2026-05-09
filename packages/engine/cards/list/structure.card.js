@@ -1,10 +1,10 @@
-import Card from "./card";
+import CardModel from "../card.model";
 
 /**
  * general card entity
  */
 
-class Structure extends Card {
+class Structure extends CardModel {
   constructor() {
     // this.id =
   }

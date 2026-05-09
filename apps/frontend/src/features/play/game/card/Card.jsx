@@ -41,23 +41,33 @@ function Card({ order, card, index }) {
   const dragOffsetMotionValueX = useMotionValue(0);
   const dragOffsetMotionValueY = useMotionValue(0);
   const dragOffsetSpringValueX = useSpring(dragOffsetMotionValueX, {
-    // stiffness: 300,
     damping: 100,
     mass: 5,
-    // duration: 0.2,
-    // bounce: 10,
   });
   const dragOffsetSpringValueY = useSpring(dragOffsetMotionValueY, {
-    // stiffness: 50,
     damping: 100,
     mass: 5,
-    // duration: 0.2,
-    // bounce: 10,
+  });
+
+  const dragDeltaMotionValueX = useMotionValue(0);
+  const dragDeltaMotionValueY = useMotionValue(0);
+  const dragDeltaSpringValueX = useSpring(dragDeltaMotionValueX, {
+    damping: 10,
+    mass: 5,
+    restDelta: 0.1,
+  });
+  const dragDeltaSpringValueY = useSpring(dragDeltaMotionValueY, {
+    // bounce: 1,
+    damping: 10,
+    mass: 5,
+    restDelta: 0.1,
   });
 
   const handlePlay = () => {
     dragOffsetSpringValueX.jump(0);
     dragOffsetSpringValueY.jump(0);
+    dragDeltaSpringValueX.jump(0);
+    dragDeltaSpringValueY.jump(0);
     ref.current.style.left = -dragOffsetSpringValueX.get() + "px";
     ref.current.style.top = -dragOffsetSpringValueY.get() + "px";
     if (isMousedOverHexWithinBoard) {
@@ -71,35 +81,29 @@ function Card({ order, card, index }) {
   };
 
   const handleDrag = (e, info) => {
-    // console.log(e, info);
     const rect = ref.current.getBoundingClientRect();
     const posX = Math.round(rect.left + rect.width * 0.5);
     const posY = Math.round(rect.top + rect.height * 0.5);
+
     //offset to mouse pos (for lerp)
     const mousePosOffsetX = Math.round(posX - info.point.x);
     const mousePosOffsetY = Math.round(posY - info.point.y);
-    console.log("mousePosOffset", mousePosOffsetX, mousePosOffsetY);
-    console.log(
-      "dragOffsetMotionValue",
-      dragOffsetMotionValueX.get(),
-      dragOffsetMotionValueY.get(),
-    );
-    console.log(
-      "dragOffsetSpringValue",
-      dragOffsetSpringValueX.get(),
-      dragOffsetSpringValueY.get(),
-    );
-    // ref.current.style.top = 1110;
-    // console.log(ref.current.top);
     dragOffsetMotionValueX.set(mousePosOffsetX);
     dragOffsetMotionValueY.set(mousePosOffsetY);
     ref.current.style.left = -dragOffsetSpringValueX.get() * 5 + "px";
     ref.current.style.top = -dragOffsetSpringValueY.get() * 5 + "px";
+
     //offset to board
     const offX = Math.abs(posX - boardPos.x);
     const offY = Math.abs(posY - boardPos.y);
     const burn = offX > BURN_TRESHOLD_X_MIN && offY < BURN_TRESHOLD_Y_MAX;
     isBurning.set(burn);
+
+    //drag offset delta for 3d rotation
+    // dragDeltaMotionValueX.set(Math.max(Math.min(info.delta.x * 5, 30), -30));
+    // dragDeltaMotionValueY.set(Math.max(Math.min(info.delta.y * 5, 30), -30));
+    dragDeltaMotionValueX.set(info.delta.x);
+    dragDeltaMotionValueY.set(info.delta.y);
   };
 
   return (
@@ -111,6 +115,8 @@ function Card({ order, card, index }) {
         scale: 0.3,
         opacity: 0.7,
         cursor: "grabbing",
+        // rotateX: dragDeltaSpringValueY.get(),
+        // rotateY: dragDeltaSpringValueX.get(),
       }}
       key={card}
       layout
@@ -118,8 +124,7 @@ function Card({ order, card, index }) {
       onDragStart={(e, info) => handleDrag(e, info)}
       onDrag={(e, info) => handleDrag(e, info)}
       onDragEnd={handlePlay}
-      // onUpdate={(e, info) => handleDrag(e, info)}
-      onChange={(e, info) => handleDrag(e, info)}
+      // onChange={(e, info) => handleDrag(e, info)}
       initial={{ scale: 0, translateY: "5em" }}
       animate={{ scale: 1, translateY: 0 }}
       exit={{
@@ -129,6 +134,10 @@ function Card({ order, card, index }) {
       }}
       transition={easeOut}
       className="relative aspect-2.5/3.5 h-full w-full select-none"
+      // style={{
+      //   rotateX: dragDeltaSpringValueY.get(),
+      //   rotateY: -dragDeltaSpringValueX.get(),
+      // }}
     >
       <motion.div
         className="absolute aspect-2.5/3.5 h-full w-full select-none"
@@ -143,8 +152,10 @@ function Card({ order, card, index }) {
               }
         }
         style={{
-          rotate: `${angle}deg`,
           filter: !isBurning.get() && isPlayed ? "brightness(0.4)" : "none",
+          // rotateX: dragDeltaSpringValueY.get() * 2 + "deg",
+          // rotateY: dragDeltaSpringValueX.get() * 2 + "deg",
+          rotateZ: `${angle}deg`,
         }}
       >
         <CardVisual key={order} order={order} card={card} />
@@ -153,17 +164,14 @@ function Card({ order, card, index }) {
         )}
         <div className="pointer-events-none absolute top-1/2 left-1/2 z-30 size-full scale-200 text-sm font-bold text-black"></div>
       </motion.div>
+      {/* <div className="absolute size-fit bg-amber-50">
+        <p>x {Math.round(dragDeltaSpringValueX.get())}</p>
+        <p>y {Math.round(dragDeltaSpringValueY.get())}</p>
+      </div> */}
     </Reorder.Item>
   );
 }
 export default Card;
-
-// const mousePos = useMousePos();
-// const mouseDragOffset = useMotionValue();
-// const [dragStartMouseOffset, setDragStartMouseOffset] = useState({
-//   x: 0,
-//   y: 0,
-// });
 
 // const target = useMemo(() => actions[0]?.hex, [actions]);
 // const targetScreenPos = useMemo(
