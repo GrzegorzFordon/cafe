@@ -10,23 +10,28 @@ import Controller from "../controller.js";
 class UnitController extends Controller {
   constructor(game) {
     super(game);
+    this.game = game;
     this.units = [];
   }
 
   init(options) {
-    this.spawnUnit(1, options?.leader, BASE_HEX_MAP.get(0));
-    this.spawnUnit(2, 2, BASE_HEX_MAP.get(1));
+    this.spawnUnit(1, options?.leader ?? 1, BASE_HEX_MAP.get(0), {
+      atk: 1,
+      hp: 2,
+      speed: 3,
+    });
+    this.spawnUnit(2, 2, BASE_HEX_MAP.get(1), { atk: 1, hp: 2, speed: 3 });
   }
 
-  spawnUnit(playerID, unitID, hex) {
-    const unit = new UnitModel({ playerID, unitID, hex });
+  spawnUnit(playerID, unitID, hex, unitData) {
+    const unit = new UnitModel({ playerID, unitID, hex, unitData });
     this.units.push(unit);
-    eventEmitter.emit("sim:effect", new UnitSpawnedEffect(unit));
+    this.game.eventEmitter.emit("sim:effect", new UnitSpawnedEffect(unit));
   }
 
   moveUnit(unitID, hex) {
     const unit = this.units.find((val) => val.id == unitID);
-    unit.move(hex);
+    unit.move(this.game, hex);
   }
 
   /**
@@ -35,10 +40,10 @@ class UnitController extends Controller {
   handleCombat(attackerUnit, defenderUnit, hex) {
     // console.log("Comparing Atk Values:", attackerUnit.atk, defenderUnit.atk);
     const effect = new CombatStartedEffect(attackerUnit.id, defenderUnit.id);
-    eventEmitter.emit("sim:effect", effect);
+    this.game.eventEmitter.emit("sim:effect", effect);
     if (attackerUnit.atk >= defenderUnit.atk) {
       this.units.filter((val) => val != defenderUnit);
-      defenderUnit.die();
+      defenderUnit.die(this.game);
     }
   }
 

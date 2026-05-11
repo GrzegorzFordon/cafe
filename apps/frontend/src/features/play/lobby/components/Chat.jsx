@@ -48,7 +48,7 @@ function Chat() {
   };
 
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-2 rounded bg-amber-950 p-2">
+    <div className="flex size-full flex-col max-w-sm max-h-96 items-center justify-center gap-2 rounded bg-amber-950 p-2">
       <div
         ref={scrollDiv}
         className="z-5 flex size-full items-center justify-center overflow-y-scroll rounded-md border-4 border-amber-950 bg-amber-900 px-4 py-2 font-bold text-black shadow"

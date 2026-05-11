@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import useAction from "../hooks/useAction";
-import GameButton from "../ui/GameButton";
+import GameButton from "../tile/ui/GameButton";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
 

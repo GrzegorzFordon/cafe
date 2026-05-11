@@ -24,5 +24,12 @@ export const BASE_HEX_MAP = new Map([
   [1, new Hex(0, -2, 2)],
 ]);
 
-const BURN_TYPES = ["POWER", "SPEED", "SHORE", "PAY", "MOVE"];
-const SPELL_TARGET_TYPES = ["HEX", "UNIT"];
+export const BURN_TYPES = {
+  POWER: "POWER",
+  SPEED: "SPEED",
+  MOVE: "MOVE",
+  SHORE: "SHORE",
+  PAY: "PAY",
+};
+
+export const SPELL_TARGET_TYPES = ["HEX", "UNIT"];

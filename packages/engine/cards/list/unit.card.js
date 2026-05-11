@@ -1,4 +1,4 @@
-import CardModel from "../card.model";
+import CardModel from "../card.model.js";
 
 class UnitCardModel extends CardModel {
   constructor(options) {

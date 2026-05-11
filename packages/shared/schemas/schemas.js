@@ -9,6 +9,7 @@ export const PlayerDTO = z.object({
 export const GameDTO = z.object({
   id: z.string(),
   roomID: z.string(),
+  data: z.json(),
   //players ??
 });
 

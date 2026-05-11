@@ -1,7 +1,7 @@
 //put a map of cardid -> card here
-import UnitAlice from "./list/units/UnitAlice";
-import CardModel from "./card.model";
-import SpellZap from "./list/spells/SpellZap";
+import UnitAlice from "./list/units/UnitAlice.js";
+import CardModel from "./card.model.js";
+import SpellZap from "./list/spells/SpellZap.js";
 
 export const CardList = new Map();
 CardList.set("0U01", UnitAlice);

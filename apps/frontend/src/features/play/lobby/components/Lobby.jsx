@@ -8,7 +8,8 @@ function Lobby() {
   const [rooms, setRooms] = useState([]);
 
   const handleLobbyUpdate = useCallback((e) => {
-    setRooms(e.detail.rooms);
+    // console.log(e);
+    setRooms(e.rooms);
   }, []);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ function Lobby() {
     <div className="flex size-full flex-col items-center justify-center gap-2 rounded bg-amber-950 p-2">
       <div className="flex size-full flex-col items-center justify-start gap-2 overflow-y-scroll rounded bg-amber-800 p-1 text-black italic">
         {rooms?.map((room) => (
-          <RoomsCard roomID={room.id} />
+          <RoomsCard key={room.id} roomID={room.id} />
         ))}
       </div>
 

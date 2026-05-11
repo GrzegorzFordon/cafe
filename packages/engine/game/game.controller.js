@@ -10,6 +10,7 @@ import StateMachine, { states } from "./states/stateMachine.js";
 import { GAME_PHASES } from "../config.js";
 import GameAdvancedEffect from "../effect/effects/gameAdvanced.effect.js";
 import _ from "lodash";
+import EventEmitter from "eventemitter3";
 
 class GameController {
   //options are: player decks, player heroes
@@ -17,6 +18,7 @@ class GameController {
     this.options = options;
     this.model = new GameModel(options);
     this.stateMachine = new StateMachine();
+    this.eventEmitter = new EventEmitter();
 
     //controllers
     this.boardController = new BoardController(this);
@@ -28,11 +30,13 @@ class GameController {
 
   start() {
     // console.log(`[Game Controller] Started`);
-    this.model = new GameModel(this.options);
+    console.log("[Game] Initialized, options:", this.options);
+
+    this.model = new GameModel(this);
     this.stateMachine.init(this);
-    this.boardController.init(this.options);
-    this.playerController.init(this.options); //TODO Handle both players
-    this.unitController.init(this.options);
+    this.boardController.init(this);
+    this.playerController.init(this); //TODO Handle both players
+    this.unitController.init(this);
     this.advance();
   }
 
@@ -48,16 +52,37 @@ class GameController {
   handleActions(actions) {
     this.advance();
 
-    _.defer(() => {
-      while (actions.length > 0) {
-        const nextAction = actions.shift();
-        nextAction.execute(this);
-      }
-    });
+    // _.defer(() => {
+    while (actions.length > 0) {
+      const nextAction = actions.shift();
+      console.log("[Game] Next:", nextAction.name);
+      // nextAction.prototype.execute(this);
+      if (nextAction.name === "PLAY") this.handlePlayAction(nextAction);
+    }
+    // });
 
     _.defer(() => {
-      this.advance();
+    this.advance();
     });
+  }
+
+  handleAction(action) {
+    console.log("[Game] handling", action.id);
+    action.bonuses.forEach((val) => {
+      this.playerController.discardCard(action.playerID, val.id);
+      console.log(val);
+    });
+  }
+
+  handleMoveAction(action) {
+    this.handleAction(action);
+  }
+
+  handlePlayAction(action) {
+    this.handleAction(action);
+    this.playerController.discardCard(action.playerID, action.card.id);
+    const options = { hex: action.hex };
+    // this.cardController.resolveCard(action.playerID, action.card, options);
   }
 
   handleWincon() {

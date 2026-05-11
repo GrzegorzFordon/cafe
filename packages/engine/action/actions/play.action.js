@@ -5,15 +5,15 @@ class PlayAction extends Action {
     super();
     this.card = card;
     this.hex = hex;
+    this.name = "PLAY";
   }
 
-  name = "Play";
-
-  execute(controller) {
-    controller.playerController.discardCard(this.playerID, this.card.id);
-    const options = { hex: this.hex };
-    controller.cardController.resolveCard(this.playerID, this.card, options);
-    // this.card.play(controller);
-  }
+  // execute(controller) {
+  //   super.execute(controller);
+  //   controller.playerController.discardCard(this.playerID, this.card.id);
+  //   const options = { hex: this.hex };
+  //   controller.cardController.resolveCard(this.playerID, this.card, options);
+  // }
 }
+
 export default PlayAction;

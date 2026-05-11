@@ -1,11 +1,11 @@
 import useSocketStore from "../../../stores/useSocketStore";
 // import { useCallback, useEffect } from "react";
 import { useCallback } from "react";
+import eventBus from "../../play/game/util/eventBus";
 
 const useSocket = () => {
   const socket = useSocketStore((state) => state.socket);
   const setRoomData = useSocketStore((state) => state.setRoomData);
-
   /**
    * Chat Actions
    */
@@ -46,6 +46,7 @@ const useSocket = () => {
   );
   const startGame = useCallback(
     (val) => {
+      eventBus.connect();
       socket.emit("room:start", val, (res) => {
         console.log(res);
       });

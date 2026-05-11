@@ -4,6 +4,7 @@ import { devtools } from "zustand/middleware";
 import io from "socket.io-client";
 import { RoomDTO } from "@cafe/shared/schemas/schemas.js";
 import { eventEmitter } from "@cafe/shared/eventEmitter";
+import eventBus from "../features/play/game/util/eventBus";
 
 const SOCKET_URL = "http://localhost:3500";
 
@@ -11,12 +12,14 @@ const useSocketStore = create(
   devtools((set, get) => ({
     socket: undefined,
     roomData: undefined,
-
+    socketID: undefined,
     connect: () => {
       if (get().socket) return;
-
+      eventBus.connect();
       console.log("Socket Store: Connecting");
       const socket = io(SOCKET_URL);
+
+      socket?.on("socket:id", (val) => set({ socketID: val }));
 
       /**
        * Chat Events
@@ -37,6 +40,7 @@ const useSocketStore = create(
        * Room Events
        */
       socket?.on("room:join", (val) => eventEmitter.emit("room:join", val));
+
       socket?.on("room:change", (val) => {
         const res = RoomDTO.parse(val);
         set({ roomData: res });
@@ -46,17 +50,22 @@ const useSocketStore = create(
        * Game Events
        */
       socket?.on("room:start", (val) => eventEmitter.emit("room:start", val));
-      // socket?.on("game:phase", (val) => eventEmitter.emit("game:change", val));
+      socket?.on("game:start", (val) => eventEmitter.emit("game:start", val));
+      socket?.on("game:update", (val) => eventEmitter.emit("game:update", val));
+      // socket?.on("game:start", (val) => console.log("SOCKET", val));
 
       set({ socket });
     },
+
     disconnect: () => {
       if (!get().socket) return;
+      eventBus.disconnect();
       console.log("Socket Store: Disconnecting");
       get().socket.disconnect();
       get().socket.offAny();
       set({ socket: undefined, roomData: undefined });
     },
+
     setRoomData: (roomData) => {
       set({ roomData: roomData });
     },

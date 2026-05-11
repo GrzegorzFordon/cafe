@@ -19,10 +19,10 @@ class BoardController extends Controller {
     // console.log("Board Controller running", this.model);
   }
 
-  getLegalMoves(unit) {
-    // console.log(unit);
+  getLegalMoves(unit, bonus) {
+    // console.log(unit, bonus);
     if (!unit) return undefined;
-    return this.model.getLegalMoves(unit.hex, unit.reach ?? 1, false);
+    return this.model.getLegalMoves(unit.hex, unit.reach + bonus ?? 1, false);
   }
 }
 

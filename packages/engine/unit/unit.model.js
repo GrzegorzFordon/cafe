@@ -9,20 +9,18 @@ import UnitDamagedEffect from "../effect/effects/unitDamaged.effect.js";
 import UnitDiedEffect from "../effect/effects/unitDied.effect.js";
 
 class UnitModel {
-  constructor(data) {
+  constructor(options) {
     this.id = nanoid();
-    // this.data = data;
-    this.playerID = data.playerID;
-    // this.cardID = data.cardID;
+    // this.options = options;
+    this.playerID = options.playerID;
+    // this.cardID = options.cardID;
     // this.cardID = "LEADER";
-    this.unitID = data.unitID ?? 1;
-    this.reach = 2;
-    const rnd = Math.round(Math.random() * 6);
-    this.atk = rnd;
-    this.speed = 6 - rnd;
-    this.hp = 1;
-    // this.hp = data.maxHP;
-    this.hex = data.hex;
+    this.unitID = options.unitID ?? 1;
+    this.reach = 1;
+    this.hex = options.hex;
+    this.atk = options.unitData.atk ?? 0;
+    this.hp = options.unitData.hp ?? 0;
+    this.speed = options.unitData.speed ?? 0;
   }
 
   // get remainingHealth() {
@@ -39,27 +37,26 @@ class UnitModel {
 
   // }
 
-
   spawn() {
     // ??
   }
 
-  move(hex) {
+  move(controller, hex) {
     this.hex = hex;
     const effect = new UnitMovedEffect(this.id, hex);
-    eventEmitter.emit("sim:effect", effect);
+    controller.eventEmitter.emit("sim:effect", effect);
   }
 
-  takeDamage(amount) {
-    this.hp -= amount;
-    const effect = new UnitDamagedEffect(this.id);
-    eventEmitter.emit("sim:effect", effect);
-    if (this.hp <= 0) this.die();
-  }
+  // takeDamage(controller,amount) {
+  //   this.hp -= amount;
+  //   const effect = new UnitDamagedEffect(this.id);
+  //   controller.eventEmitter.emit("sim:effect", effect);
+  //   if (this.hp <= 0) this.die();
+  // }
 
-  die() {
+  die(controller) {
     const effect = new UnitDiedEffect(this.id);
-    eventEmitter.emit("sim:effect", effect);
+    controller.eventEmitter.emit("sim:effect", effect);
   }
 }
 

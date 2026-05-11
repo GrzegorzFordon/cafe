@@ -1,4 +1,4 @@
-import Ability from "./ability";
+import Ability from "./ability.js";
 
 class SpawnUnitAbility extends Ability {
   constructor(options) {

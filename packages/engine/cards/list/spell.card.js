@@ -1,4 +1,5 @@
-import CardModel from "../card.model";
+import CardModel from "../card.model.js";
+
 
 class SpellCardModel extends CardModel {
   constructor(options) {

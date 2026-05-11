@@ -1,4 +1,7 @@
+import { BURN_TYPES } from "@cafe/engine/config";
 import useGameStore from "../stores/useGameStore";
+import { useState } from "react";
+import useSocketStore from "../../../../stores/useSocketStore";
 
 /**
  * Custom hook for selecting actions (sim inputs)
@@ -8,10 +11,20 @@ const useAction = () => {
   const actions = useGameStore((state) => state.actions);
   const addAction = useGameStore((state) => state.addAction);
   const resetActions = useGameStore((state) => state.resetActions);
-  const playerID = useGameStore((state) => state.playerID);
+  // const playerID = useGameStore((state) => state.playerID);
+  const socketID = useSocketStore((state) => state.socketID);
+
+  const burnEffects = useGameStore((state) => state.burnEffects);
+  // const addBurnEffect = useGameStore((state) => state.addBurnEffect);
+  const resetBurnEffects = useGameStore((state) => state.resetBurnEffects);
+  const usedBurnEffects = useGameStore((state) => state.usedBurnEffects);
+  const setUsedBurnEffects = useGameStore((state) => state.setUsedBurnEffects);
 
   const addActionObject = (action) => {
-    action.playerID = playerID;
+    action.bonuses = burnEffects;
+    setUsedBurnEffects([...usedBurnEffects, ...burnEffects]);
+    resetBurnEffects();
+    action.playerID = socketID;
     addAction(action);
   };
 
@@ -33,11 +46,15 @@ const useAction = () => {
   };
 
   const hasActionsOfType = (id, type) => {
-    return actions.some((val) => val.card?.id == id && val.name == type);
+    return actions.some((val) => val.card?.id === id && val.name === type);
   };
 
-
-
+  const isCardBurned = (card) => {
+    const activelyBurned = burnEffects.some((val) => val.id == card.id);
+    const burnedThisTurn = usedBurnEffects.some((val) => val.id == card.id);
+    // console.log(card.cardID, activelyBurned, burnedThisTurn);
+    return activelyBurned || burnedThisTurn;
+  };
 
   return {
     actions,
@@ -49,6 +66,8 @@ const useAction = () => {
     resetActions,
     addActionObject,
     hasActionsOfType,
+    isCardBurned,
+    // getBurnEffectsOfType,
   };
 };
 export default useAction;

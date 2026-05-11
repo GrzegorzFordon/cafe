@@ -1,6 +1,3 @@
-// import { eventEmitter } from "../../../../util/eventEmitter.js";
-// import FakeEffect from "../effect.fake";
-
 import { Hex } from "@cafe/shared/util/hex.js";
 
 class BoardModel {

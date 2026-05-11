@@ -8,9 +8,9 @@ function RoomsCard({ roomID }) {
   return (
     <motion.div
       onClick={() => joinRoom({ roomID: roomID })}
-      whileHover={{ scale: 1.005 }}
+      // whileHover={{ scale: 1.005 }}
       whileTap={{ scale: 0.98 }}
-      className="flex size-full max-h-12 cursor-pointer flex-col items-center justify-center rounded bg-amber-100 select-none"
+      className="flex size-full max-h-12 cursor-pointer flex-col items-center justify-center rounded bg-amber-100 select-none hover:bg-amber-200 active:bg-amber-300"
     >
       RoomsCard {roomID ?? "no id"}
     </motion.div>

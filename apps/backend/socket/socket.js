@@ -1,12 +1,9 @@
 import { Server as SocketIOServer } from "socket.io";
 import Lobby from "./lobby/lobby.js";
-import {
-  GameDTO,
-  RoomDTO,
-  PlayerDTO,
-} from "@cafe/shared/schemas/schemas.js";
-import Games from "./game/games.js";
+import { GameDTO, RoomDTO, PlayerDTO } from "@cafe/shared/schemas/schemas.js";
 import { GAME_PHASES } from "@cafe/engine/config.js";
+import _ from "lodash";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 
 class Socket {
   constructor(httpServer) {
@@ -17,7 +14,6 @@ class Socket {
       },
     });
     this.lobby = new Lobby();
-    this.games = new Games();
   }
 
   onSendMessage(socket, data) {
@@ -29,7 +25,7 @@ class Socket {
   }
 
   onCreateRoom(socket, data, ack) {
-    console.log(`Received request to create Room from User ${socket.id}`);
+    console.log(`[Socket (Server)] Received request to create Room from User ${socket.id}`);
     try {
       const player = PlayerDTO.parse({ id: socket.id });
       const res = this.lobby.createRoom(player);
@@ -49,7 +45,7 @@ class Socket {
   }
 
   onJoinRoom(socket, data, ack) {
-    console.log(`User ${socket.id} is trying to join Room ${data.roomID}`);
+    console.log(`[Socket (Server)] User ${socket.id} is trying to join Room ${data.roomID}`);
     try {
       //change to see if the room exists, send error back otherwise
 
@@ -71,7 +67,7 @@ class Socket {
   }
 
   onLeaveRoom(socket, data, ack) {
-    console.log(`User ${socket.id} is trying to leave Room ${data.roomID}`);
+    console.log(`[Socket (Server)] User ${socket.id} is trying to leave Room ${data.roomID}`);
     try {
       const player = PlayerDTO.parse({ id: socket.id });
       this.lobby.leaveRoom(data.roomID, player);
@@ -88,31 +84,41 @@ class Socket {
     }
   }
 
-  onGameStart(socket, data, ack) {
+  async onGameStart(socket, data, ack) {
     console.log(
-      `User ${socket.id} is trying to start game in Room ${data.roomID}`,
+      `[Socket (Server)] User ${socket.id} is trying to start game in Room ${data.roomID}`,
     );
-    this.lobby.startGameInRoom(data.roomID);
+    await this.lobby.startGameInRoom(data.roomID);
+    // _.defer(() => this.broadcastGameStart(data.roomID, { data: data }));
+    // this.broadcastGameStart(data.roomID, { data: data });
   }
 
   onGameActions(socket, data, ack) {
     //either sends the actions to the game manager
     //or it collects all actions for the turn, sorts them by speed, THEN sends that to the game manager
+    // console.log("Server received game actions from", socket.id, data);
+    this.lobby.updateGameInRoom(data.roomID, data.actions);
   }
 
   onGameFinish(socket, data, ack) {
     console.log(
-      `User ${socket.id} is trying to finish game in Room ${data.roomID}`,
+      `[Socket (Server)] User ${socket.id} is trying to finish game in Room ${data.roomID}`,
     );
     this.lobby.finishGameInRoom(data.roomID);
   }
 
   init() {
-    console.log("initializing websocket");
+    console.log("[Socket (Server)] initializing websocket");
+
+    eventEmitter.on("room:advance", (id, phase, effects) =>
+      this.broadcastGameUpdate(id, { phase, effects }),
+    );
+
     this.server.on("connection", async (socket) => {
-      console.log(`User connected (${socket.id})`);
+      console.log(`[Socket (Server)] User connected (${socket.id})`);
 
       socket.join("general");
+      this.server.to(socket.id).emit("socket:id", socket.id);
       this.broadcastLobbyState();
 
       /**
@@ -145,6 +151,7 @@ class Socket {
       /**
        * Game Events
        */
+      
       socket.on("game:actions", (data, ack) => {
         this.onGameActions(socket, data, ack);
       });
@@ -158,53 +165,49 @@ class Socket {
       });
 
       socket.on("disconnect", () => {
-        console.log(`User disconnected (${socket.id})`);
+        console.log(`[Socket (Server)] User disconnected (${socket.id})`);
       });
     });
   }
 
   broadcastLobbyState() {
-    console.log("Broadcasting lobby state");
+    console.log("[Socket (Server)] Broadcasting lobby state");
     const rooms = this.lobby.getAllRooms();
-    this.server
-      .timeout(1000 * 10)
-      .emit("lobby:change", { rooms: rooms }, (err, responses) => {
-        if (err) {
-        } else {
-          console.log("lobby ack: ", responses);
-        }
-      });
+    this.server.emit("lobby:change", { rooms: rooms });
   }
 
   broadcastRoomState(roomID) {
-    console.log(`Broadcasting Room state to Room ${roomID}`);
+    console.log(`[Socket (Server)] Broadcasting Room state to Room ${roomID}`);
     const room = this.lobby.getRoomByID(roomID);
     if (!room) return;
-    const result = RoomDTO.parse({
+    const schema = RoomDTO.parse({
       id: roomID,
-      hostID: "foo",
+      hostID: room.hostID,
       players: room.players,
       status: room.status,
     });
-    this.server.to(roomID).emit("room:change", result);
+    this.server.to(roomID).emit("room:change", schema);
   }
 
-  broadcastGameStart(roomID, initialState) {
-    console.log("Broadcasting game start");
-    const result = GameDTO.parse({
-      id: "gameID",
-      roomID: roomID,
-      hostID: "hostID",
-    });
-
-    this.server.to(roomID).emit("game:start", result);
-  }
-
-  broadcastGamePhase(roomID, info) {
-    console.log("Broadcasting game phase");
-    const result = { phase: GAME_PHASES.PLAN, effects: info.effects };
-    this.server.to(roomID).emit("game:phase", result);
+  broadcastGameUpdate(roomID, info) {
+    console.log(
+      "[Socket (Server)] Broadcasting Game Update",
+      roomID,
+      info.phase,
+      info.effects.length,
+    );
+    const schema = { phase: info.phase, effects: info.effects };
+    this.server.to(roomID).emit("game:update", schema);
   }
 }
 
 export default Socket;
+
+// this.server
+//   .timeout(1000 * 10)
+//   .emit("lobby:change", { rooms: rooms }, (err, responses) => {
+//     if (err) {
+//     } else {
+//       console.log("lobby ack: ", responses);
+//     }
+//   });

@@ -8,8 +8,8 @@ class BurnAction extends Action {
 
   name = "Burn";
 
-  execute(controller) {
-    controller.playerController.discardCard(this.playerID, this.card.id);
-  }
+  // execute(controller) {
+  //   controller.playerController.discardCard(this.playerID, this.card.id);
+  // }
 }
 export default BurnAction;

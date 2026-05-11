@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 function ActiveCardDisplay() {
   const [activeCard, setActiveCard] = useState();
 
-  const handleEffect = async (e) => {
+  const handleEffectActiveCard = async (e) => {
     if (e.name !== "Card Resolving Effect") return;
     setActiveCard(e.card);
     // await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -17,9 +17,9 @@ function ActiveCardDisplay() {
   };
 
   useEffect(() => {
-    eventBus.subscribeToGameEffects(handleEffect);
-    return () => eventBus.unsubscribeToGameEffects(handleEffect);
-  });
+    eventBus.subscribeToGameEffects(handleEffectActiveCard);
+    return () => eventBus.unsubscribeToGameEffects(handleEffectActiveCard);
+  },[]);
 
   return (
     <AnimatePresence>

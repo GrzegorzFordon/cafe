@@ -87,7 +87,7 @@ function Unit({ unit }) {
         />
       </motion.div>
 
-      <UnitHUD atk={unit.atk} speed={unit.speed} />
+      <UnitHUD atk={unit.atk} hp={unit.hp} speed={unit.speed} />
     </motion.div>
   );
 }

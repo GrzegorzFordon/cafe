@@ -1,12 +1,14 @@
 import useGame from "../hooks/useGame";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
-import GameButton from "../ui/GameButton";
+import GameButton from "../tile/ui/GameButton";
 import { useCallback, useEffect, useState } from "react";
 import { GAME_PHASES } from "@cafe/engine/config";
 import eventBus from "../util/eventBus";
+import useSocket from "../../../socket/hooks/useSocket";
 function DebugWindow() {
   const { startGame, submitActions } = useGame();
+  // const { startGame } = useSocket();
 
   const [phase, setPhase] = useState("PRE");
 

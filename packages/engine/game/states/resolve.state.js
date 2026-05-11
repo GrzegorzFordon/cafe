@@ -13,7 +13,7 @@ class ResolveState extends State {
 
   onEnter(controller) {
     const effect = new GameAdvancedEffect(GAME_PHASES.RESOLVE);
-    eventEmitter.emit("sim:advance", effect);
+    controller.eventEmitter.emit("sim:advance", effect);
     // controller.handleActions
   }
 }

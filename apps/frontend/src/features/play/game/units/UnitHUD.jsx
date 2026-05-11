@@ -1,29 +1,16 @@
-function UnitHUD({ atk, speed }) {
+function UnitHUD({ atk, speed, hp }) {
   return (
-    <div className=""></div>
-    // <div
-    //   draggable={false}
-    //   className="absolute flex size-full left-1/2 top-1/2 -translate-1/2 items-center justify-center bg-amber-500 opacity-30 select-none"
-    // ></div>
+    <div draggable={false} className="pointer-events-none select-none">
+      <p className="absolute right-0 -bottom-2 aspect-square size-5 text-center text-green-800 text-shadow-black/60 text-shadow-sm">
+        {hp ?? 7}
+      </p>
+      <p className="absolute right-2 bottom-0 aspect-square size-5 text-center text-red-800 text-shadow-black/60 text-shadow-sm">
+        {atk ?? 0}
+      </p>
+      <p className="absolute top-0 left-0 aspect-square size-5 -translate-y-1/2 text-center text-orange-400 text-shadow-black/60 text-shadow-sm">
+        {speed ?? 0}
+      </p>
+    </div>
   );
 }
 export default UnitHUD;
-
-/**
- *       <p className="absolute top-0 z-50 flex aspect-square size-6 items-center justify-center rounded-full bg-yellow-50 text-yellow-800 select-none">
-        {3}
-      </p>
-      <div className="absolute bottom-0 flex justify-end gap-0 bg-amber-50 p-1">
-        <p className="z-50 flex aspect-square size-5 items-center justify-center rounded-full text-red-400 select-none">
-          {atk ?? 0}
-        </p>
-        <p className="z-50 flex aspect-square size-5 items-center justify-center rounded-full text-green-400 select-none">
-          {speed ?? 0}
-        </p>
-      </div>
-
-      <div
-        draggable={false}
-        className="bg-amber-5 absolute -bottom-1 z-10 flex aspect-square justify-evenly gap-4 rounded-sm text-2xl font-black text-black opacity-90 select-none text-shadow-sm"
-      ></div>
- */

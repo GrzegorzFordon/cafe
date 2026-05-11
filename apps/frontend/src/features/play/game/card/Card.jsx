@@ -3,7 +3,6 @@ import {
   AnimatePresence,
   easeOut,
   motion,
-  useDragControls,
   Reorder,
   useMotionValue,
   useSpring,
@@ -13,8 +12,10 @@ import useBoard from "../hooks/useBoard.js";
 import useAction from "../hooks/useAction.js";
 import PlayAction from "@cafe/engine/action/actions/play.action.js";
 import BurnAction from "@cafe/engine/action/actions/burn.action.js";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import ReactRough, { Line, Rectangle } from "rough-react-wrapper";
+import useGameStore from "../stores/useGameStore.js";
+import { BURN_TYPES } from "@cafe/engine/config.js";
 // import rough from "roughjs";
 
 /**
@@ -29,12 +30,13 @@ const BURN_TRESHOLD_Y_MAX = 150;
 
 function Card({ order, card, index }) {
   const { mousedOverHex, isMousedOverHexWithinBoard, boardPos } = useBoard();
-  const { addActionObject, hasActionsOfType } = useAction();
+  const { addActionObject, hasActionsOfType, isCardBurned } = useAction();
   const isBurning = useMotionValue(0);
+  const addBurnEffect = useGameStore((state) => state.addBurnEffect);
   const ref = useRef();
 
-  const isPlayed = hasActionsOfType(card.id, "Play");
-  const isBurned = hasActionsOfType(card.id, "Burn");
+  const isPlayed = hasActionsOfType(card.id, "PLAY");
+  const isBurned = isCardBurned(card);
 
   const angle = MAX_HAND_FAN_ANGLE_DEGREES * (index - 0.5);
 
@@ -74,8 +76,9 @@ function Card({ order, card, index }) {
       const playAction = new PlayAction(card, mousedOverHex);
       addActionObject(playAction);
     } else if (isBurning.get() == true) {
-      const burnAction = new BurnAction(card);
-      addActionObject(burnAction);
+      // const burnAction = new BurnAction(card);
+      // addActionObject(burnAction);
+      addBurnEffect(card);
     }
     isBurning.set(false);
   };
@@ -121,6 +124,7 @@ function Card({ order, card, index }) {
       key={card}
       layout
       value={order}
+      dragSnapToOrigin={!isBurned && !isBurned}
       onDragStart={(e, info) => handleDrag(e, info)}
       onDrag={(e, info) => handleDrag(e, info)}
       onDragEnd={handlePlay}
@@ -134,10 +138,7 @@ function Card({ order, card, index }) {
       }}
       transition={easeOut}
       className="relative aspect-2.5/3.5 h-full w-full select-none"
-      // style={{
-      //   rotateX: dragDeltaSpringValueY.get(),
-      //   rotateY: -dragDeltaSpringValueX.get(),
-      // }}
+
     >
       <motion.div
         className="absolute aspect-2.5/3.5 h-full w-full select-none"
@@ -159,22 +160,28 @@ function Card({ order, card, index }) {
         }}
       >
         <CardVisual key={order} order={order} card={card} />
+
+        <div className="pointer-events-none absolute -top-2 left-2 z-30 flex aspect-square size-4 scale-200 items-center justify-center rounded-full p-2 text-center text-sm font-black text-orange-500 text-shadow-2xs text-shadow-black/70">
+          {card.speed ?? "X"}
+        </div>
+
+        <div className="pointer-events-none absolute -top-2 right-2 flex size-fit justify-end">
+          {card.burnEffects.includes(BURN_TYPES.POWER) && (
+            <div className="size-4 rounded-full bg-red-600 shadow shadow-black/40"></div>
+          )}
+          {card.burnEffects.includes(BURN_TYPES.SPEED) && (
+            <div className="size-4 rounded-full bg-yellow-600 shadow shadow-black/40"></div>
+          )}
+          {card.burnEffects.includes(BURN_TYPES.MOVE) && (
+            <div className="size-4 rounded-full bg-green-600 shadow shadow-black/40"></div>
+          )}
+        </div>
+
         {(isBurned || isBurning.get()) && (
           <div className="absolute top-1/2 left-1/2 size-full -translate-1/2 bg-red-600 opacity-85 mix-blend-multiply"></div>
         )}
-        <div className="pointer-events-none absolute top-1/2 left-1/2 z-30 size-full scale-200 text-sm font-bold text-black"></div>
       </motion.div>
-      {/* <div className="absolute size-fit bg-amber-50">
-        <p>x {Math.round(dragDeltaSpringValueX.get())}</p>
-        <p>y {Math.round(dragDeltaSpringValueY.get())}</p>
-      </div> */}
     </Reorder.Item>
   );
 }
 export default Card;
-
-// const target = useMemo(() => actions[0]?.hex, [actions]);
-// const targetScreenPos = useMemo(
-//   () => pixelFromHex(target ?? ""),
-//   [pixelFromHex, target],
-// );

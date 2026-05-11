@@ -1,9 +1,6 @@
 import { customAlphabet } from "nanoid";
 import Room, { roomStatus } from "./room.js";
-import {
-  PlayerDTO,
-  RoomDTO,
-} from "@cafe/shared/schemas/schemas.js";
+import { PlayerDTO, RoomDTO } from "@cafe/shared/schemas/schemas.js";
 
 class Lobby {
   constructor() {
@@ -22,10 +19,10 @@ class Lobby {
   createRoom(playerDTO) {
     try {
       const roomID = this.getRandomRoomCode();
-      console.log(`Room Manager creating new Room with ID ${roomID}`);
+      // console.log(`Room Manager creating new Room with ID ${roomID}`);
       const res = RoomDTO.parse({
         id: roomID,
-        hostID: "hostID",
+        hostID: playerDTO.id,
         players: [],
         status: roomStatus.LOBBY,
       });
@@ -60,7 +57,7 @@ class Lobby {
 
   deleteRoom(roomID) {
     try {
-      console.log(`Deleting Room ${roomID}`);
+      // console.log(`Deleting Room ${roomID}`);
       const room = this.getRoomByID(roomID);
       this.rooms.delete(room.id);
     } catch (error) {}
@@ -90,6 +87,15 @@ class Lobby {
     }
   }
 
+  updateGameInRoom(roomID, actions) {
+    try {
+      // console.log("Lobby,Updating", roomID, actions);
+      const room = this.getRoomByID(roomID);
+      room.updateGame(actions);
+    } catch (error) {
+      throw error;
+    }
+  }
   finishGameInRoom(roomID) {
     try {
       const room = this.getRoomByID(roomID);

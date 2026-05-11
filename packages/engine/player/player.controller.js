@@ -11,12 +11,25 @@ class PlayerController extends Controller {
   constructor(game) {
     super(game);
     this.id = "id";
+    this.game = game;
     this.models = new Map();
   }
 
   init(options) {
-    this.models.set(options?.playerOneID ?? 1, new PlayerModel(options, 1));
-    this.models.set(options?.playerTwoID ?? 2, new PlayerModel(options, 2));
+    this.game.options.players.forEach((player) =>
+      this.models.set(
+        player.id ?? 0,
+        new PlayerModel(options, player ?? 0), //TODO second argument needs .id
+      ),
+    );
+    // this.models.set(
+    //   this.game.options?.players[0].id ?? 0,
+    //   new PlayerModel(options, this.game.options?.players[0] ?? 0),
+    // );
+    // this.models.set(
+    //   this.game.options?.players[1]?.id ?? 1,
+    //   new PlayerModel(options, this.game.options?.players[1] ?? 1),
+    // );
     this.models.forEach((m) => m.shuffle());
     this.drawUpToHandSize();
   }
@@ -28,34 +41,20 @@ class PlayerController extends Controller {
      **/
 
     this.models.forEach((m) => {
-      while (m.hand.length < BASE_HAND_SIZE) m.draw();
+      while (m.hand.length < BASE_HAND_SIZE) m.draw(this.game);
     });
   }
 
   draw(playerID, amount) {
     const model = this.models.get(playerID);
-    for (let n = 0; n < amount; n++) model.draw();
+    for (let n = 0; n < amount; n++) model.draw(this.game);
   }
 
   discardCard(playerID, cardID) {
     const model = this.models.get(playerID);
-    model.discardCard(cardID);
+    console.log("[Player Controller] Discarding", playerID, cardID);
+    model.discardCard(this.game, cardID);
   }
-
-  // checkForEnemyHoldingBase(){
-  //   const baseHex = BASE_COORDS //change to be different for players
-  //   const unitInBase =
-  // }
-
-  // playCard(cardID, options) {
-  //   //play card
-  //   //how does this play with card controller? maybe it calls it here?
-  //   this.discard(cardID);
-  // }
-
-  // burnCard(cardID, options) {
-  //   //burn card
-  // }
 
   get players() {
     return this.models;
@@ -67,4 +66,18 @@ export default PlayerController;
 // validateDeck(deck) { }
 // serialize() {
 //   //TODO turn all needed info into a playerDTO (schemas)
+// }
+// checkForEnemyHoldingBase(){
+//   const baseHex = BASE_COORDS //change to be different for players
+//   const unitInBase =
+// }
+
+// playCard(cardID, options) {
+//   //play card
+//   //how does this play with card controller? maybe it calls it here?
+//   this.discard(cardID);
+// }
+
+// burnCard(cardID, options) {
+//   //burn card
 // }

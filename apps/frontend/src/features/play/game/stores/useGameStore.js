@@ -3,11 +3,12 @@ import { devtools } from "zustand/middleware";
 import GameController from "@cafe/engine/game/game.controller";
 
 const useGameStore = create(
-  devtools((set, get) => ({
+  devtools((set) => ({
     gameController: new GameController(),
-    playerID: 1,
+    // playerID: 1,
     actions: [],
-    effects: [],
+    burnEffects: [],
+    usedBurnEffects: [],
 
     setGameController: (gameController) => {
       set({ gameController: gameController });
@@ -21,20 +22,16 @@ const useGameStore = create(
       set({ actions: [] });
     },
 
-    addEffect: (effect) => {
-      set((state) => ({ effects: [...state.effects, effect] }));
+    addBurnEffect: (effect) => {
+      set((state) => ({ burnEffects: [...state.burnEffects, effect] }));
     },
 
-    resetEffects: () => {
-      set({ effects: [] });
+    resetBurnEffects: () => {
+      set({ burnEffects: [] });
     },
 
-    getNextEffect: () => {
-      const nextEffect = get().effects.shift();
-      set((state) => ({
-        effects: state.effects.filter((val) => val != nextEffect),
-      }));
-      return nextEffect;
+    setUsedBurnEffects: (val) => {
+      set({ usedBurnEffects: val });
     },
   })),
 );
