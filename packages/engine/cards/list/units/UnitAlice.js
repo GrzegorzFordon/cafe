@@ -7,6 +7,7 @@ class UnitAlice extends UnitCardModel {
     super(options);
     this.cardID = "0U01";
     // this.abilities = [new SpawnUnitAbility({ playerID: this.playerID, unit:this })];
+    this.name = "Alice";
     this.unitATK = 2;
     this.unitHP = 3;
     this.speed = 3;

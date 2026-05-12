@@ -90,6 +90,11 @@ class PlayerModel {
     );
   }
 
+  getCardInHand(cardID) {
+    // console.log("Player Model", this.playerID, this.hand);
+    return this.hand.find((card) => card.id === cardID);
+  }
+
   // //Burn Effects
   // addBurnEffect(effect) {
   //   this.activeBurnEffects.push(effect);

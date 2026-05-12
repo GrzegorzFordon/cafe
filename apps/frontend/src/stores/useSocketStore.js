@@ -13,6 +13,9 @@ const useSocketStore = create(
     socket: undefined,
     roomData: undefined,
     socketID: undefined,
+
+    actionsSubAck: false,
+
     connect: () => {
       if (get().socket) return;
       eventBus.connect();
@@ -31,10 +34,9 @@ const useSocketStore = create(
       /**
        * Lobby Events
        */
-      socket?.on("lobby:change", (val, ack) => {
-        eventEmitter.emit("lobby:change", val);
-        ack?.({ status: "ok" });
-      });
+      socket?.on("lobby:change", (val) =>
+        eventEmitter.emit("lobby:change", val),
+      );
 
       /**
        * Room Events
@@ -49,10 +51,9 @@ const useSocketStore = create(
       /**
        * Game Events
        */
+
       socket?.on("room:start", (val) => eventEmitter.emit("room:start", val));
-      socket?.on("game:start", (val) => eventEmitter.emit("game:start", val));
       socket?.on("game:update", (val) => eventEmitter.emit("game:update", val));
-      // socket?.on("game:start", (val) => console.log("SOCKET", val));
 
       set({ socket });
     },
@@ -68,6 +69,10 @@ const useSocketStore = create(
 
     setRoomData: (roomData) => {
       set({ roomData: roomData });
+    },
+
+    setActionsSubAck: (val) => {
+      set({ actionsSubAck: val });
     },
   })),
 );

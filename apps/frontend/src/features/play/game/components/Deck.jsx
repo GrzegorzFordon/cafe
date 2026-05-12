@@ -25,7 +25,7 @@ function Deck() {
   }, [handleEffect]);
 
   return (
-    <div className="absolute bottom-0 left-10 flex size-10 items-center justify-center rounded-2xl bg-amber-50 text-2xl font-black text-black">
+    <div className="absolute bottom-0 left-10 flex size-10 items-center justify-center rounded-2xl bg-amber-50 text-2xl font-black text-black select-none">
       {cardsLeftInDeck}
     </div>
   );

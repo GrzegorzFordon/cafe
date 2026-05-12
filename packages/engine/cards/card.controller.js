@@ -8,9 +8,10 @@ class CardController extends Controller {
 
   init() {}
 
-  resolveCard(playerID, card, options) {
+  resolveCard(playerID, cardID, options) {
     // console.log(this.game);
-    // console.log("[Card Controller] Resolving", card, "with", options);
+    const card = this.game.playerController.getCardInHand(playerID, cardID);
+    console.log("[Card Controller] Resolving", card.name, "with", options);
     card.onPlay(this.game, options);
   }
 }

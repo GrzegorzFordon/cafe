@@ -55,14 +55,14 @@ class GameController {
     // _.defer(() => {
     while (actions.length > 0) {
       const nextAction = actions.shift();
-      console.log("[Game] Next:", nextAction.name);
+      console.log("[Game] Next:", nextAction.name, nextAction.card?.name);
       // nextAction.prototype.execute(this);
       if (nextAction.name === "PLAY") this.handlePlayAction(nextAction);
     }
     // });
 
     _.defer(() => {
-    this.advance();
+      this.advance();
     });
   }
 
@@ -80,9 +80,9 @@ class GameController {
 
   handlePlayAction(action) {
     this.handleAction(action);
-    this.playerController.discardCard(action.playerID, action.card.id);
     const options = { hex: action.hex };
-    // this.cardController.resolveCard(action.playerID, action.card, options);
+    this.cardController.resolveCard(action.playerID, action.card.id, options);
+    this.playerController.discardCard(action.playerID, action.card.id);
   }
 
   handleWincon() {
@@ -95,7 +95,7 @@ class GameController {
      * then if wincon in model is wincon
      * finish()
      */
-    this.playerController.players.forEach((element) => {
+    this.playerController.playerModels.forEach((element) => {
       // console.log("Checking wincon for Player", element.playerID);
     });
   }

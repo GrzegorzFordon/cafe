@@ -19,7 +19,6 @@ class EventBus {
   async processEffects() {
     const eCache = [...this.effects];
     this.effects = [];
-    // console.log(`[EventBus] Processing`);
     while (eCache.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 100));
       const nextEffect = eCache.shift();
@@ -29,11 +28,14 @@ class EventBus {
     }
   }
 
+  /**
+   * Local Sim
+   */
+
   handleSimEffect(e) {
     if (SEND_LOGS) console.log(`[EventBus] Caught:`, e.name);
     EventBus.instance.effects.push(e);
   }
-
   async handleGameAdvance(e) {
     _.defer(() => {
       EventBus.instance.effects.push(e);
@@ -45,16 +47,9 @@ class EventBus {
    * SERVER
    */
 
-  handleGameStartServer(e) {
-    console.log("[EventBus] SERVER Start", e);
-    EventBus.instance.effects.push(new GameAdvancedEffect(GAME_PHASES.START));
-    _.defer(() => EventBus.instance.processEffects());
-  }
-
   handleGameUpdateServer(e) {
     console.log("[EventBus] SERVER Update", e);
     e.effects.forEach((ef) => EventBus.instance.effects.push(ef));
-    // EventBus.instance.effects = e.effects;
     EventBus.instance.effects.push(new GameAdvancedEffect(e.phase));
     _.defer(() => {
       EventBus.instance.processEffects();
@@ -66,7 +61,6 @@ class EventBus {
     EventBus.instance.disconnect();
     // eventEmitter.on("sim:effect", EventBus.instance.handleSimEffect);
     // eventEmitter.on("sim:advance", EventBus.instance.handleGameAdvance);
-    eventEmitter.on("game:start", EventBus.instance.handleGameStartServer);
     eventEmitter.on("game:update", EventBus.instance.handleGameUpdateServer);
   }
 
@@ -74,7 +68,7 @@ class EventBus {
     EventBus.instance.effects = [];
     // eventEmitter.off("sim:effect", EventBus.instance.handleSimEffect);
     // eventEmitter.off("sim:advance", EventBus.instance.handleGameAdvance);
-    eventEmitter.off("game:start", EventBus.instance.handleGameStartServer);
+    // eventEmitter.off("game:start", EventBus.instance.handleGameStartServer);
     eventEmitter.off("game:update", EventBus.instance.handleGameUpdateServer);
   }
 
@@ -90,12 +84,11 @@ class EventBus {
   }
 
   subscribeToGameEffects(sub) {
-    // if (SEND_LOGS) console.log("Subscribing", sub);
+    if (SEND_LOGS) console.log("Subscribing", sub);
     EventBus.instance.observers.add(sub);
   }
   unsubscribeToGameEffects(sub) {
-    // if (SEND_LOGS) console.log("Unsubscribing", sub);
-    // EventBus.instance.observers.filter((val) => val !== sub);
+    if (SEND_LOGS) console.log("Unsubscribing", sub);
     EventBus.instance.observers.delete(sub);
   }
 }

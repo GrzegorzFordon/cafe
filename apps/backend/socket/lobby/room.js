@@ -17,7 +17,7 @@ class Room {
     this.players = [];
     this.status = roomDTO.status;
     this.gameController = new GameController({ players: this.players });
-    // this.eventEmitter = new EventEmitter();
+    this.submittedActions = new Map();
   }
 
   effects = [];
@@ -48,9 +48,29 @@ class Room {
     this.status = roomStatus.INPROGRESS;
   }
 
+  submitActions(playerID, actions) {
+    console.log("[Room] submit actions", playerID, actions.length);
+    this.submittedActions.set(playerID, actions);
+    //for each player, does the map have an entry?
+
+    let allSubmitted = true;
+    this.players.forEach((player) => {
+      if (!this.submittedActions.has(player.id)) allSubmitted = false;
+    });
+    if (allSubmitted) {
+      let combinedActions = [];
+      this.submittedActions.forEach((actions) =>
+        actions.forEach((action) => combinedActions.push(action)),
+      );
+      // console.log("combinedActions", combinedActions);
+      this.updateGame(combinedActions);
+    }
+  }
+
   updateGame(actions) {
     // console.log("ROOM", actions);
     this.gameController.handleActions(actions);
+    this.submittedActions.clear();
   }
 
   finishGame() {

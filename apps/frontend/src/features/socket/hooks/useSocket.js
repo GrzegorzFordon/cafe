@@ -6,6 +6,7 @@ import eventBus from "../../play/game/util/eventBus";
 const useSocket = () => {
   const socket = useSocketStore((state) => state.socket);
   const setRoomData = useSocketStore((state) => state.setRoomData);
+  const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
   /**
    * Chat Actions
    */
@@ -60,10 +61,13 @@ const useSocket = () => {
   const sendActions = useCallback(
     (val) => {
       socket.emit("game:actions", val, (res) => {
-        console.log(res);
+        if (res.status === "ok") {
+          setActionsSubAck(true);
+          console.log("send actions ack")
+        }
       });
     },
-    [socket],
+    [setActionsSubAck, socket],
   );
   const finishGame = useCallback(
     (val) => {

@@ -86,7 +86,14 @@ class Lobby {
       throw error;
     }
   }
-
+  submitPlayerActions(roomID, playerID, actions) {
+    try {
+      const room = this.getRoomByID(roomID);
+      room.submitActions(playerID, actions);
+    } catch (error) {
+      throw error;
+    }
+  }
   updateGameInRoom(roomID, actions) {
     try {
       // console.log("Lobby,Updating", roomID, actions);

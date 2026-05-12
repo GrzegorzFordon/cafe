@@ -28,7 +28,7 @@ const useGame = () => {
     // local version has actions stored already so we send them to the sim immediately for now
     // console.log("[Hook] Submitting");
     // gameController.handleActions(actions);
-    resetActions();
+    // resetActions();
   };
 
   return {

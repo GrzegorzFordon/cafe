@@ -12,12 +12,12 @@ class PlayerController extends Controller {
     super(game);
     this.id = "id";
     this.game = game;
-    this.models = new Map();
+    this.playerModels = new Map();
   }
 
   init(options) {
     this.game.options.players.forEach((player) =>
-      this.models.set(
+      this.playerModels.set(
         player.id ?? 0,
         new PlayerModel(options, player ?? 0), //TODO second argument needs .id
       ),
@@ -30,7 +30,7 @@ class PlayerController extends Controller {
     //   this.game.options?.players[1]?.id ?? 1,
     //   new PlayerModel(options, this.game.options?.players[1] ?? 1),
     // );
-    this.models.forEach((m) => m.shuffle());
+    this.playerModels.forEach((m) => m.shuffle());
     this.drawUpToHandSize();
   }
 
@@ -40,24 +40,28 @@ class PlayerController extends Controller {
      * if their hand is full (to force deckout)
      **/
 
-    this.models.forEach((m) => {
+    this.playerModels.forEach((m) => {
       while (m.hand.length < BASE_HAND_SIZE) m.draw(this.game);
     });
   }
 
   draw(playerID, amount) {
-    const model = this.models.get(playerID);
+    const model = this.playerModels.get(playerID);
     for (let n = 0; n < amount; n++) model.draw(this.game);
   }
 
   discardCard(playerID, cardID) {
-    const model = this.models.get(playerID);
+    const model = this.playerModels.get(playerID);
     console.log("[Player Controller] Discarding", playerID, cardID);
     model.discardCard(this.game, cardID);
   }
 
-  get players() {
-    return this.models;
+  getCardInHand(playerID, cardID) {
+    const model = this.playerModels.get(playerID);
+    if (!model) return;
+    const card = model.getCardInHand(cardID);
+    if (!card) return;
+    return card;
   }
 }
 

@@ -27,8 +27,8 @@ function PlayPage() {
         ) : (
           <LobbyPage />
         )}
-        <p>{JSON.stringify(roomData)}</p>
-        <p>{socketID}</p>
+        {/* <p>{JSON.stringify(roomData)}</p>
+        <p>{socketID}</p> */}
       </div>
     </div>
   );

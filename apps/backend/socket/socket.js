@@ -25,7 +25,9 @@ class Socket {
   }
 
   onCreateRoom(socket, data, ack) {
-    console.log(`[Socket (Server)] Received request to create Room from User ${socket.id}`);
+    console.log(
+      `[Socket (Server)] Received request to create Room from User ${socket.id}`,
+    );
     try {
       const player = PlayerDTO.parse({ id: socket.id });
       const res = this.lobby.createRoom(player);
@@ -45,7 +47,9 @@ class Socket {
   }
 
   onJoinRoom(socket, data, ack) {
-    console.log(`[Socket (Server)] User ${socket.id} is trying to join Room ${data.roomID}`);
+    console.log(
+      `[Socket (Server)] User ${socket.id} is trying to join Room ${data.roomID}`,
+    );
     try {
       //change to see if the room exists, send error back otherwise
 
@@ -67,7 +71,9 @@ class Socket {
   }
 
   onLeaveRoom(socket, data, ack) {
-    console.log(`[Socket (Server)] User ${socket.id} is trying to leave Room ${data.roomID}`);
+    console.log(
+      `[Socket (Server)] User ${socket.id} is trying to leave Room ${data.roomID}`,
+    );
     try {
       const player = PlayerDTO.parse({ id: socket.id });
       this.lobby.leaveRoom(data.roomID, player);
@@ -96,8 +102,11 @@ class Socket {
   onGameActions(socket, data, ack) {
     //either sends the actions to the game manager
     //or it collects all actions for the turn, sorts them by speed, THEN sends that to the game manager
-    // console.log("Server received game actions from", socket.id, data);
-    this.lobby.updateGameInRoom(data.roomID, data.actions);
+    console.log("[Socket (Server)] Received game actions from", socket.id);
+    this.lobby.submitPlayerActions(data.roomID, socket.id, data.actions);
+    ack?.({
+      status: "ok",
+    });
   }
 
   onGameFinish(socket, data, ack) {
@@ -151,7 +160,7 @@ class Socket {
       /**
        * Game Events
        */
-      
+
       socket.on("game:actions", (data, ack) => {
         this.onGameActions(socket, data, ack);
       });
@@ -161,7 +170,11 @@ class Socket {
       });
 
       socket.on("disconnecting", () => {
-        // console.log(socket.rooms); // the Set contains at least the socket ID
+        console.log(socket.rooms); // the Set contains at least the socket ID
+        socket.rooms.forEach((room) => {
+          this.onLeaveRoom(socket, { roomID: room });
+          console.log(room);
+        });
       });
 
       socket.on("disconnect", () => {

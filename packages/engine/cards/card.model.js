@@ -14,7 +14,7 @@ class CardModel {
   }
 
   onPlay(controller, options) {
-    console.log("Playing", this);
+    console.log("[Card Model] Playing", this.name, "with", options);
     const effect = new CardResolvingEffect(this.playerID, this);
     controller.eventEmitter.emit("sim:effect", effect);
     // this.burnEffects.forEach((val) =>

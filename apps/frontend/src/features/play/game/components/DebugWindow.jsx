@@ -6,9 +6,11 @@ import { useCallback, useEffect, useState } from "react";
 import { GAME_PHASES } from "@cafe/engine/config";
 import eventBus from "../util/eventBus";
 import useSocket from "../../../socket/hooks/useSocket";
+import useSocketStore from "../../../../stores/useSocketStore";
 function DebugWindow() {
   const { startGame, submitActions } = useGame();
   // const { startGame } = useSocket();
+  const actionsSubAck = useSocketStore((state) => state.actionsSubAck);
 
   const [phase, setPhase] = useState("PRE");
 
@@ -27,7 +29,11 @@ function DebugWindow() {
     phase == "PRE" ? (
       <GameButton callback={() => startGame()} text={"START GAME"} />
     ) : phase == GAME_PHASES.PLAN ? (
-      <GameButton callback={() => submitActions()} text={"SUBMIT ACTIONS"} />
+      <GameButton
+        callback={() => submitActions()}
+        disabled={actionsSubAck}
+        text={actionsSubAck ? "SUBMITTED" : "SUBMIT ACTIONS"}
+      />
     ) : null;
 
   return (
