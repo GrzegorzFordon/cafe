@@ -52,7 +52,7 @@ class PlayerController extends Controller {
 
   discardCard(playerID, cardID) {
     const model = this.playerModels.get(playerID);
-    console.log("[Player Controller] Discarding", playerID, cardID);
+    // console.log("[Player Controller] Discarding", playerID, cardID);
     model.discardCard(this.game, cardID);
   }
 

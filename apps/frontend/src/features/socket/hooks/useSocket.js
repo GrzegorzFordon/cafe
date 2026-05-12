@@ -24,7 +24,7 @@ const useSocket = () => {
   const joinRoom = useCallback(
     (val) =>
       socket.emit("room:join", val, (res) => {
-        console.log(res);
+        // console.log(res);
         // if (res.status == "ok") setActiveRoomID(res.roomID);
       }),
     [socket],
@@ -32,7 +32,7 @@ const useSocket = () => {
   const createRoom = useCallback(
     (val) =>
       socket.emit("room:create", val, (res) => {
-        console.log(res);
+        // console.log(res);
         // if (res.status == "ok") setActiveRoomID(res.roomID);
       }),
     [socket],
@@ -40,43 +40,43 @@ const useSocket = () => {
   const leaveRoom = useCallback(
     (val) =>
       socket.emit("room:leave", val, (res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == "ok") setRoomData(undefined);
       }),
     [setRoomData, socket],
   );
+  /**
+   * Game Actions
+   */
   const startGame = useCallback(
     (val) => {
-      eventBus.connect();
-      socket.emit("room:start", val, (res) => {
+      // eventBus.connectToServer();
+      socket.emit("game:start", val, (res) => {
         console.log(res);
       });
     },
     [socket],
   );
 
-  /**
-   * Game Actions
-   */
   const sendActions = useCallback(
     (val) => {
       socket.emit("game:actions", val, (res) => {
         if (res.status === "ok") {
           setActionsSubAck(true);
-          console.log("send actions ack")
+          console.log("send actions ack");
         }
       });
     },
     [setActionsSubAck, socket],
   );
-  const finishGame = useCallback(
-    (val) => {
-      socket.emit("game:finish", val, (res) => {
-        console.log(res);
-      });
-    },
-    [socket],
-  );
+  // const finishGame = useCallback(
+  //   (val) => {
+  //     socket.emit("game:finish", val, (res) => {
+  //       console.log(res);
+  //     });
+  //   },
+  //   [socket],
+  // );
 
   return {
     sendMessage,
@@ -85,7 +85,7 @@ const useSocket = () => {
     leaveRoom,
     startGame,
     sendActions,
-    finishGame,
+    // finishGame,
   };
 };
 

@@ -29,8 +29,7 @@ class GameController {
   }
 
   start() {
-    // console.log(`[Game Controller] Started`);
-    console.log("[Game] Initialized, options:", this.options);
+    // console.log("[Game] Initialized, options:", this.options);
 
     this.model = new GameModel(this);
     this.stateMachine.init(this);
@@ -52,14 +51,14 @@ class GameController {
   handleActions(actions) {
     this.advance();
 
-    // _.defer(() => {
-    while (actions.length > 0) {
-      const nextAction = actions.shift();
-      console.log("[Game] Next:", nextAction.name, nextAction.card?.name);
-      // nextAction.prototype.execute(this);
-      if (nextAction.name === "PLAY") this.handlePlayAction(nextAction);
-    }
-    // });
+    _.defer(() => {
+      while (actions.length > 0) {
+        const nextAction = actions.shift();
+        // console.log("[Game] Next:", nextAction.name, nextAction.card?.name);
+        if (nextAction.name === "PLAY") this.handlePlayAction(nextAction);
+        if (nextAction.name === "MOVE") this.handleMoveAction(nextAction);
+      }
+    });
 
     _.defer(() => {
       this.advance();
@@ -67,15 +66,18 @@ class GameController {
   }
 
   handleAction(action) {
-    console.log("[Game] handling", action.id);
+    // console.log("[Game] handling", action.id);
     action.bonuses.forEach((val) => {
       this.playerController.discardCard(action.playerID, val.id);
-      console.log(val);
+      // console.log(val);
     });
   }
 
   handleMoveAction(action) {
     this.handleAction(action);
+    // console.log("[Game] handling", action);
+
+    this.boardController.resolveMove(action.unit, action.hex, action.bonuses);
   }
 
   handlePlayAction(action) {

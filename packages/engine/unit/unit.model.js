@@ -7,10 +7,12 @@ import { nanoid } from "nanoid";
 import UnitMovedEffect from "../effect/effects/unitMoved.effect.js";
 import UnitDamagedEffect from "../effect/effects/unitDamaged.effect.js";
 import UnitDiedEffect from "../effect/effects/unitDied.effect.js";
+import { incrementCounter } from "../util/refCount.js";
 
 class UnitModel {
   constructor(options) {
-    this.id = nanoid();
+    // this.id = nanoid();
+    this.id = incrementCounter();
     // this.options = options;
     this.playerID = options.playerID;
     // this.cardID = options.cardID;
@@ -21,6 +23,7 @@ class UnitModel {
     this.atk = options.unitData.atk ?? 0;
     this.hp = options.unitData.hp ?? 0;
     this.speed = options.unitData.speed ?? 0;
+    // this.onDeathCallback = onDeathCallback;
   }
 
   // get remainingHealth() {
@@ -57,6 +60,7 @@ class UnitModel {
   die(controller) {
     const effect = new UnitDiedEffect(this.id);
     controller.eventEmitter.emit("sim:effect", effect);
+    controller.eventEmitter.emit("sim:inner:unitDeath", this.id);
   }
 }
 

@@ -18,8 +18,8 @@ const useSocketStore = create(
 
     connect: () => {
       if (get().socket) return;
-      eventBus.connect();
-      console.log("Socket Store: Connecting");
+      eventBus.connectToServer();
+      console.log("[Socket Store] Connecting");
       const socket = io(SOCKET_URL);
 
       socket?.on("socket:id", (val) => set({ socketID: val }));
@@ -52,16 +52,19 @@ const useSocketStore = create(
        * Game Events
        */
 
-      socket?.on("room:start", (val) => eventEmitter.emit("room:start", val));
-      socket?.on("game:update", (val) => eventEmitter.emit("game:update", val));
+      // socket?.on("room:start", (val) => eventEmitter.emit("room:start", val));
+
+      socket?.on("socket:game:start", (val) => eventEmitter.emit("game:start", val));
+      socket?.on("socket:game:update", (val) => eventEmitter.emit("game:actions", val));
+      // socket?.on("game:update", (val) => eventEmitter.emit("game:update", val));
 
       set({ socket });
     },
 
     disconnect: () => {
       if (!get().socket) return;
-      eventBus.disconnect();
-      console.log("Socket Store: Disconnecting");
+      // eventBus.disconnect();
+      console.log("[Socket Store] Disconnecting");
       get().socket.disconnect();
       get().socket.offAny();
       set({ socket: undefined, roomData: undefined });

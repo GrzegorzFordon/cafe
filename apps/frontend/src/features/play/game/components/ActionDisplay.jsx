@@ -30,9 +30,9 @@ function ActionDisplay() {
       </div>
       {list}
 
-      <div className="BUTTONS flex w-full justify-center gap-2">
+      {/* <div className="BUTTONS flex w-full justify-center gap-2">
         <GameButton callback={resetActions} text={"RESET"} className="w-full" />
-      </div>
+      </div> */}
     </motion.div>
   );
 }

@@ -26,9 +26,7 @@ function DebugWindow() {
   }, [handleEffectsDEBUG]);
 
   const children =
-    phase == "PRE" ? (
-      <GameButton callback={() => startGame()} text={"START GAME"} />
-    ) : phase == GAME_PHASES.PLAN ? (
+    phase == GAME_PHASES.PLAN ? (
       <GameButton
         callback={() => submitActions()}
         disabled={actionsSubAck}

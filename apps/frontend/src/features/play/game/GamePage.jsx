@@ -12,18 +12,22 @@ import eventBus from "./util/eventBus";
 import Deck from "./components/Deck";
 import useSocketStore from "../../../stores/useSocketStore";
 import useGameStore from "./stores/useGameStore";
+import GameController from "@cafe/engine/game/game.controller";
+import _ from "lodash";
 
 function GamePage() {
   const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
+
   const resetActions = useGameStore((state) => state.resetActions);
 
   const handleEffectGamePage = useCallback(
     async (e) => {
       if (e?.name !== "Game Advanced Effect") return;
-      if (e?.phase !== "UPKEEP") return;
-      console.log("Game Page", e);
-      setActionsSubAck(false);
-      resetActions();
+      if (e?.phase === "UPKEEP") {
+        console.log("Game Page", e);
+        setActionsSubAck(false);
+        resetActions();
+      }
     },
     [resetActions, setActionsSubAck],
   );
@@ -37,7 +41,7 @@ function GamePage() {
     <div className="GAME-PAGE relative flex size-full items-center justify-center overflow-hidden p-2">
       <Board />
       <Hand />
-      {/* <ActionDisplay /> */}
+      <ActionDisplay />
       <DebugWindow />
       <ActionPainter />
       <ActiveCardDisplay />

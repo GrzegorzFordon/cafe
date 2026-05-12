@@ -4,8 +4,7 @@ import GameController from "@cafe/engine/game/game.controller";
 
 const useGameStore = create(
   devtools((set) => ({
-    gameController: new GameController(),
-    // playerID: 1,
+    gameController: undefined,
     actions: [],
     burnEffects: [],
     usedBurnEffects: [],

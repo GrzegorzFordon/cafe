@@ -138,7 +138,6 @@ function Card({ order, card, index }) {
       }}
       transition={easeOut}
       className="relative aspect-2.5/3.5 h-full w-full select-none"
-
     >
       <motion.div
         className="absolute aspect-2.5/3.5 h-full w-full select-none"
@@ -180,6 +179,9 @@ function Card({ order, card, index }) {
         {(isBurned || isBurning.get()) && (
           <div className="absolute top-1/2 left-1/2 size-full -translate-1/2 bg-red-600 opacity-85 mix-blend-multiply"></div>
         )}
+        {/* <div className="absolute top-1/2 left-1/2 size-10 -translate-1/2 rounded-sm bg-amber-50">
+          {card.id}
+        </div> */}
       </motion.div>
     </Reorder.Item>
   );

@@ -119,8 +119,15 @@ class Socket {
   init() {
     console.log("[Socket (Server)] initializing websocket");
 
-    eventEmitter.on("room:advance", (id, phase, effects) =>
-      this.broadcastGameUpdate(id, { phase, effects }),
+    // eventEmitter.on("room:advance", (id, phase, effects) =>
+    //   this.broadcastGameUpdate(id, { phase, effects }),
+    // );
+
+    eventEmitter.on("server:room:start", (roomID, info) =>
+      this.broadcastGameStart(roomID, info),
+    );
+    eventEmitter.on("server:room:actions", (roomID, actions) =>
+      this.broadcastGameActions(roomID, actions),
     );
 
     this.server.on("connection", async (socket) => {
@@ -151,15 +158,16 @@ class Socket {
         this.broadcastRoomState(data.roomID);
         this.broadcastLobbyState();
       });
-      socket.on("room:start", (data, ack) => {
-        this.onGameStart(socket, data, ack);
-        this.broadcastRoomState(data.roomID);
-        this.broadcastLobbyState();
-      });
 
       /**
        * Game Events
        */
+      socket.on("game:start", (data, ack) => {
+        this.onGameStart(socket, data, ack);
+        this.broadcastRoomState(data.roomID);
+        this.broadcastLobbyState();
+        // _.defer(() => this.broadcastGameStart(data.roomID, { data: data }));
+      });
 
       socket.on("game:actions", (data, ack) => {
         this.onGameActions(socket, data, ack);
@@ -202,15 +210,29 @@ class Socket {
     this.server.to(roomID).emit("room:change", schema);
   }
 
-  broadcastGameUpdate(roomID, info) {
+  // broadcastGameUpdate(roomID, info) {
+  //   console.log(
+  //     "[Socket (Server)] Broadcasting Game Update",
+  //     roomID,
+  //     info.phase,
+  //     info.effects.length,
+  //   );
+  //   const schema = { phase: info.phase, effects: info.effects };
+  //   this.server.to(roomID).emit("game:update", schema);
+  // }
+
+  broadcastGameStart(roomID, info) {
+    console.log("[Socket (Server)] Broadcasting Game Start", roomID);
+    this.server.to(roomID).emit("socket:game:start", info);
+  }
+
+  broadcastGameActions(roomID, actions) {
     console.log(
-      "[Socket (Server)] Broadcasting Game Update",
+      "[Socket (Server)] Broadcasting Game Actions",
       roomID,
-      info.phase,
-      info.effects.length,
+      actions.length,
     );
-    const schema = { phase: info.phase, effects: info.effects };
-    this.server.to(roomID).emit("game:update", schema);
+    this.server.to(roomID).emit("socket:game:update", actions);
   }
 }
 

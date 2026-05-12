@@ -6,7 +6,6 @@ class MoveAction extends Action {
     super();
     this.unit = unit;
     this.hex = hex;
-    this.execute = this.execute.bind(this);
     this.name = "MOVE";
   }
 

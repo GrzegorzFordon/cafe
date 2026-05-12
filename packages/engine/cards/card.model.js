@@ -1,10 +1,12 @@
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 import CardResolvingEffect from "../effect/effects/cardResolving.effect.js";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import { BURN_TYPES } from "../config.js";
+import { incrementCounter } from "../util/refCount.js";
 class CardModel {
   constructor(options) {
-    this.id = nanoid();
+    // this.id = nanoid();
+    this.id = incrementCounter();
     this.playerID = options.playerID.id ?? -1;
     this.burnEffects = BURN_TYPES.MOVE;
 
@@ -14,7 +16,7 @@ class CardModel {
   }
 
   onPlay(controller, options) {
-    console.log("[Card Model] Playing", this.name, "with", options);
+    // console.log("[Card Model] Playing", this.name, "with", options);
     const effect = new CardResolvingEffect(this.playerID, this);
     controller.eventEmitter.emit("sim:effect", effect);
     // this.burnEffects.forEach((val) =>

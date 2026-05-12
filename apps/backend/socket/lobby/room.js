@@ -20,7 +20,7 @@ class Room {
     this.submittedActions = new Map();
   }
 
-  effects = [];
+  // effects = [];
 
   addPlayer(PlayerDTO) {
     console.log(`[Room] ${this.id} Adding Player ${PlayerDTO.id}`);
@@ -35,47 +35,49 @@ class Room {
     console.log("[Room] Starting Game Sim", this.id, this.players);
 
     this.gameController.eventEmitter.on("sim:effect", (val) => {
-      console.log("[Room]", this.id, val.name);
-      this.effects.push(val);
+      // console.log("[Room]", this.id, val.name);
+      // this.effects.push(val);
     });
     this.gameController.eventEmitter.on("sim:advance", (val) => {
       // console.log(this.id, val, this.effects);
-      eventEmitter.emit("room:advance", this.id, val.phase, this.effects);
-      this.effects = [];
+      // eventEmitter.emit("room:advance", this.id, val.phase, this.effects);
+      // this.effects = [];
     });
 
     this.gameController.start();
     this.status = roomStatus.INPROGRESS;
+    eventEmitter.emit("server:room:start", this.id, this.players);
   }
 
   submitActions(playerID, actions) {
     console.log("[Room] submit actions", playerID, actions.length);
     this.submittedActions.set(playerID, actions);
-    //for each player, does the map have an entry?
 
     let allSubmitted = true;
+
     this.players.forEach((player) => {
       if (!this.submittedActions.has(player.id)) allSubmitted = false;
     });
+
     if (allSubmitted) {
       let combinedActions = [];
       this.submittedActions.forEach((actions) =>
         actions.forEach((action) => combinedActions.push(action)),
       );
-      // console.log("combinedActions", combinedActions);
+
       this.updateGame(combinedActions);
     }
   }
 
   updateGame(actions) {
-    // console.log("ROOM", actions);
-    this.gameController.handleActions(actions);
+    this.gameController.handleActions([...actions]);
+    eventEmitter.emit("server:room:actions", this.id, actions);
     this.submittedActions.clear();
   }
 
-  finishGame() {
-    this.status = roomStatus.FINISHED;
-  }
+  // finishGame() {
+  //   this.status = roomStatus.FINISHED;
+  // }
 }
 
 export default Room;

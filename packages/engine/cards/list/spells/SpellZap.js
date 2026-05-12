@@ -16,7 +16,7 @@ class SpellZap extends SpellCardModel {
 
   onPlay(controller, options) {
     super.onPlay(controller, options);
-    console.log("zzzZzZZAppin!");
+    // console.log("zzzZzZZAppin!");
   }
 }
 export default SpellZap;

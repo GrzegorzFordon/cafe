@@ -37,22 +37,22 @@ class PlayerModel {
   }
 
   shuffle() {
-    //Fisher–Yates shuffle
-    let index = this.deck.length;
-    while (index != 0) {
-      let rndIndex = Math.floor(Math.random() * index);
-      index--;
-      [this.deck[index], this.deck[rndIndex]] = [
-        this.deck[rndIndex],
-        this.deck[index],
-      ];
-    }
+    // //Fisher–Yates shuffle
+    // let index = this.deck.length;
+    // while (index != 0) {
+    //   let rndIndex = Math.floor(Math.random() * index);
+    //   index--;
+    //   [this.deck[index], this.deck[rndIndex]] = [
+    //     this.deck[rndIndex],
+    //     this.deck[index],
+    //   ];
+    // }
   }
 
   draw(controller) {
     const cardID = this.deck.shift();
     if (!cardID) {
-      console.log("Add Player Lost Game Here");
+      // console.log("Add Player Lost Game Here");
       return;
     }
     const cardModel = CardList.get(cardID);
