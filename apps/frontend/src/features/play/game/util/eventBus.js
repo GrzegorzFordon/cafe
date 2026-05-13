@@ -3,7 +3,7 @@ import GameAdvancedEffect from "@cafe/engine/effect/effects/gameAdvanced.effect"
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import _ from "lodash";
 
-const SEND_LOGS = 1;
+const SEND_LOGS = 0;
 
 class EventBus {
   static instance = null;
@@ -30,7 +30,7 @@ class EventBus {
   }
 
   handleSimEffect(e) {
-    if (SEND_LOGS) console.log(`[EventBus] Caught:`, e.name);
+    if (SEND_LOGS) console.log(`[EventBus] Caught:`, e);
     EventBus.instance.effects.push(e);
   }
 

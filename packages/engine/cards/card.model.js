@@ -2,12 +2,13 @@
 import CardResolvingEffect from "../effect/effects/cardResolving.effect.js";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import { BURN_TYPES } from "../config.js";
-import { incrementCounter } from "../util/refCount.js";
+// import { incrementCounter } from "../util/refCount.js";
 class CardModel {
   constructor(options) {
     // this.id = nanoid();
-    this.id = incrementCounter();
-    this.playerID = options.playerID.id ?? -1;
+    // this.id = incrementCounter();
+    this.id = options.id;
+    this.playerID = options.playerID;
     this.burnEffects = BURN_TYPES.MOVE;
 
     // this.schema = options.schema;

@@ -17,7 +17,6 @@ import _ from "lodash";
 
 function GamePage() {
   const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
-
   const resetActions = useGameStore((state) => state.resetActions);
 
   const handleEffectGamePage = useCallback(

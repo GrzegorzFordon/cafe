@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Card from "../Card/Card.jsx";
 import { AnimatePresence, Reorder } from "motion/react";
 import eventBus from "../util/eventBus.js";
@@ -9,15 +9,15 @@ import useSocketStore from "../../../../stores/useSocketStore.js";
 
 const SEND_LOGS = 0;
 
-function Hand({playerID}) {
+function Hand() {
   const [cards, setCards] = useState([]);
   const { isCardBurned, hasActionsOfType } = useAction();
   const socketID = useSocketStore((state) => state.socketID);
 
   const handleEffect = useCallback(
     async (e) => {
-      // console.log("[Hand]", socketID, e.playerID?.id, socketID === e.playerID?.id);
-      if (socketID !== e.playerID?.id) return;
+      // console.log("[Hand]", socketID, e.playerID, socketID === e.playerID);
+      if (socketID !== e.playerID) return;
 
       if (e.name == "Card Drawn Effect") {
         if (SEND_LOGS) console.log("[Hand] Caught Draw: ", e);
@@ -32,6 +32,14 @@ function Hand({playerID}) {
     [socketID],
   );
 
+  const filteredCards = useMemo(
+    () =>
+      cards.filter(
+        (val) => !isCardBurned(val) && !hasActionsOfType(val, "PLAY"),
+      ),
+    [cards, hasActionsOfType, isCardBurned],
+  );
+
   useEffect(() => {
     eventBus.subscribeToGameEffects(handleEffect);
     return () => eventBus.unsubscribeToGameEffects(handleEffect);
@@ -39,17 +47,14 @@ function Hand({playerID}) {
 
   const list = (
     <AnimatePresence>
-      {cards.map((val, i) => {
+      {filteredCards.map((val, i) => {
         return (
-          !isCardBurned(val) &&
-          !hasActionsOfType(val.id, "PLAY") && (
-            <Card
-              key={val.id}
-              order={val}
-              card={val}
-              index={i / (cards.length - 1)}
-            />
-          )
+          <Card
+            key={val.id}
+            order={val}
+            card={val}
+            index={i / (filteredCards.length - 1)}
+          />
         );
       })}
     </AnimatePresence>

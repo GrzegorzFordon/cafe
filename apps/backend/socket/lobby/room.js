@@ -72,7 +72,7 @@ class Room {
   updateGame(actions) {
     this.gameController.handleActions([...actions]);
     eventEmitter.emit("server:room:actions", this.id, actions);
-    this.submittedActions.clear();
+    this.submittedActions = new Map();
   }
 
   // finishGame() {

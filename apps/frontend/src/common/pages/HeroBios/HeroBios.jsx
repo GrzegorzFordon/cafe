@@ -1,10 +1,7 @@
-import image from "../../../assets/heroes.PNG"
+import image from "../../../assets/heroes.PNG";
+import FramedHero from "./FramedHero";
 
 function HeroBios() {
-  return (
-    <>
-    <img src={image} width={"60%"}/>
-    </>
-  )
+  return <FramedHero />;
 }
-export default HeroBios
+export default HeroBios;

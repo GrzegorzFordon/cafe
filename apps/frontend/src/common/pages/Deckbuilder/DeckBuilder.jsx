@@ -1,7 +1,9 @@
+import builderSprite from "../../../assets/deckbuilder.png";
+
 function DeckBuilder() {
   return (
-    <div className="flex size-full max-h-72 max-w-xl items-center justify-center bg-amber-200 text-black text-2xl font-bold">
-      DeckBuilder.
+    <div className="flex size-9/10 items-center justify-center text-2xl font-bold text-black">
+      <img src={builderSprite} alt="" className="size-fit"/>
     </div>
   );
 }

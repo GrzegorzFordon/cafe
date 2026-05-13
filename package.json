@@ -23,6 +23,10 @@
     "packages/*"
   ],
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/free-regular-svg-icons": "^7.2.0",
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/react-fontawesome": "^3.3.1",
     "awilix": "^13.0.3",
     "eventemitter3": "^5.0.4",
     "immer": "^11.1.7",

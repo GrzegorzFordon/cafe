@@ -19,7 +19,6 @@ class GameController {
     this.model = new GameModel(options);
     this.stateMachine = new StateMachine();
     this.eventEmitter = new EventEmitter();
-
     //controllers
     this.boardController = new BoardController(this);
     this.playerController = new PlayerController(this);
@@ -30,11 +29,11 @@ class GameController {
 
   start() {
     // console.log("[Game] Initialized, options:", this.options);
-
+    console.log(this.options);
     this.model = new GameModel(this);
     this.stateMachine.init(this);
     this.boardController.init(this);
-    this.playerController.init(this); //TODO Handle both players
+    this.playerController.init(this);
     this.unitController.init(this);
     this.advance();
   }
@@ -54,29 +53,25 @@ class GameController {
     _.defer(() => {
       while (actions.length > 0) {
         const nextAction = actions.shift();
-        // console.log("[Game] Next:", nextAction.name, nextAction.card?.name);
         if (nextAction.name === "PLAY") this.handlePlayAction(nextAction);
         if (nextAction.name === "MOVE") this.handleMoveAction(nextAction);
       }
-    });
-
-    _.defer(() => {
       this.advance();
     });
+
+    // _.defer(() => {
+    // });
   }
 
   handleAction(action) {
     // console.log("[Game] handling", action.id);
     action.bonuses.forEach((val) => {
       this.playerController.discardCard(action.playerID, val.id);
-      // console.log(val);
     });
   }
 
   handleMoveAction(action) {
     this.handleAction(action);
-    // console.log("[Game] handling", action);
-
     this.boardController.resolveMove(action.unit, action.hex, action.bonuses);
   }
 

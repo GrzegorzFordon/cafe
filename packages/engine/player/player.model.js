@@ -6,12 +6,34 @@ import CardDrawnEffect from "../effect/effects/cardDrawn.effect.js";
 import CardDiscardedEffect from "../effect/effects/cardDiscarded.effect.js";
 import { CardList } from "../cards/cardList.js";
 import PlayerActionsCountEffect from "../effect/effects/playerActionsCount.effect.js";
+import prng from "../util/prng.js";
 
 class PlayerModel {
   constructor(options, playerID) {
     this.playerID = playerID;
     this.hand = [];
     this.deck = [
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
+      "0U01",
       "0U01",
       "0U01",
       "0U01",
@@ -25,28 +47,29 @@ class PlayerModel {
       // "0U07",
       // "0U08",
       // "0U09",
-      "0S01",
-      "0S01",
-      "0S01",
-      "0S01",
-      "0S01",
+      // "0S01",
+      // "0S01",
+      // "0S01",
+      // "0S01",
+      // "0S01",
     ];
     this.discard = [];
     this.actionPoints = 2;
+    this.autoIncrement = 0;
     // this.activeBurnEffects = [];
   }
 
   shuffle() {
-    // //Fisher–Yates shuffle
-    // let index = this.deck.length;
-    // while (index != 0) {
-    //   let rndIndex = Math.floor(Math.random() * index);
-    //   index--;
-    //   [this.deck[index], this.deck[rndIndex]] = [
-    //     this.deck[rndIndex],
-    //     this.deck[index],
-    //   ];
-    // }
+    //Fisher–Yates shuffle
+    let index = this.deck.length;
+    while (index != 0) {
+      let rndIndex = Math.floor(prng * index);
+      index--;
+      [this.deck[index], this.deck[rndIndex]] = [
+        this.deck[rndIndex],
+        this.deck[index],
+      ];
+    }
   }
 
   draw(controller) {
@@ -56,7 +79,10 @@ class PlayerModel {
       return;
     }
     const cardModel = CardList.get(cardID);
-    const card = new cardModel({ playerID: this.playerID });
+    const card = new cardModel({
+      playerID: this.playerID,
+      id: this.autoIncrement++,
+    });
     this.hand.push(card);
     const effect = new CardDrawnEffect(this.playerID, card, this.deck.length);
     controller.eventEmitter.emit("sim:effect", effect);
@@ -70,7 +96,11 @@ class PlayerModel {
     }
     this.discard.push(card);
     this.hand = this.hand.filter((val) => val.id != card.id);
-    const effect = new CardDiscardedEffect(this.playerID, card);
+    const effect = new CardDiscardedEffect(
+      this.playerID,
+      card,
+      this.discard.length,
+    );
     controller.eventEmitter.emit("sim:effect", effect);
   }
 

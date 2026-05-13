@@ -19,17 +19,10 @@ class PlayerController extends Controller {
     this.game.options.players.forEach((player) =>
       this.playerModels.set(
         player.id ?? 0,
-        new PlayerModel(options, player ?? 0), //TODO second argument needs .id
+        new PlayerModel(options, player.id ?? 0), //TODO second argument needs .id
       ),
     );
-    // this.models.set(
-    //   this.game.options?.players[0].id ?? 0,
-    //   new PlayerModel(options, this.game.options?.players[0] ?? 0),
-    // );
-    // this.models.set(
-    //   this.game.options?.players[1]?.id ?? 1,
-    //   new PlayerModel(options, this.game.options?.players[1] ?? 1),
-    // );
+
     this.playerModels.forEach((m) => m.shuffle());
     this.drawUpToHandSize();
   }
@@ -41,7 +34,10 @@ class PlayerController extends Controller {
      **/
 
     this.playerModels.forEach((m) => {
-      while (m.hand.length < BASE_HAND_SIZE) m.draw(this.game);
+      while (m.hand.length < BASE_HAND_SIZE) {
+        if (!m.deck.length) break;
+        m.draw(this.game);
+      }
     });
   }
 
@@ -74,14 +70,4 @@ export default PlayerController;
 // checkForEnemyHoldingBase(){
 //   const baseHex = BASE_COORDS //change to be different for players
 //   const unitInBase =
-// }
-
-// playCard(cardID, options) {
-//   //play card
-//   //how does this play with card controller? maybe it calls it here?
-//   this.discard(cardID);
-// }
-
-// burnCard(cardID, options) {
-//   //burn card
 // }

@@ -5,6 +5,7 @@ import GamePage from "./game/GamePage";
 import Chat from "./lobby/components/Chat";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import useGame from "./game/hooks/useGame";
+import useGameStore from "./game/stores/useGameStore";
 // import { RoomDTO } from "@cafe/shared/schemas/schemas.js";
 
 function PlayPage() {
@@ -12,7 +13,8 @@ function PlayPage() {
   const disconnect = useSocketStore((state) => state.disconnect);
   const roomData = useSocketStore((state) => state.roomData);
   const socketID = useSocketStore((state) => state.socketID);
-
+  const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
+  const resetActions = useGameStore((state) => state.resetActions);
   const { startGame, processActions } = useGame();
 
   useEffect(() => {
@@ -25,9 +27,11 @@ function PlayPage() {
   const handleGameStart = useCallback(
     (e) => {
       console.log("GAMEPAGE", e);
+      setActionsSubAck(false);
+      resetActions();
       startGame(e);
     },
-    [startGame],
+    [resetActions, setActionsSubAck, startGame],
   );
 
   const handleGameActions = useCallback(
@@ -56,8 +60,10 @@ function PlayPage() {
         ) : (
           <LobbyPage />
         )}
-        {/* <p>{JSON.stringify(roomData)}</p>
-        <p>{socketID}</p> */}
+        {/* <p>{JSON.stringify(roomData)}</p> */}
+        <p className="absolute bottom-2 left-2 text-start text-amber-50/50">
+          {socketID}
+        </p>
       </div>
     </div>
   );

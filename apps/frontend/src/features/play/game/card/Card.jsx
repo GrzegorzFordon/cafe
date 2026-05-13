@@ -12,7 +12,7 @@ import useBoard from "../hooks/useBoard.js";
 import useAction from "../hooks/useAction.js";
 import PlayAction from "@cafe/engine/action/actions/play.action.js";
 import BurnAction from "@cafe/engine/action/actions/burn.action.js";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import ReactRough, { Line, Rectangle } from "rough-react-wrapper";
 import useGameStore from "../stores/useGameStore.js";
 import { BURN_TYPES } from "@cafe/engine/config.js";
@@ -35,7 +35,10 @@ function Card({ order, card, index }) {
   const addBurnEffect = useGameStore((state) => state.addBurnEffect);
   const ref = useRef();
 
-  const isPlayed = hasActionsOfType(card.id, "PLAY");
+  const isPlayed = useMemo(
+    () => hasActionsOfType(card.id, "PLAY"),
+    [card.id, hasActionsOfType],
+  );
   const isBurned = isCardBurned(card);
 
   const angle = MAX_HAND_FAN_ANGLE_DEGREES * (index - 0.5);
@@ -140,7 +143,7 @@ function Card({ order, card, index }) {
       className="relative aspect-2.5/3.5 h-full w-full select-none"
     >
       <motion.div
-        className="absolute aspect-2.5/3.5 h-full w-full select-none"
+        className="absolute aspect-2.5/3.5 h-full w-full select-none active:cursor-grabbing"
         key={card}
         whileHover={
           isPlayed || isBurned

@@ -19,8 +19,10 @@
 
   background: var(--bg);
   background-image: url(../../public/bg_tex.png);
+  background-size: 10rem;
+  background-blend-mode:soft-light;
   opacity: 0.8;
-  overflow: hidden;
+  overflow-x: hidden;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -41,7 +43,7 @@
     --text: #9ca3af;
     --text-h: #f3f4f6;
     /* --bg: #16171d; */
-    --bg: #cdcdcf;
+    --bg: #2b242a;
     --border: #2e303a;
     /* --code-bg: #1f2028; */
     /* --code-bg: #cdcdcf; */

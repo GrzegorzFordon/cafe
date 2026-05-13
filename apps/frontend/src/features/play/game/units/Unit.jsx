@@ -10,19 +10,21 @@ import MoveAction from "@cafe/engine/action/actions/move.action.js";
 import UnitHUD from "./UnitHUD";
 import useValidate from "../hooks/useValidate";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+import useSocketStore from "../../../../stores/useSocketStore";
 
 function Unit({ unit }) {
   const { getActionsByUnit, addActionObject } = useAction();
   const { mousedOverHex, pixelFromHex, isHexWithinBoard } = useBoard();
   const { getLegalMoves } = useValidate();
   const sprite = useMemo(
-    () => (unit?.unitID == 1 ? unitSprite : unitSpriteA),
+    () => (unit?.unitID === "0L01" ? unitSprite : unitSpriteA),
     [unit],
   );
   const ref = useRef();
   const zIndex = useMotionValue(100);
   const pos = pixelFromHex(unit.hex);
-
+  const socketID = useSocketStore((state) => state.socketID);
+  const isFriendly = socketID == unit.playerID;
   const myAction = useMemo(
     () => getActionsByUnit(unit),
     [getActionsByUnit, unit],
@@ -68,7 +70,7 @@ function Unit({ unit }) {
       </AnimatePresence>
 
       <motion.div
-        drag={!hasActions}
+        drag={!hasActions && isFriendly}
         dragSnapToOrigin={!hasActions}
         onPointerDown={() => {
           if (!hasActions) handleDragStart();
@@ -77,8 +79,11 @@ function Unit({ unit }) {
         onDragStart={() => handleDragStart()}
         onDrag={() => handleDrag()}
         onDragEnd={() => handleDragEnd()}
-        className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl"
-        style={{ filter: hasActions ? "brightness(0.4)" : "none" }}
+        className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl hover:not-[isFriendly]:cursor-grab active:not-[isFriendly]:cursor-grabbing"
+        style={{
+          filter: hasActions ? "brightness(0.4)" : "none",
+          pointerEvents: isFriendly ? "all" : "none",
+        }}
       >
         <motion.img
           className="pointer-events-none size-fit opacity-55 select-none"
@@ -87,7 +92,16 @@ function Unit({ unit }) {
         />
       </motion.div>
 
-      <UnitHUD atk={unit.atk} hp={unit.hp} speed={unit.speed} />
+      <UnitHUD
+        atk={unit.atk}
+        hp={unit.hp}
+        speed={unit.speed}
+        isFriendly={isFriendly}
+      />
+      {/* <div className="text-sm bg-amber-50 size-fit">{JSON.stringify(unit.playerID)}</div> */}
+      {!isFriendly && (
+        <div className="absolute top-1/2 left-1/2 size-10 -translate-1/2 rounded-2xl bg-red-500 mix-blend-color"></div>
+      )}
     </motion.div>
   );
 }

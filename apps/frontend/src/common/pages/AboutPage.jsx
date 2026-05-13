@@ -1,8 +1,17 @@
-import image from "../../assets/team.png"
+import image from "../../assets/team.png";
+import FramedHero from "./HeroBios/FramedHero";
 
 function About() {
   return (
-    <img src={image} width={"60%"}/>
-  )
+    <div className="size-full">
+      //{" "}
+      <img
+        className="absolute top-1/2 left-1/2 -translate-1/2"
+        src={image}
+        width={"60%"}
+      />
+      <FramedHero />
+    </div>
+  );
 }
-export default About
+export default About;

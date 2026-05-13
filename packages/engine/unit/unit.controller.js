@@ -14,15 +14,28 @@ class UnitController extends Controller {
     this.game = game;
     this.units = [];
     this.onUnitDeathCallback = this.onUnitDeathCallback.bind(this);
+    this.autoIncrement = 0;
   }
 
-  init(options) {
-    this.spawnUnit(1, options?.leader ?? 1, BASE_HEX_MAP.get(0), {
+  init() {
+    const stats = {
       atk: 1,
       hp: 2,
       speed: 3,
-    });
-    this.spawnUnit(2, 2, BASE_HEX_MAP.get(1), { atk: 1, hp: 2, speed: 3 });
+    };
+
+    this.spawnUnit(
+      this.game.options.players[0].id,
+      "0L01",
+      BASE_HEX_MAP.get(0),
+      stats,
+    );
+    this.spawnUnit(
+      this.game.options.players[1]?.id ?? 13,
+      "0L02",
+      BASE_HEX_MAP.get(1),
+      stats,
+    );
     this.game.eventEmitter.on("sim:inner:unitDeath", this.onUnitDeathCallback);
   }
 
@@ -32,13 +45,20 @@ class UnitController extends Controller {
   }
 
   spawnUnit(playerID, unitID, hex, unitData) {
-    const unit = new UnitModel({ playerID, unitID, hex, unitData });
+    const unit = new UnitModel({
+      playerID,
+      unitID,
+      hex,
+      unitData,
+      id: this.autoIncrement++,
+    });
     this.units.push(unit);
     this.game.eventEmitter.emit("sim:effect", new UnitSpawnedEffect(unit));
   }
 
   moveUnit(unitID, hex) {
     const unit = this.units.find((val) => val.id == unitID);
+    if (!unit) return;
     unit.move(this.game, hex);
   }
 

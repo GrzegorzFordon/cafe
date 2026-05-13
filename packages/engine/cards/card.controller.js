@@ -9,7 +9,10 @@ class CardController extends Controller {
   init() {}
 
   resolveCard(playerID, cardID, options) {
-    // console.log(this.game.playerController.playerModels.get(playerID), cardID);
+    const player = this.game.playerController.playerModels.get(playerID);
+    let ids = [];
+    player.hand.forEach((card) => ids.push(card.id));
+    console.log(ids, cardID);
     const card = this.game.playerController.getCardInHand(playerID, cardID);
     // console.log("[Card Controller] Resolving", card.name, "with", options);
     card.onPlay(this.game, options);

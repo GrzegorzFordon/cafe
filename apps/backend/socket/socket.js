@@ -9,7 +9,7 @@ class Socket {
   constructor(httpServer) {
     this.server = new SocketIOServer(httpServer, {
       cors: {
-        origin: ["http://localhost:5173", "http://192.168.2.115:5173"],
+        origin: ["http://localhost:5173", "http://192.168.2.115:5173", "*"],
         methods: ["GET", "POST"],
       },
     });
@@ -179,9 +179,10 @@ class Socket {
 
       socket.on("disconnecting", () => {
         console.log(socket.rooms); // the Set contains at least the socket ID
-        socket.rooms.forEach((room) => {
-          this.onLeaveRoom(socket, { roomID: room });
-          console.log(room);
+        socket.rooms.forEach((roomID) => {
+          if (roomID && roomID !== socket.id)
+            this.onLeaveRoom(socket, { roomID });
+          // console.log(room);
         });
       });
 
