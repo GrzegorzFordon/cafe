@@ -1,7 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion, useMotionValue } from "motion/react";
-import unitSprite from "../assets/units/character_yellow_front.png";
-import unitSpriteA from "../assets/units/character_purple_front.png";
+import unitYellow from "../assets/units/character_yellow_front.png";
+import unitBeige from "../assets/units/character_beige_front.png";
+import unitPink from "../assets/units/character_pink_front.png";
+import unitPurple from "../assets/units/character_purple_front.png";
+import unitPulp from "../assets/units/unitPulp01.png";
+import crownSprite from "../assets/crown.png";
 import { useMemo, useRef } from "react";
 import useBoard from "../hooks/useBoard";
 import useAction from "../hooks/useAction";
@@ -11,18 +15,40 @@ import UnitHUD from "./UnitHUD";
 import useValidate from "../hooks/useValidate";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import useSocketStore from "../../../../stores/useSocketStore";
+import useSocket from "../../../socket/hooks/useSocket";
 
 function Unit({ unit }) {
   const { getActionsByUnit, addActionObject } = useAction();
   const { mousedOverHex, pixelFromHex, isHexWithinBoard } = useBoard();
   const { getLegalMoves } = useValidate();
-  const sprite = useMemo(
-    () => (unit?.unitID === "0L01" ? unitSprite : unitSpriteA),
-    [unit],
-  );
+  const sprite = useMemo(() => {
+    switch (unit.unitID) {
+      case "0L01":
+        return unitBeige;
+      case "0L02":
+        return unitPink;
+      case "0L03":
+        return unitPurple;
+      case "0U01":
+        return unitYellow;
+      case "0U02":
+        return unitPulp;
+      default:
+        return unitYellow;
+    }
+  }, [unit]);
   const ref = useRef();
+
+  const { isFirstPlayer } = useSocket();
+
   const zIndex = useMotionValue(100);
-  const pos = pixelFromHex(unit.hex);
+
+  const rotHex = useMemo(
+    () => (isFirstPlayer ? unit.hex : unit.hex.mirror()),
+    [isFirstPlayer, unit.hex],
+  );
+
+  const pos = pixelFromHex(rotHex);
   const socketID = useSocketStore((state) => state.socketID);
   const isFriendly = socketID == unit.playerID;
   const myAction = useMemo(
@@ -31,6 +57,7 @@ function Unit({ unit }) {
   );
 
   const hasActions = useMemo(() => myAction.length > 0, [myAction]);
+  const isLeader = useMemo(() => unit.unitID.includes("L"), [unit.unitID]);
 
   const handleDragStart = () => {
     eventEmitter.emit("unit:drag:start", unit);
@@ -53,21 +80,24 @@ function Unit({ unit }) {
     <motion.div
       ref={ref}
       layout
-      animate={{ scale: 1 }}
       onLayoutMeasure={() => handleDrag()}
       className="UNIT CONTAINER absolute size-15 -translate-1/2 -translate-y-15 select-none"
-      style={{ left: pos.x, top: pos.y, zIndex: zIndex }}
+      style={{
+        left: pos.x,
+        top: pos.y,
+        zIndex: zIndex,
+        // scale: isLeader ? 2 : 1,
+      }}
     >
-      <AnimatePresence>
-        <motion.img
-          animate={{ scale: 1 }}
-          initial={{ scale: 0 }}
-          exit={{ scale: 0 }}
-          draggable="false"
-          className="UNIT select-none"
-          src={sprite}
-        />
-      </AnimatePresence>
+      <motion.img
+        draggable="false"
+        className="UNIT select-none"
+        initial={{ scale: 0 }}
+        animate={{ scale: isLeader ? 1 : 0.8 }}
+        exit={{ scale: 0 }}
+        src={sprite}
+        style={{ filter: hasActions ? "brightness(0.4)" : "none" }}
+      />
 
       <motion.div
         drag={!hasActions && isFriendly}
@@ -83,10 +113,13 @@ function Unit({ unit }) {
         style={{
           filter: hasActions ? "brightness(0.4)" : "none",
           pointerEvents: isFriendly ? "all" : "none",
+          opacity: 0,
+          scale: isLeader ? 1 : 0.8,
         }}
+        whileDrag={{ opacity: 0.5 }}
       >
-        <motion.img
-          className="pointer-events-none size-fit opacity-55 select-none"
+        <img
+          className="pointer-events-none size-fit select-none"
           draggable="false"
           src={sprite}
         />
@@ -98,9 +131,23 @@ function Unit({ unit }) {
         speed={unit.speed}
         isFriendly={isFriendly}
       />
-      {/* <div className="text-sm bg-amber-50 size-fit">{JSON.stringify(unit.playerID)}</div> */}
+
+      <div className="size-fit bg-amber-50 text-sm">
+        {/* {JSON.stringify(unit.unitID.includes("L"))} */}
+        {/* {isLeader ? "leader" : "x"} */}
+      </div>
+
       {!isFriendly && (
-        <div className="absolute top-1/2 left-1/2 size-10 -translate-1/2 rounded-2xl bg-red-500 mix-blend-color"></div>
+        <div className="absolute top-1/2 left-1/2 flex size-fit -translate-1/2 justify-center items-center text-sm text-red-300 bg-red-950 rounded-sm opacity-80 scale-90">
+          ENEMY
+        </div>
+      )}
+
+      {isLeader && (
+        <img
+          className="pointer-events-none absolute top-2/7 left-3/5 -translate-1/2 scale-45 rotate-18"
+          src={crownSprite}
+        />
       )}
     </motion.div>
   );

@@ -4,6 +4,8 @@ export const PLAYER_COUNT = 2;
 
 export const BASE_HAND_SIZE = 5;
 
+export const BOARD_SIZE = 3;
+
 export const GAME_PHASES = {
   START: "START",
   UPKEEP: "UPKEEP",
@@ -22,6 +24,22 @@ export const ZONES = {
 export const BASE_HEX_MAP = new Map([
   [0, new Hex(0, 2, -2)],
   [1, new Hex(0, -2, 2)],
+]);
+
+// export const SPAWNS_HEX_MAP = new Map({
+//   0: [
+//     [0, new Hex(-1, 2, -1)],
+//     [1, new Hex(1, 2, -3)],
+//   ],
+//   1: [
+//     [0, new Hex(1, -2, 1)],
+//     [1, new Hex(-1, -1, 2)],
+//   ],
+// });
+
+export const TARGET_HEX_MAP = new Map([
+  [0, new Hex(-2, 1, 1)],
+  [1, new Hex(2, -1, -1)],
 ]);
 
 export const BURN_TYPES = {

@@ -14,6 +14,7 @@ import useSocketStore from "../../../stores/useSocketStore";
 import useGameStore from "./stores/useGameStore";
 import GameController from "@cafe/engine/game/game.controller";
 import _ from "lodash";
+import SideBoard from "./board/SideBoard";
 
 function GamePage() {
   const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
@@ -39,6 +40,7 @@ function GamePage() {
   return (
     <div className="GAME-PAGE relative flex size-full items-center justify-center overflow-hidden p-2">
       <Board />
+      {/* <SideBoard/> */}
       <Hand />
       <ActionDisplay />
       <DebugWindow />

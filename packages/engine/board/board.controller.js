@@ -48,7 +48,7 @@ class BoardController extends Controller {
       if (occupant) {
         this.game.unitController.moveUnit(unit.id, goalHex);
         if (unit.playerID !== occupant.playerID) {
-          this.game.unitController.handleCombat(unit, occupant, nextHex);
+          this.game.unitController.handleCombat(unit.id, occupant.id, nextHex);
         }
         break;
       }

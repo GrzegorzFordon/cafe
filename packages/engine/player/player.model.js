@@ -6,7 +6,8 @@ import CardDrawnEffect from "../effect/effects/cardDrawn.effect.js";
 import CardDiscardedEffect from "../effect/effects/cardDiscarded.effect.js";
 import { CardList } from "../cards/cardList.js";
 import PlayerActionsCountEffect from "../effect/effects/playerActionsCount.effect.js";
-import prng from "../util/prng.js";
+import uniformFloat from "../util/prng.js";
+import { BURN_TYPES } from "../config.js";
 
 class PlayerModel {
   constructor(options, playerID) {
@@ -16,42 +17,34 @@ class PlayerModel {
       "0U01",
       "0U01",
       "0U01",
+      "0U02",
+      "0U02",
+      "0U02",
+      "0U02",
+      "0U02",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
       "0U01",
       "0U01",
       "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      "0U01",
-      // "0U02",
-      // "0U03",
-      // "0U04",
-      // "0U05",
-      // "0U06",
-      // "0U07",
-      // "0U08",
-      // "0U09",
-      // "0S01",
-      // "0S01",
-      // "0S01",
-      // "0S01",
-      // "0S01",
+      "0U02",
+      "0U02",
+      "0U02",
+      "0U02",
+      "0U02",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
+      "0S01",
     ];
     this.discard = [];
     this.actionPoints = 2;
@@ -61,14 +54,22 @@ class PlayerModel {
 
   shuffle() {
     //Fisher–Yates shuffle
-    let index = this.deck.length;
-    while (index != 0) {
-      let rndIndex = Math.floor(prng * index);
-      index--;
-      [this.deck[index], this.deck[rndIndex]] = [
-        this.deck[rndIndex],
-        this.deck[index],
-      ];
+    // let index = this.deck.length;
+    // while (index != 0) {
+    //   let rndIndex = Math.floor(uniformFloat * index);
+    //   console.log(uniformFloat);
+    //   index--;
+    //   [this.deck[index], this.deck[rndIndex]] = [
+    //     this.deck[rndIndex],
+    //     this.deck[index],
+    //   ];
+    // }
+
+    for (var i = this.deck.length - 1; i > 0; i--) {
+      var j = Math.floor(uniformFloat() * (i + 1));
+      var temp = this.deck[i];
+      this.deck[i] = this.deck[j];
+      this.deck[j] = temp;
     }
   }
 
@@ -123,6 +124,20 @@ class PlayerModel {
   getCardInHand(cardID) {
     // console.log("Player Model", this.playerID, this.hand);
     return this.hand.find((card) => card.id === cardID);
+  }
+
+  getHeldBurnTypes() {
+    const holdingPower = this.hand.some(
+      (card) => card.burnEffects.includes[BURN_TYPES.POWER],
+    );
+    const holdingSpeed = this.hand.some(
+      (card) => card.burnEffects.includes[BURN_TYPES.SPEED],
+    );
+    const holdingMove = this.hand.some(
+      (card) => card.burnEffects.includes[BURN_TYPES.MOVE],
+    );
+
+    return { power: holdingPower, speed: holdingSpeed, move: holdingMove };
   }
 
   // //Burn Effects

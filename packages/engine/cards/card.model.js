@@ -1,19 +1,16 @@
-// import { nanoid } from "nanoid";
 import CardResolvingEffect from "../effect/effects/cardResolving.effect.js";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import { BURN_TYPES } from "../config.js";
-// import { incrementCounter } from "../util/refCount.js";
+
 class CardModel {
   constructor(options) {
-    // this.id = nanoid();
-    // this.id = incrementCounter();
     this.id = options.id;
     this.playerID = options.playerID;
-    this.burnEffects = BURN_TYPES.MOVE;
-
+    this.burnEffects = [];
     // this.schema = options.schema;
     this.cardID = options.cardID ?? "0000"; //TODO move to schema
-    this.speed = options.speed ?? Math.round(Math.random() * 10);
+    this.name = options.name ?? "Card";
+    this.speed = options.speed ?? 0;
   }
 
   onPlay(controller, options) {
@@ -24,6 +21,8 @@ class CardModel {
     //   controller.playerController.discardCard(this.playerID, val.id),
     // );
   }
+
+  onBurn(controller, options) {}
 }
 
 export default CardModel;

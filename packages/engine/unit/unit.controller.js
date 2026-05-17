@@ -19,22 +19,56 @@ class UnitController extends Controller {
 
   init() {
     const stats = {
-      atk: 1,
-      hp: 2,
+      atk: 2,
+      hp: 6,
       speed: 3,
+      reach: 2,
     };
-
+    const statsB = {
+      atk: 5,
+      hp: 4,
+      speed: 2,
+      reach: 2,
+    };
+    const statsMinion = {
+      atk: 0,
+      hp: 2,
+      speed: 6,
+      reach: 3,
+    };
+    const statsMinionB = {
+      atk: 1,
+      hp: 1,
+      speed: 5,
+      reach: 3,
+    };
+    const ids = this.game.options.players.map((p) => p.id);
+    this.spawnUnit(ids[0], "0L01", BASE_HEX_MAP.get(0).neighbor(1), stats);
+    this.spawnUnit(ids[0], "0L03", BASE_HEX_MAP.get(0).neighbor(4), statsB);
+    this.spawnUnit(ids[0], "0U01", BASE_HEX_MAP.get(0).neighbor(2), statsMinion);
     this.spawnUnit(
-      this.game.options.players[0].id,
-      "0L01",
-      BASE_HEX_MAP.get(0),
+      ids[1] ?? 13,
+      "0L02",
+      BASE_HEX_MAP.get(1).neighbor(3),
       stats,
     );
     this.spawnUnit(
-      this.game.options.players[1]?.id ?? 13,
-      "0L02",
-      BASE_HEX_MAP.get(1),
-      stats,
+      ids[1] ?? 13,
+      "0U02",
+      BASE_HEX_MAP.get(1).neighbor(1),
+      statsMinionB,
+    );
+    this.spawnUnit(
+      ids[1] ?? 13,
+      "0U02",
+      BASE_HEX_MAP.get(1).neighbor(2),
+      statsMinionB,
+    );
+    this.spawnUnit(
+      ids[1] ?? 13,
+      "0U02",
+      BASE_HEX_MAP.get(1).neighbor(4),
+      statsMinionB,
     );
     this.game.eventEmitter.on("sim:inner:unitDeath", this.onUnitDeathCallback);
   }
@@ -65,13 +99,20 @@ class UnitController extends Controller {
   /**
    * COMBAT
    */
-  handleCombat(attackerUnit, defenderUnit, hex) {
-    const effect = new CombatStartedEffect(attackerUnit.id, defenderUnit.id);
+  handleCombat(attackerUnitID, defenderUnitID, hex) {
+    // console.log(attackerUnitID, defenderUnitID, this.units);
+    const attacker = this.units.find((val) => val.id == attackerUnitID);
+    const defender = this.units.find((val) => val.id == defenderUnitID);
+    const attackerAtk = attacker.atk;
+    const defenderAtk = defender.atk;
+    const effect = new CombatStartedEffect(attackerUnitID, defenderUnitID);
     this.game.eventEmitter.emit("sim:effect", effect);
-    if (attackerUnit.atk >= defenderUnit.atk) {
-      // this.units = this.units.filter((val) => val != defenderUnit);
-      defenderUnit.die(this.game);
-    }
+    defender.takeDamage(this.game, attackerAtk);
+    // attacker.takeDamage(this.game, defenderAtk);
+    // if (attackerUnit.atk >= defenderUnit.atk) {
+    //   // this.units = this.units.filter((val) => val != defenderUnit);
+    //   defenderUnit.die(this.game);
+    // }
   }
 
   getUnitAtHex(hex) {

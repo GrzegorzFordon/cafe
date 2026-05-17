@@ -22,11 +22,11 @@ function Hand() {
       if (e.name == "Card Drawn Effect") {
         if (SEND_LOGS) console.log("[Hand] Caught Draw: ", e);
         setCards((p) => [...p, e.card]);
-        await new Promise((resolve) => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 50));
       } else if (e.name == "Card Discarded Effect") {
         if (SEND_LOGS) console.log("[Hand] Caught Discard: ", e);
         setCards((p) => p.filter((val) => val.id != e.card.id));
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 10));
       }
     },
     [socketID],
@@ -64,7 +64,7 @@ function Hand() {
     <div className="flex w-fit flex-col">
       <Reorder.Group
         as="div"
-        className="absolute -bottom-5 left-1/2 z-20 flex h-44 max-w-9/10 -translate-x-1/2 items-center justify-center gap-2"
+        className="absolute bottom-5 left-1/2 z-20 flex h-44 max-w-9/10 -translate-x-1/2 items-center justify-center gap-2"
         axis="x"
         values={cards}
         onReorder={setCards}

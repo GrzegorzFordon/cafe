@@ -3,7 +3,7 @@ import GameAdvancedEffect from "@cafe/engine/effect/effects/gameAdvanced.effect"
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import _ from "lodash";
 
-const SEND_LOGS = 0;
+const SEND_LOGS = 1;
 
 class EventBus {
   static instance = null;

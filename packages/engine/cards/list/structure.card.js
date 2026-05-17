@@ -1,16 +1,13 @@
 import CardModel from "../card.model.js";
 
-
-/**
- * general card entity
- */
-
-class Structure extends CardModel {
-  constructor() {
-    // this.id =
+class StructureCardModel extends CardModel {
+  constructor(options) {
+    super(options);
   }
 
-  // spawnUnit() {}
+  onPlay(controller, options) {
+    super.onPlay(controller, options);
+  }
 }
 
-export default Structure;
+export default StructureCardModel;

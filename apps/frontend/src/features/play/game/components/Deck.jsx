@@ -31,10 +31,10 @@ function Deck() {
 
   return (
     <>
-      <div className="absolute bottom-10 left-5 flex h-22 w-15 items-center justify-center rounded-2xl bg-amber-50 text-2xl font-black text-black select-none">
+      <div className="absolute -rotate-3 bottom-10 left-5 flex h-22 w-15 items-center justify-center rounded-2xl bg-amber-50 text-2xl font-black text-black select-none">
         {cardsLeftInDeck}
       </div>
-      <div className="absolute right-5 bottom-10 flex h-22 w-15 items-center justify-center rounded-2xl bg-amber-50 text-2xl font-black text-black select-none">
+      <div className="absolute rotate-3 right-5 bottom-10 flex h-22 w-15 items-center justify-center rounded-2xl bg-amber-50 text-2xl font-black text-black select-none">
         {cardsInDiscard}
       </div>
     </>

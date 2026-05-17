@@ -4,14 +4,17 @@ import Point from "@cafe/shared/util/point";
 import { Hex } from "@cafe/shared/util/hex";
 import useMousePos from "../hooks/useMousePos";
 import useBoardStore from "../stores/useBoardStore";
+import { BOARD_SIZE } from "@cafe/engine/config";
+import useSocket from "../../../socket/hooks/useSocket";
 
 export const Y_SQUASH = 0.7;
-export const BOARD_SIZE = 2;
+// export const BOARD_SIZE = 3;
 
 const useBoard = () => {
   const mousePos = useMousePos();
   const boardRef = useBoardStore((state) => state.boardRef);
   const tileSize = useBoardStore((state) => state.tileSize);
+  const { isFirstPlayer } = useSocket();
 
   const layout = useMemo(
     () =>
@@ -57,8 +60,9 @@ const useBoard = () => {
       y: Math.round(mousePos.y - top),
     };
     const hex = layout.pixelToHexRounded(offsetMousePos);
+    const rotHex = isFirstPlayer ? hex : hex.mirror();
     return hex;
-  }, [layout, mousePos, boardRef]);
+  }, [boardRef, mousePos, layout, isFirstPlayer]);
 
   const boardPos = useMemo(() => {
     const rect = boardRef?.getBoundingClientRect();
@@ -69,7 +73,6 @@ const useBoard = () => {
   }, [boardRef]);
 
   const isMousedOverHexWithinBoard = isHexWithinBoard(mousedOverHex);
-
 
   return {
     hexList,

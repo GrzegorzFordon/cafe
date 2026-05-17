@@ -9,9 +9,7 @@ class SpellZap extends SpellCardModel {
     this.cardID = "0S01";
     this.name = "zZzap!!";
     this.speed = 5;
-    this.burnEffects = BURN_TYPES.POWER;
-
-    // this.abilities = [new SpawnUnitAbility({ playerID: this.playerID, unit:this })];
+    this.burnEffects = [BURN_TYPES.POWER, BURN_TYPES.SPEED];
   }
 
   onPlay(controller, options) {

@@ -59,6 +59,14 @@ class PlayerController extends Controller {
     if (!card) return;
     return card;
   }
+
+  getHeldBurnTypes(playerID) {
+    const model = this.playerModels.get(playerID);
+    if (!model) return;
+    const res = model.getHeldBurnTypes();
+    if (!res) return;
+    return res;
+  }
 }
 
 export default PlayerController;

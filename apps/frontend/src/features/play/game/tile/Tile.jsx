@@ -9,23 +9,37 @@ import { AnimatePresence, motion, useMotionValue } from "motion/react";
 import Unit from "../units/Unit.jsx";
 import useAction from "../hooks/useAction.js";
 import arrowSprite from "../assets/arrow_down.png";
-import { BASE_HEX_MAP } from "@cafe/engine/config";
-import { useRef } from "react";
+import { BASE_HEX_MAP, TARGET_HEX_MAP } from "@cafe/engine/config";
+import { useMemo, useRef } from "react";
 import useBoardStore from "../stores/useBoardStore.js";
+import { Hex } from "@cafe/shared/util/hex.js";
 
-function Tile({ hex, isActive }) {
-  const { mousedOverHex, pixelFromHex } = useBoard(hex);
+function Tile({ hex, isActive, isMirrored }) {
+  const { mousedOverHex, pixelFromHex } = useBoard();
   const { getActionsByHex } = useAction();
-
   const ref = useRef();
 
-  const position = pixelFromHex(hex);
+  const rotHex = useMemo(
+    () => (isMirrored ? hex.mirror() : hex),
+    [hex, isMirrored],
+  );
+
+  const position = useMemo(() => pixelFromHex(rotHex), [pixelFromHex, rotHex]);
   const tileSize = useBoardStore((state) => state.tileSize);
 
-  const actions = getActionsByHex(hex);
+  const actions = getActionsByHex(rotHex);
 
-  const isHover = hex.isEqual(mousedOverHex);
-  const isBase = BASE_HEX_MAP.values().some((v) => hex.isEqual(v));
+  const isHover = rotHex.isEqual(mousedOverHex);
+  const isBase = BASE_HEX_MAP.values().some((v) => rotHex.isEqual(v));
+  const isTarget = TARGET_HEX_MAP.values().some((v) => rotHex.isEqual(v));
+  const isOuterEdge = useMemo(
+    () => rotHex.distance(new Hex(0, 0, 0)) === 4,
+    [rotHex],
+  );
+  const isOuterEdgeCorner = useMemo(
+    () => isOuterEdge && (rotHex.q === 0 || rotHex.r === 0 || rotHex.s === 0),
+    [rotHex, isOuterEdge],
+  );
   // const isSpawn = BASE_HEX_MAP.values().some((v)=> )
   // const isBase = false;
 
@@ -38,6 +52,8 @@ function Tile({ hex, isActive }) {
         top: position.y - tileSize * 0.5,
         width: tileSize,
         height: tileSize,
+        opacity: isOuterEdge ? 0.8 : 1.0,
+        scale: isOuterEdgeCorner ? 0 : isOuterEdge ? 0.1 : 1.0,
       }}
     >
       <img
@@ -53,6 +69,22 @@ function Tile({ hex, isActive }) {
           src={spriteBaseZone}
           alt=""
         />
+      )}
+      {isTarget && (
+        <>
+          <img
+            draggable="false"
+            className="absolute scale-140 scale-y-96 opacity-90"
+            src={spriteBaseZone}
+            alt=""
+          />
+          <img
+            draggable="false"
+            className="absolute scale-120 scale-y-82 opacity-90"
+            src={spriteBaseZone}
+            alt=""
+          />
+        </>
       )}
 
       <AnimatePresence>
@@ -84,9 +116,7 @@ function Tile({ hex, isActive }) {
       </AnimatePresence>
 
       {/* <div className="absolute size-fit rounded-sm bg-amber-50 text-sm">
-        {hex.q}|
-        {hex.r}|
-        {hex.s}
+        {rotHex.q}|{rotHex.r}|{rotHex.s}
       </div> */}
 
       {actions.length > 0 && (

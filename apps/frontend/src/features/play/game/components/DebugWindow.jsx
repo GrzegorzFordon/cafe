@@ -7,12 +7,22 @@ import { GAME_PHASES } from "@cafe/engine/config";
 import eventBus from "../util/eventBus";
 import useSocket from "../../../socket/hooks/useSocket";
 import useSocketStore from "../../../../stores/useSocketStore";
+import { useHotkeys } from "react-hotkeys-hook";
 function DebugWindow() {
   const { startGame, submitActions } = useGame();
   // const { startGame } = useSocket();
   const actionsSubAck = useSocketStore((state) => state.actionsSubAck);
 
   const [phase, setPhase] = useState("PRE");
+
+  useHotkeys(
+    "space",
+    () => {
+      if (phase === GAME_PHASES.PLAN) submitActions();
+    },
+    {},
+    phase,
+  );
 
   const handleEffectsDEBUG = useCallback((e) => {
     if (e.name != "Game Advanced Effect") return;

@@ -23,7 +23,7 @@ function Units() {
         draft.push(clone);
       });
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 200));
     },
     [setUnits],
   );
@@ -41,6 +41,19 @@ function Units() {
     [setUnits],
   );
 
+  const handleEffectTakeDamage = useCallback(
+    async (e) => {
+      if (e.name != "Unit Damaged Effect") return;
+      setUnits((draft) => {
+        const unit = draft.find((val) => val.id === e.unitID);
+        unit.hp -= e.amount;
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    },
+    [setUnits],
+  );
+
   // useEffect(() => console.log("UNITS", units), [units]);
 
   const handleEffectDie = useCallback(
@@ -50,7 +63,7 @@ function Units() {
 
       setUnits((draft) => draft.filter((val) => val.id !== e.unitID));
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     },
     [setUnits],
   );
@@ -62,13 +75,20 @@ function Units() {
   useEffect(() => {
     eventBus.subscribeToGameEffects(handleEffectSpawn);
     eventBus.subscribeToGameEffects(handleEffectMove);
+    eventBus.subscribeToGameEffects(handleEffectTakeDamage);
     eventBus.subscribeToGameEffects(handleEffectDie);
     return () => {
       eventBus.unsubscribeToGameEffects(handleEffectSpawn);
       eventBus.unsubscribeToGameEffects(handleEffectMove);
+      eventBus.unsubscribeToGameEffects(handleEffectTakeDamage);
       eventBus.unsubscribeToGameEffects(handleEffectDie);
     };
-  }, [handleEffectDie, handleEffectMove, handleEffectSpawn]);
+  }, [
+    handleEffectDie,
+    handleEffectMove,
+    handleEffectSpawn,
+    handleEffectTakeDamage,
+  ]);
 
   const list = (
     <AnimatePresence>

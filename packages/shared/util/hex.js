@@ -21,6 +21,10 @@ class Hex {
   rotateRight() {
     return new Hex(-this.r, -this.s, -this.q);
   }
+
+  mirror() {
+    return this.rotateRight().rotateRight().rotateRight();
+  }
   static direction(direction) {
     return Hex.directions[direction];
   }

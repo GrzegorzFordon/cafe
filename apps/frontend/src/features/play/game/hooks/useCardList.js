@@ -17,6 +17,8 @@ import _15 from "../assets/cards/15.png";
 import _16 from "../assets/cards/16.png";
 import _def from "../assets/cards/def.png";
 import _0S01 from "../assets/cards/0S01.png";
+import _0S02 from "../assets/cards/0S02.png";
+import _pulp from "../assets/cards/pulp01.png";
 // import useGameStore from "../stores/useGameStore";
 
 const useCardList = (cardID) => {
@@ -32,7 +34,7 @@ const useCardList = (cardID) => {
       case "0U01":
         return _01;
       case "0U02":
-        return _12;
+        return _pulp;
       case "0U03":
         return _13;
       case "0U04":
@@ -48,7 +50,7 @@ const useCardList = (cardID) => {
       case "0U09":
         return _09;
       case "0S01":
-        return _0S01;
+        return _0S02;
       default:
         return _def;
     }

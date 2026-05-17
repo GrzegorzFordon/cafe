@@ -16,6 +16,7 @@ import { useMemo, useRef } from "react";
 import ReactRough, { Line, Rectangle } from "rough-react-wrapper";
 import useGameStore from "../stores/useGameStore.js";
 import { BURN_TYPES } from "@cafe/engine/config.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 // import rough from "roughjs";
 
 /**
@@ -69,6 +70,8 @@ function Card({ order, card, index }) {
   });
 
   const handlePlay = () => {
+    eventEmitter.emit("card:drag:end", card);
+
     dragOffsetSpringValueX.jump(0);
     dragOffsetSpringValueY.jump(0);
     dragDeltaSpringValueX.jump(0);
@@ -84,6 +87,10 @@ function Card({ order, card, index }) {
       addBurnEffect(card);
     }
     isBurning.set(false);
+  };
+
+  const handleDragStart = () => {
+    eventEmitter.emit("card:drag:start", card);
   };
 
   const handleDrag = (e, info) => {
@@ -108,8 +115,8 @@ function Card({ order, card, index }) {
     //drag offset delta for 3d rotation
     // dragDeltaMotionValueX.set(Math.max(Math.min(info.delta.x * 5, 30), -30));
     // dragDeltaMotionValueY.set(Math.max(Math.min(info.delta.y * 5, 30), -30));
-    dragDeltaMotionValueX.set(info.delta.x);
-    dragDeltaMotionValueY.set(info.delta.y);
+    // dragDeltaMotionValueX.set(info.delta.x);
+    // dragDeltaMotionValueY.set(info.delta.y);
   };
 
   return (
@@ -128,7 +135,7 @@ function Card({ order, card, index }) {
       layout
       value={order}
       dragSnapToOrigin={!isBurned && !isBurned}
-      onDragStart={(e, info) => handleDrag(e, info)}
+      onDragStart={() => handleDragStart()}
       onDrag={(e, info) => handleDrag(e, info)}
       onDragEnd={handlePlay}
       // onChange={(e, info) => handleDrag(e, info)}
@@ -150,8 +157,9 @@ function Card({ order, card, index }) {
             ? {}
             : {
                 scale: 1.15,
-                rotate: `${angle * 0.2}deg`,
-                transition: { duration: 0.1 },
+                rotateZ: `${angle * 0.2}deg`,
+                transition: { duration: 0.2, ease: easeOut },
+                translateY: `-10px`,
               }
         }
         style={{
@@ -179,12 +187,9 @@ function Card({ order, card, index }) {
           )}
         </div>
 
-        {(isBurned || isBurning.get()) && (
+        {/* {(isBurned || isBurning.get()) ?? (
           <div className="absolute top-1/2 left-1/2 size-full -translate-1/2 bg-red-600 opacity-85 mix-blend-multiply"></div>
-        )}
-        {/* <div className="absolute top-1/2 left-1/2 size-10 -translate-1/2 rounded-sm bg-amber-50">
-          {card.id}
-        </div> */}
+        )} */}
       </motion.div>
     </Reorder.Item>
   );

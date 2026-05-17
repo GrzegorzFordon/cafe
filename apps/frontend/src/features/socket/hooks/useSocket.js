@@ -1,12 +1,16 @@
 import useSocketStore from "../../../stores/useSocketStore";
-// import { useCallback, useEffect } from "react";
-import { useCallback } from "react";
-import eventBus from "../../play/game/util/eventBus";
+import { useCallback, useMemo } from "react";
+// import eventBus from "../../play/game/util/eventBus";
 
 const useSocket = () => {
   const socket = useSocketStore((state) => state.socket);
+  const socketID = useSocketStore((state) => state.socketID);
+  const roomData = useSocketStore((state) => state.roomData);
   const setRoomData = useSocketStore((state) => state.setRoomData);
   const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
+
+  const isFirstPlayer = useMemo(() => true, []);
+
   /**
    * Chat Actions
    */
@@ -45,6 +49,7 @@ const useSocket = () => {
       }),
     [setRoomData, socket],
   );
+
   /**
    * Game Actions
    */
@@ -63,7 +68,6 @@ const useSocket = () => {
       socket.emit("game:actions", val, (res) => {
         if (res.status === "ok") {
           setActionsSubAck(true);
-          console.log("send actions ack");
         }
       });
     },
@@ -79,6 +83,7 @@ const useSocket = () => {
   // );
 
   return {
+    isFirstPlayer,
     sendMessage,
     joinRoom,
     createRoom,

@@ -1,8 +1,17 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./routes/routes.jsx";
 import { VFXProvider } from "react-vfx";
+import { useEffect } from "react";
 
 function App() {
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+  };
+  useEffect(() => {
+    document.addEventListener("contextmenu", handleContextMenu);
+    return () => document.addEventListener("contextmenu", handleContextMenu);
+  });
+
   return (
     <VFXProvider>
       <div className="flex h-dvh w-dvw">

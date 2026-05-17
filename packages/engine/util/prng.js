@@ -1,7 +1,7 @@
-import { uniformInt } from "pure-rand/distribution/uniformInt";
+import { uniformFloat32 } from "pure-rand/distribution/uniformFloat32";
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
-const seed = 42;
+const seed = 3234234234234;
 const prng = xoroshiro128plus(seed);
 
-export default prng;
+export default () => uniformFloat32(prng);

@@ -1,4 +1,5 @@
 import { Hex } from "@cafe/shared/util/hex.js";
+import { BOARD_SIZE } from "../config.js";
 
 class BoardModel {
   constructor() {
@@ -7,16 +8,17 @@ class BoardModel {
   }
 
   setupBoard(options) {
-    const N = 2;
+    const N = BOARD_SIZE;
     for (let q = -N; q <= N; q++) {
       const r1 = Math.max(-N, -q - N);
       const r2 = Math.min(N, -q + N);
       for (let r = r1; r <= r2; r++) {
-        this.hexList.push(new Hex(q, r, -q - r));
+        if (q !== 0 || r !== 0) this.hexList.push(new Hex(q, r, -q - r));
       }
     }
   }
 
+  //change to use the line walk alg from controller
   getLegalMoves(hex, reach, isDiagonal) {
     const dirs = isDiagonal ? Hex.diagonals : Hex.directions;
     const moves = [];
