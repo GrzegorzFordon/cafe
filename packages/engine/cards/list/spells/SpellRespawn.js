@@ -7,8 +7,8 @@ class SpellB extends SpellCardModel {
   constructor(options) {
     super(options);
     this.cardID = "0S02";
-    this.name = "Spell B";
-    this.speed = 3;
+    this.name = "Re-Spawn";
+    this.speed = 6;
     this.burnEffects = [BURN_TYPES.MOVE];
   }
 

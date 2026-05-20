@@ -15,16 +15,18 @@ import useGameStore from "./stores/useGameStore";
 import GameController from "@cafe/engine/game/game.controller";
 import _ from "lodash";
 import SideBoard from "./board/SideBoard";
+import useBoard from "./hooks/useBoard";
 
 function GamePage() {
   const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
   const resetActions = useGameStore((state) => state.resetActions);
+  const { spawnsInfo } = useBoard();
 
   const handleEffectGamePage = useCallback(
     async (e) => {
       if (e?.name !== "Game Advanced Effect") return;
-      if (e?.phase === "UPKEEP") {
-        console.log("Game Page", e);
+      if (e?.phase === "PLAN") {
+        // console.log("Game Page", e);
         setActionsSubAck(false);
         resetActions();
       }
@@ -46,8 +48,9 @@ function GamePage() {
       <DebugWindow />
       <ActionPainter />
       <ActiveCardDisplay />
-      <BurnDisplay />
+      {/* <BurnDisplay /> */}
       <Deck />
+      <span className="absolute left-1/2 top-1/2 z-50 bg-amber-50">{JSON.stringify(spawnsInfo)}</span>
     </div>
   );
 }

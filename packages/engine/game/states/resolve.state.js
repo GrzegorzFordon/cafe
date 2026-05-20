@@ -5,10 +5,10 @@ import { GAME_PHASES } from "../../config.js";
 import GameAdvancedEffect from "../../effect/effects/gameAdvanced.effect.js";
 
 class ResolveState extends State {
-  constructor() {
+  constructor(options) {
     super();
     this.name = "Resolve State";
-    this.next = states.UPKEEP;
+    this.next = options.lastPhaseSpeed <= 1 ? states.UPKEEP : states.PLAN;
   }
 
   onEnter(controller) {

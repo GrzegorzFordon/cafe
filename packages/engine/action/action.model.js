@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 
 class Action {
   constructor() {
-    this.id = nanoid();
+    // this.id = nanoid();
     this.playerID = undefined;
     this.bonuses = [];
     // this.execute = this.execute.bind(this);

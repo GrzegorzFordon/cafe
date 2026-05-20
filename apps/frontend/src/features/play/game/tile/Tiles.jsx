@@ -5,12 +5,15 @@ import Tile from "./Tile.jsx";
 import useValidate from "../hooks/useValidate.js";
 import { Hex } from "@cafe/shared/util/hex.js";
 import useSocket from "../../../socket/hooks/useSocket.js";
+import eventBus from "../util/eventBus.js";
+import { useImmer } from "use-immer";
 
 function Tiles() {
   const { hexList, mousedOverHex } = useBoard();
-  const { getLegalMoves } = useValidate();
+  const { getLegalMoves, getLegalTargets } = useValidate();
   const [legalTiles, setLegalTiles] = useState([]);
   const [isCardDrag, setIsCardDrag] = useState(false);
+  const [spawns, setSpawns] = useImmer(new Map());
 
   const { isFirstPlayer } = useSocket();
 
@@ -26,16 +29,44 @@ function Tiles() {
     setLegalTiles([]);
   };
 
-  const handleCardDragStart = () => {
-    console.log("drag start");
-    setIsCardDrag(1);
-  };
+  const handleCardDragStart = useCallback(
+    (unit) => {
+      const result = getLegalTargets(unit);
+      setLegalTiles(result);
+      setIsCardDrag(1);
+    },
+    [getLegalTargets],
+  );
 
   const handleCardDragEnd = () => {
+    setLegalTiles([]);
     setIsCardDrag(0);
   };
 
-  useEffect(() => console.log(isCardDrag), [isCardDrag]);
+  const handleEffectTiles = useCallback(
+    async (e) => {
+      if (e.name === "Spawn Used Effect")
+        // setSpawns(
+        //   (p) => new Map(p.set(new Hex(e.hex.q, e.hex.r, e.hex.s), e.unit)),
+        // );
+        setSpawns((draft) =>
+          draft.set(new Hex(e.hex.q, e.hex.r, e.hex.s), e.unit),
+        );
+      if (e.name === "Spawn Freed Effect")
+        // setSpawns((p) => (p = p.delete(e.hex)));
+        setSpawns((draft) => {
+          const key = draft.keys().find((val) => val.isEqual(e.hex));
+          draft.delete(key);
+        });
+      // await new Promise((resolve) => setTimeout(resolve, 1500));
+    },
+    [setSpawns],
+  );
+
+  useEffect(() => {
+    eventBus.subscribeToGameEffects(handleEffectTiles);
+    return () => eventBus.unsubscribeToGameEffects(handleEffectTiles);
+  }, [handleEffectTiles]);
 
   useEffect(() => {
     eventEmitter.on("unit:drag:start", handleUnitDragStart);
@@ -48,7 +79,7 @@ function Tiles() {
       eventEmitter.off("card:drag:start", handleCardDragStart);
       eventEmitter.off("card:drag:end", handleCardDragEnd);
     };
-  }, [handleUnitDragStart]);
+  }, [handleCardDragStart, handleUnitDragStart]);
 
   const list = useMemo(
     () =>
@@ -57,6 +88,7 @@ function Tiles() {
         const isActiveCard = isCardDrag && mousedOverHex.isEqual(hex);
         const isActive = isActiveUnit || isActiveCard;
         const centerHex = new Hex(0, 0, 0);
+        const isSpawnInUse = spawns.keys().some((val) => val.isEqual(hex));
         return (
           !hex.isEqual(centerHex) && (
             <Tile
@@ -64,11 +96,12 @@ function Tiles() {
               hex={hex}
               isActive={isActive}
               isMirrored={!isFirstPlayer}
+              isSpawnInUse={isSpawnInUse}
             />
           )
         );
       }),
-    [hexList, isCardDrag, isFirstPlayer, legalTiles, mousedOverHex],
+    [hexList, isCardDrag, isFirstPlayer, legalTiles, mousedOverHex, spawns],
   );
 
   return (

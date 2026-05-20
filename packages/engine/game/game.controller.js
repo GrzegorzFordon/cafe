@@ -7,10 +7,13 @@ import UnitController from "../unit/unit.controller.js";
 import GameModel from "./game.model.js";
 import { nanoid } from "nanoid";
 import StateMachine, { states } from "./states/stateMachine.js";
-import { GAME_PHASES } from "../config.js";
+import { BASE_HEX_MAP, GAME_PHASES, TARGET_HEX_MAP } from "../config.js";
 import GameAdvancedEffect from "../effect/effects/gameAdvanced.effect.js";
 import _ from "lodash";
 import EventEmitter from "eventemitter3";
+import ChargedModifier from "../unit/modifier/charged.modifier.js";
+import UnitChargedEffect from "../effect/effects/unitCharged.effect.js";
+import UnitModifiedEffect from "../effect/effects/unitModified.effect.js";
 
 class GameController {
   //options are: player decks, player heroes
@@ -27,14 +30,14 @@ class GameController {
     this.actionController = new ActionController(this);
   }
 
-  start() {
+  async start() {
     // console.log("[Game] Initialized, options:", this.options);
     console.log(this.options);
     this.model = new GameModel(this);
-    this.stateMachine.init(this);
-    this.boardController.init(this);
-    this.playerController.init(this);
-    this.unitController.init(this);
+    await this.stateMachine.init(this);
+    await this.boardController.init(this);
+    await this.playerController.init(this);
+    await this.unitController.init(this);
     this.advance();
   }
 
@@ -47,8 +50,20 @@ class GameController {
     this.stateMachine.changeState(states.END);
   }
 
+  sortActionsBySpeed(actions) {
+    return actions.sort(
+      (a, b) =>
+        (b?.card?.speed ? b.card.speed : b.unit.speed) -
+        (a?.card?.speed ? a.card.speed : a.unit.speed),
+    );
+  }
+
   handleActions(actions) {
     this.advance();
+    console.log(JSON.stringify(actions));
+    // actions.forEach((val) => console.log(val.card.speed));
+    actions = this.sortActionsBySpeed(actions);
+    // actions.forEach((val) => console.log(val.card.speed));
 
     _.defer(() => {
       while (actions.length > 0) {
@@ -94,6 +109,43 @@ class GameController {
      */
     this.playerController.playerModels.forEach((element) => {
       // console.log("Checking wincon for Player", element.playerID);
+    });
+  }
+
+  handleChargedUnitInBase() {
+    this.unitController.units.forEach((unit) => {
+      const unitStandsOnBase =
+        BASE_HEX_MAP.get(0).isEqual(unit.hex) ||
+        BASE_HEX_MAP.get(1).isEqual(unit.hex);
+
+      const unitCharged = unit.modifiers.some((mod) => mod.name === "Charged");
+      // console.log(unit.id, unitStandsOnBase, unitCharged);
+      if (unitStandsOnBase && unitCharged) {
+        console.log(unit.id, "is charged and standing on base");
+        // const modifier = new ChargedModifier();
+        // unit.addModifier(modifier);
+        // const effect = new UnitModifiedEffect(unit.id, modifier, true);
+        // this.eventEmitter.emit("sim:effect", effect);
+        unit.die(this);
+      }
+    });
+  }
+  handleCharge() {
+    this.unitController.units.forEach((unit) => {
+      const unitStandsOnCharger =
+        TARGET_HEX_MAP.get(0).isEqual(unit.hex) ||
+        TARGET_HEX_MAP.get(1).isEqual(unit.hex);
+
+      const unitAlreadyCharged = unit.modifiers.some(
+        (mod) => mod.name === "Charged",
+      );
+      if (unitStandsOnCharger && !unitAlreadyCharged) {
+        console.log(unit.id, "standing on charger");
+        const modifier = new ChargedModifier();
+        unit.addModifier(modifier);
+        const effect = new UnitModifiedEffect(unit.id, modifier, true);
+        this.eventEmitter.emit("sim:effect", effect);
+      }
     });
   }
 }

@@ -5,6 +5,7 @@ class BoardModel {
   constructor() {
     this.hexList = [];
     this.structures = [];
+    this.spawns = new Map();
   }
 
   setupBoard(options) {
@@ -29,6 +30,11 @@ class BoardModel {
         if (this.hexList.some((h) => h.isEqual(nextHex))) moves.push(nextHex);
       });
     return moves;
+  }
+
+  updateSpawns(unit, spawn, isAdd) {
+    if (isAdd) this.spawns.set(spawn, unit);
+    else this.spawns.delete(spawn);
   }
 }
 

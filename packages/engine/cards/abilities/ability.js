@@ -1,6 +1,8 @@
 class Ability {
   constructor(options) {
-    // this.id = nanoid();
+    this.playerID = options.playerID;
   }
+
+  resolve() {}
 }
 export default Ability;

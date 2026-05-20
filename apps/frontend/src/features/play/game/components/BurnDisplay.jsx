@@ -1,27 +1,44 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import useGameStore from "../stores/useGameStore";
 import { BURN_TYPES } from "@cafe/engine/config";
 
 function BurnDisplay() {
-  const [expand, setExpand] = useState(false);
+  // const [expand, setExpand] = useState(false);
 
   const burnEffects = useGameStore((state) => state.burnEffects);
   // const usedBurnEffects = useGameStore((state) => state.usedBurnEffects);
 
   const powerCount = useMemo(() => {
-    return burnEffects.filter((val) =>
-      val.burnEffects.includes(BURN_TYPES.POWER),
-    ).length;
+    let count = 0;
+    burnEffects.forEach(
+      (val) =>
+        (count += val.burnEffects.filter(
+          (val) => val === BURN_TYPES.POWER,
+        ).length),
+    );
+    return count;
   }, [burnEffects]);
+
   const speedCount = useMemo(() => {
-    return burnEffects.filter((val) =>
-      val.burnEffects.includes(BURN_TYPES.SPEED),
-    ).length;
+    let count = 0;
+    burnEffects.forEach(
+      (val) =>
+        (count += val.burnEffects.filter(
+          (val) => val === BURN_TYPES.SPEED,
+        ).length),
+    );
+    return count;
   }, [burnEffects]);
+
   const moveCount = useMemo(() => {
-    return burnEffects.filter((val) =>
-      val.burnEffects.includes(BURN_TYPES.MOVE),
-    ).length;
+    let count = 0;
+    burnEffects.forEach(
+      (val) =>
+        (count += val.burnEffects.filter(
+          (val) => val === BURN_TYPES.MOVE,
+        ).length),
+    );
+    return count;
   }, [burnEffects]);
 
   // const list = useMemo(
@@ -43,12 +60,13 @@ function BurnDisplay() {
   //   [expand, usedBurnEffects],
   // );
   return (
-    <div className="absolute top-1/3 left-10 flex flex-col items-start justify-start rounded-sm bg-amber-50 p-2 font-semibold text-black select-none">
+    <div className="absolute top-1/6 left-2 flex flex-col items-start justify-start rounded-sm bg-amber-50 p-2 font-semibold text-black select-none">
       <div className="flex gap-2 font-bold">Burns</div>
       <p>Power Up: {powerCount}</p>
       <p>Speed Up: {speedCount}</p>
       <p>Move Up: {moveCount}</p>
       {/* {list} */}
+      {/* {JSON.stringify(burnEffects)} */}
     </div>
   );
 }

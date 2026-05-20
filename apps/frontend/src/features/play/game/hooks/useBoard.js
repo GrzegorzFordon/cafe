@@ -6,6 +6,7 @@ import useMousePos from "../hooks/useMousePos";
 import useBoardStore from "../stores/useBoardStore";
 import { BOARD_SIZE } from "@cafe/engine/config";
 import useSocket from "../../../socket/hooks/useSocket";
+import useGameStore from "../stores/useGameStore";
 
 export const Y_SQUASH = 0.7;
 // export const BOARD_SIZE = 3;
@@ -14,6 +15,7 @@ const useBoard = () => {
   const mousePos = useMousePos();
   const boardRef = useBoardStore((state) => state.boardRef);
   const tileSize = useBoardStore((state) => state.tileSize);
+  // const gameController = useGameStore((state) => state.gameController);
   const { isFirstPlayer } = useSocket();
 
   const layout = useMemo(
@@ -74,6 +76,11 @@ const useBoard = () => {
 
   const isMousedOverHexWithinBoard = isHexWithinBoard(mousedOverHex);
 
+  // const spawnsInfo = useMemo(() => {
+  //   const data = gameController.boardController.SpawnInfo;
+  //   return data;
+  // }, [gameController]);
+
   return {
     hexList,
     boardPos,
@@ -81,6 +88,7 @@ const useBoard = () => {
     isHexWithinBoard,
     isMousedOverHexWithinBoard,
     pixelFromHex,
+    // spawnsInfo,
   };
 };
 

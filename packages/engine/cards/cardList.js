@@ -5,7 +5,7 @@ import UnitPulp from "./list/units/UnitPulp.js";
 import UnitB from "./list/units/UnitB.js";
 import InfusionA from "./list/infusions/InfusionA.js";
 import InfusionB from "./list/infusions/InfusionB.js";
-import SpellB from "./list/spells/SpellB.js";
+import SpellRespawn from "./list/spells/SpellRespawn.js";
 import SpellC from "./list/spells/SpellC.js";
 import StructureA from "./list/structures/StructureA.js";
 import StructureB from "./list/structures/StructureB.js";
@@ -21,7 +21,7 @@ CardList.set("0I01", InfusionA);
 CardList.set("0I02", InfusionB);
 
 CardList.set("0S01", SpellZap);
-CardList.set("0S02", SpellB);
+CardList.set("0S02", SpellRespawn);
 CardList.set("0S03", SpellC);
 
 CardList.set("0T01", StructureA);

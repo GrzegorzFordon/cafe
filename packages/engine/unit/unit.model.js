@@ -12,19 +12,24 @@ import UnitChargedEffect from "../effect/effects/unitCharged.effect.js";
 
 class UnitModel {
   constructor(options) {
-    // this.id = nanoid();
-    // this.id = incrementCounter();
     this.id = options.id;
     this.playerID = options.playerID;
-    // this.cardID = options.cardID;
-    this.unitID = options.unitID ?? 1;
+    this.cardID = options.cardID;
+
+    this.spawnHex = options.hex;
     this.hex = options.hex;
+
+    this.unitID = options.unitID ?? 1;
     this.atk = options.unitData.atk ?? 0;
     this.hp = options.unitData.hp ?? 0;
     this.speed = options.unitData.speed ?? 0;
     this.reach = options.unitData.reach ?? 1;
     this.loot = options.unitData.loot ?? 1;
-    this.isCharged = false;
+
+    // this.isCharged = false; TODO turn into modifier!
+    // this.exhausted = false; TODO also modifier??
+
+    this.modifiers = [];
   }
 
   // get remainingHealth() {
@@ -49,12 +54,13 @@ class UnitModel {
     controller.eventEmitter.emit("sim:effect", effect);
   }
 
-  charge() {
-    if (this.isCharged) return;
-    this.isCharged = true;
-    const effect = new UnitChargedEffect(this.id, this.isCharged);
-    controller.eventEmitter.emit("sim:effect", effect);
-  }
+  //CHANGE TO MODIFIER
+  // charge() {
+  //   if (this.isCharged) return;
+  //   this.isCharged = true;
+  //   const effect = new UnitChargedEffect(this.id, this.isCharged);
+  //   controller.eventEmitter.emit("sim:effect", effect);
+  // }
 
   takeDamage(controller, amount) {
     this.hp -= amount;
@@ -65,8 +71,15 @@ class UnitModel {
 
   die(controller) {
     const effect = new UnitDiedEffect(this.id);
+    controller.eventEmitter.emit("sim:inner:unitDied", {
+      unitID: this.id,
+      spawnHex: this.spawnHex,
+    });
     controller.eventEmitter.emit("sim:effect", effect);
-    controller.eventEmitter.emit("sim:inner:unitDeath", this.id);
+  }
+
+  addModifier(modifier) {
+    this.modifiers.push(modifier);
   }
 }
 

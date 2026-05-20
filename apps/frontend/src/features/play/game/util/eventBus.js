@@ -3,7 +3,7 @@ import GameAdvancedEffect from "@cafe/engine/effect/effects/gameAdvanced.effect"
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import _ from "lodash";
 
-const SEND_LOGS = 1;
+const SEND_LOGS = 0;
 
 class EventBus {
   static instance = null;
@@ -19,7 +19,7 @@ class EventBus {
   async processEffects() {
     const eCache = [...EventBus.instance.effects];
     EventBus.instance.effects = [];
-    console.log(`[EventBus] Processing`);
+    if (SEND_LOGS) console.log(`[EventBus] Processing`);
     while (eCache.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 100));
       const nextEffect = eCache.shift();
@@ -37,7 +37,7 @@ class EventBus {
   async handleGameAdvance(e) {
     EventBus.instance.effects.push(e);
     _.defer(() => {
-    EventBus.instance.processEffects();
+      EventBus.instance.processEffects();
     });
   }
 
@@ -46,7 +46,7 @@ class EventBus {
    */
 
   handleGameStartServer(e) {
-    console.log("[EventBus] SERVER Start", e);
+    if (SEND_LOGS) console.log("[EventBus] SERVER Start", e);
 
     EventBus.instance.effects.push(
       new GameAdvancedEffect(GAME_PHASES.START, e),
@@ -56,11 +56,9 @@ class EventBus {
   }
 
   handleGameActionsServer(e) {
-    console.log("[EventBus] SERVER Actions", e);
+    if (SEND_LOGS) console.log("[EventBus] SERVER Actions", e);
     // e.forEach(ef=>EventBus.instance.effects.push(ef))
-
   }
-
 
   // handleGameUpdateServer(e) {
   //   console.log("[EventBus] SERVER Update", e);
@@ -73,14 +71,14 @@ class EventBus {
   // }
 
   connectToServer() {
-    console.log("[EventBus] Connecting to server");
+    if (SEND_LOGS) console.log("[EventBus] Connecting to server");
 
     // eventEmitter?.on("game:start", EventBus.instance.handleGameStartServer);
     eventEmitter?.on("game:actions", EventBus.instance.handleGameActionsServer);
   }
 
   connectToSim(emitter) {
-    console.log("[EventBus] Connecting to sim");
+    if (SEND_LOGS) console.log("[EventBus] Connecting to sim");
 
     EventBus.instance.effects = [];
     // EventBus.instance.disconnect();

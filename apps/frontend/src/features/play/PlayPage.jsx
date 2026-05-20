@@ -26,7 +26,7 @@ function PlayPage() {
 
   const handleGameStart = useCallback(
     (e) => {
-      console.log("GAMEPAGE", e);
+      // console.log("GAMEPAGE", e);
       setActionsSubAck(false);
       resetActions();
       startGame(e);
@@ -36,7 +36,7 @@ function PlayPage() {
 
   const handleGameActions = useCallback(
     (e) => {
-      console.log("GAMEPAGE", e);
+      // console.log("GAMEPAGE", e);
       processActions(e);
     },
     [processActions],

@@ -15,10 +15,11 @@ class UpkeepState extends State {
     const effect = new GameAdvancedEffect(GAME_PHASES.UPKEEP);
     controller.eventEmitter.emit("sim:advance", effect);
     controller.handleWincon();
+    controller.handleCharge();
+    controller.handleChargedUnitInBase();
     controller.playerController.drawUpToHandSize();
+    controller.unitController.readyAllUnits();
     controller.advance();
   }
 }
 export default UpkeepState;
-
-

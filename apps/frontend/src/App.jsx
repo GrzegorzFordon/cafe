@@ -2,8 +2,10 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes/routes.jsx";
 import { VFXProvider } from "react-vfx";
 import { useEffect } from "react";
+import { enableMapSet } from "immer";
 
 function App() {
+  enableMapSet();
   const handleContextMenu = (e) => {
     e.preventDefault();
   };

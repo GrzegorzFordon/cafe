@@ -4,13 +4,9 @@ import UnitCardModel from "../unit.card.js";
 
 class UnitAlice extends UnitCardModel {
   constructor(options) {
-    super(options);
+    super(options, { atk: 2, hp: 3, speed: 4, reach: 1 });
     this.cardID = "0U01";
     this.name = "Alice";
-    this.unitATK = 2;
-    this.unitHP = 3;
-    this.speed = 3;
-    // this.abilities = [new SpawnUnitAbility({ playerID: this.playerID, unit:this })];
   }
 
   onPlay(controller, options) {

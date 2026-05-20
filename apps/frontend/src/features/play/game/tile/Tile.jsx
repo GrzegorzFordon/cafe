@@ -13,12 +13,12 @@ import { BASE_HEX_MAP, TARGET_HEX_MAP } from "@cafe/engine/config";
 import { useMemo, useRef } from "react";
 import useBoardStore from "../stores/useBoardStore.js";
 import { Hex } from "@cafe/shared/util/hex.js";
+import batterSprite from "../../../../assets/battery-pack.png";
 
-function Tile({ hex, isActive, isMirrored }) {
+function Tile({ hex, isActive, isMirrored, isSpawnInUse }) {
   const { mousedOverHex, pixelFromHex } = useBoard();
   const { getActionsByHex } = useAction();
   const ref = useRef();
-
   const rotHex = useMemo(
     () => (isMirrored ? hex.mirror() : hex),
     [hex, isMirrored],
@@ -65,23 +65,39 @@ function Tile({ hex, isActive, isMirrored }) {
       {isBase && (
         <img
           draggable="false"
-          className="absolute scale-170 scale-y-117 opacity-70"
+          className="absolute scale-170 scale-y-117 opacity-80"
           src={spriteBaseZone}
           alt=""
         />
+      )}
+      {isSpawnInUse && (
+        <>
+          <img
+            draggable="false"
+            className="absolute scale-170 scale-y-117 opacity-50"
+            src={spriteBaseZone}
+            alt=""
+          />{" "}
+          <img
+            draggable="false"
+            className="absolute scale-85 scale-y-58 opacity-50"
+            src={spriteBaseZone}
+            alt=""
+          />
+        </>
       )}
       {isTarget && (
         <>
           <img
             draggable="false"
-            className="absolute scale-140 scale-y-96 opacity-90"
-            src={spriteBaseZone}
+            className="absolute scale-50 opacity-50"
+            src={batterSprite}
             alt=""
           />
           <img
             draggable="false"
-            className="absolute scale-120 scale-y-82 opacity-90"
-            src={spriteBaseZone}
+            className="absolute scale-170 scale-y-117 opacity-70"
+            src={spriteActioned}
             alt=""
           />
         </>
@@ -140,6 +156,8 @@ function Tile({ hex, isActive, isMirrored }) {
           )}
         </motion.div>
       )}
+
+      {/* <span className="absolute">{isSpawnInUse ? "yes" : "no"}</span> */}
     </div>
   );
 }

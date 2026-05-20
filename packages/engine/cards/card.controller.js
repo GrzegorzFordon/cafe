@@ -17,5 +17,10 @@ class CardController extends Controller {
     // console.log("[Card Controller] Resolving", card.name, "with", options);
     card.onPlay(this.game, options);
   }
+
+  burnCard(playerID, cardID, options) {
+    const card = this.game.playerController.getCardInHand(playerID, cardID);
+    card.onBurn(this.game, options);
+  }
 }
 export default CardController;

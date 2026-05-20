@@ -14,56 +14,49 @@ function Units() {
 
   const handleEffectSpawn = useCallback(
     async (e) => {
-      if (e.name != "Unit Spawned Effect") return;
+      if (e.name === "Unit Spawned Effect") {
+        //clone loses methods, so replace hex with new proper hex object TODO figure out cleaner answer
+        const clone = structuredClone(e.unit);
+        clone.hex = new Hex(clone.hex.q, clone.hex.r, clone.hex.s);
+        setUnits((draft) => {
+          draft.push(clone);
+        });
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
 
-      const clone = structuredClone(e.unit);
-      //clone loses methods, so replace hex with new proper hex object TODO figure out cleaner answer
-      clone.hex = new Hex(clone.hex.q, clone.hex.r, clone.hex.s);
-      setUnits((draft) => {
-        draft.push(clone);
-      });
+      if (e.name === "Unit Moved Effect") {
+        setUnits((draft) => {
+          const unit = draft.find((val) => val.id === e.unitID);
+          unit.hex = e.hex;
+        });
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
 
-      await new Promise((resolve) => setTimeout(resolve, 200));
-    },
-    [setUnits],
-  );
+      if (e.name === "Unit Damaged Effect") {
+        setUnits((draft) => {
+          const unit = draft.find((val) => val.id === e.unitID);
+          unit.hp -= e.amount;
+        });
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
 
-  const handleEffectMove = useCallback(
-    async (e) => {
-      if (e.name != "Unit Moved Effect") return;
-      setUnits((draft) => {
-        const unit = draft.find((val) => val.id === e.unitID);
-        unit.hex = e.hex;
-      });
+      if (e.name === "Unit Died Effect") {
+        setUnits((draft) => draft.filter((val) => val.id !== e.unitID));
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    },
-    [setUnits],
-  );
-
-  const handleEffectTakeDamage = useCallback(
-    async (e) => {
-      if (e.name != "Unit Damaged Effect") return;
-      setUnits((draft) => {
-        const unit = draft.find((val) => val.id === e.unitID);
-        unit.hp -= e.amount;
-      });
-
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    },
-    [setUnits],
-  );
-
-  // useEffect(() => console.log("UNITS", units), [units]);
-
-  const handleEffectDie = useCallback(
-    async (e) => {
-      if (e.name != "Unit Died Effect") return;
-      console.log("handling Died", e);
-
-      setUnits((draft) => draft.filter((val) => val.id !== e.unitID));
-
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      if (e.name === "Unit Modified Effect") {
+        setUnits((draft) => {
+          const unit = draft.find((val) => val.id === e.unitID);
+          e.added
+            ? unit.modifiers.push(e.modifier)
+            : (unit.modifiers = unit.modifiers.filter(
+                (val) => val.name !== e.modifier.name,
+              ));
+        });
+        // console.log("[Frontend Units]", units);
+        await new Promise((resolve) => setTimeout(resolve, 10));
+      }
     },
     [setUnits],
   );
@@ -74,21 +67,11 @@ function Units() {
 
   useEffect(() => {
     eventBus.subscribeToGameEffects(handleEffectSpawn);
-    eventBus.subscribeToGameEffects(handleEffectMove);
-    eventBus.subscribeToGameEffects(handleEffectTakeDamage);
-    eventBus.subscribeToGameEffects(handleEffectDie);
+
     return () => {
       eventBus.unsubscribeToGameEffects(handleEffectSpawn);
-      eventBus.unsubscribeToGameEffects(handleEffectMove);
-      eventBus.unsubscribeToGameEffects(handleEffectTakeDamage);
-      eventBus.unsubscribeToGameEffects(handleEffectDie);
     };
-  }, [
-    handleEffectDie,
-    handleEffectMove,
-    handleEffectSpawn,
-    handleEffectTakeDamage,
-  ]);
+  }, [handleEffectSpawn]);
 
   const list = (
     <AnimatePresence>

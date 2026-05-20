@@ -15,6 +15,7 @@ export const states = {
 class StateMachine {
   constructor() {
     this.state = undefined;
+    this.lastPhaseSpeed = 7;
   }
 
   init(controller) {
@@ -24,7 +25,7 @@ class StateMachine {
 
   advance(controller) {
     if (this.state) this.state.onExit(controller);
-    this.state = new this.state.next();
+    this.state = new this.state.next({ lastPhaseSpeed: this.lastPhaseSpeed });
     // console.log("[StateMachine] Entering:", this.state.name);
 
     this.state.onEnter(controller);

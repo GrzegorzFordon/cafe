@@ -5,9 +5,9 @@ class InfusionCardModel extends CardModel {
     super(options);
   }
 
-  // onPlay(controller, options) {
-  //   super.onPlay(controller, options);
-  // }
+  onBurn(controller, options) {
+    super.onBurn(controller, options);
+  }
 }
 
 export default InfusionCardModel;

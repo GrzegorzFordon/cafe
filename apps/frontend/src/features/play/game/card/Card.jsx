@@ -17,6 +17,7 @@ import ReactRough, { Line, Rectangle } from "rough-react-wrapper";
 import useGameStore from "../stores/useGameStore.js";
 import { BURN_TYPES } from "@cafe/engine/config.js";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+import CardBurnEffectsView from "./CardBurnEffectsView.jsx";
 // import rough from "roughjs";
 
 /**
@@ -138,7 +139,6 @@ function Card({ order, card, index }) {
       onDragStart={() => handleDragStart()}
       onDrag={(e, info) => handleDrag(e, info)}
       onDragEnd={handlePlay}
-      // onChange={(e, info) => handleDrag(e, info)}
       initial={{ scale: 0, translateY: "5em" }}
       animate={{ scale: 1, translateY: 0 }}
       exit={{
@@ -147,7 +147,10 @@ function Card({ order, card, index }) {
         transition: { duration: 0.3 },
       }}
       transition={easeOut}
-      className="relative aspect-2.5/3.5 h-full w-full select-none"
+      style={{
+        willChange: true,
+      }}
+      className="relative aspect-2.5/3.5 h-full w-full will-change-transform select-none"
     >
       <motion.div
         className="absolute aspect-2.5/3.5 h-full w-full select-none active:cursor-grabbing"
@@ -157,7 +160,7 @@ function Card({ order, card, index }) {
             ? {}
             : {
                 scale: 1.15,
-                rotateZ: `${angle * 0.2}deg`,
+                rotateZ: `${Math.round(angle * 0.2)}deg`,
                 transition: { duration: 0.2, ease: easeOut },
                 translateY: `-10px`,
               }
@@ -166,30 +169,32 @@ function Card({ order, card, index }) {
           filter: !isBurning.get() && isPlayed ? "brightness(0.4)" : "none",
           // rotateX: dragDeltaSpringValueY.get() * 2 + "deg",
           // rotateY: dragDeltaSpringValueX.get() * 2 + "deg",
-          rotateZ: `${angle}deg`,
+          rotateZ: `${Math.round(angle)}deg`,
+          scale: 0.99,
         }}
       >
         <CardVisual key={order} order={order} card={card} />
 
         <div className="pointer-events-none absolute -top-2 left-2 z-30 flex aspect-square size-4 scale-200 items-center justify-center rounded-full p-2 text-center text-sm font-black text-orange-500 text-shadow-2xs text-shadow-black/70">
-          {card.speed ?? "X"}
+          {card.speed && card.speed !== 0 ? card.speed : ""}
         </div>
 
-        <div className="pointer-events-none absolute -top-2 right-2 flex size-fit justify-end">
-          {card.burnEffects.includes(BURN_TYPES.POWER) && (
-            <div className="size-4 rounded-full bg-red-600 shadow shadow-black/40"></div>
-          )}
-          {card.burnEffects.includes(BURN_TYPES.SPEED) && (
-            <div className="size-4 rounded-full bg-yellow-600 shadow shadow-black/40"></div>
-          )}
-          {card.burnEffects.includes(BURN_TYPES.MOVE) && (
-            <div className="size-4 rounded-full bg-green-600 shadow shadow-black/40"></div>
-          )}
-        </div>
+        <div
+          style={{
+            backgroundColor:
+              isBurned || isBurning.get() ? "red" : "transparent",
+          }}
+          className="absolute top-1/2 left-1/2 size-full -translate-1/2 opacity-85 mix-blend-multiply"
+        ></div>
 
-        {/* {(isBurned || isBurning.get()) ?? (
-          <div className="absolute top-1/2 left-1/2 size-full -translate-1/2 bg-red-600 opacity-85 mix-blend-multiply"></div>
-        )} */}
+        <CardBurnEffectsView data={card.burnEffects} />
+
+        <span className="absolute right-0 bottom-0 -translate-1/2 rounded-sm bg-amber-50 p-1">
+          {card?.cardID}
+        </span>
+        <span className="text-md absolute top-1/3 left-1/2 flex w-9/10 -translate-1/2 text-sm items-center justify-center rounded-sm bg-amber-50 font-black text-black will-change-transform">
+          {card?.name}
+        </span>
       </motion.div>
     </Reorder.Item>
   );

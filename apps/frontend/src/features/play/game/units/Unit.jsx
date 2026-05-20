@@ -5,7 +5,6 @@ import unitBeige from "../assets/units/character_beige_front.png";
 import unitPink from "../assets/units/character_pink_front.png";
 import unitPurple from "../assets/units/character_purple_front.png";
 import unitPulp from "../assets/units/unitPulp01.png";
-import crownSprite from "../assets/crown.png";
 import { useMemo, useRef } from "react";
 import useBoard from "../hooks/useBoard";
 import useAction from "../hooks/useAction";
@@ -51,6 +50,16 @@ function Unit({ unit }) {
   const pos = pixelFromHex(rotHex);
   const socketID = useSocketStore((state) => state.socketID);
   const isFriendly = socketID == unit.playerID;
+
+  const isExhausted = useMemo(
+    () => unit.modifiers.some((val) => val.name === "Exhausted"),
+    [unit.modifiers],
+  );
+  const isCharged = useMemo(
+    () => unit.modifiers.some((val) => val.name === "Charged"),
+    [unit.modifiers],
+  );
+
   const myAction = useMemo(
     () => getActionsByUnit(unit),
     [getActionsByUnit, unit],
@@ -58,6 +67,8 @@ function Unit({ unit }) {
 
   const hasActions = useMemo(() => myAction.length > 0, [myAction]);
   const isLeader = useMemo(() => unit.unitID.includes("L"), [unit.unitID]);
+
+  const isDraggable = isFriendly && !isExhausted;
 
   const handleDragStart = () => {
     eventEmitter.emit("unit:drag:start", unit);
@@ -81,7 +92,7 @@ function Unit({ unit }) {
       ref={ref}
       layout
       onLayoutMeasure={() => handleDrag()}
-      className="UNIT CONTAINER absolute size-15 -translate-1/2 -translate-y-15 select-none"
+      className="UNIT CONTAINER absolute size-12 h-15 -translate-1/2 -translate-y-12 select-none"
       style={{
         left: pos.x,
         top: pos.y,
@@ -93,14 +104,14 @@ function Unit({ unit }) {
         draggable="false"
         className="UNIT select-none"
         initial={{ scale: 0 }}
-        animate={{ scale: isLeader ? 1 : 0.8 }}
+        animate={{ scale: isLeader ? 1 : 0.9 }}
         exit={{ scale: 0 }}
         src={sprite}
         style={{ filter: hasActions ? "brightness(0.4)" : "none" }}
       />
 
       <motion.div
-        drag={!hasActions && isFriendly}
+        drag={!hasActions && isFriendly && !isExhausted}
         dragSnapToOrigin={!hasActions}
         onPointerDown={() => {
           if (!hasActions) handleDragStart();
@@ -109,12 +120,12 @@ function Unit({ unit }) {
         onDragStart={() => handleDragStart()}
         onDrag={() => handleDrag()}
         onDragEnd={() => handleDragEnd()}
-        className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl hover:not-[isFriendly]:cursor-grab active:not-[isFriendly]:cursor-grabbing"
+        className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl hover:not-[isDraggable]:cursor-grab active:not-[isDraggable]:cursor-grabbing"
         style={{
-          filter: hasActions ? "brightness(0.4)" : "none",
-          pointerEvents: isFriendly ? "all" : "none",
+          filter: hasActions || isExhausted ? "brightness(0.4)" : "none",
+          pointerEvents: isDraggable ? "all" : "none",
           opacity: 0,
-          scale: isLeader ? 1 : 0.8,
+          scale: isLeader ? 1 : 0.9,
         }}
         whileDrag={{ opacity: 0.5 }}
       >
@@ -130,25 +141,15 @@ function Unit({ unit }) {
         hp={unit.hp}
         speed={unit.speed}
         isFriendly={isFriendly}
+        isExhausted={isExhausted}
+        isCharged={isCharged}
+        isLeader={isLeader}
       />
 
       <div className="size-fit bg-amber-50 text-sm">
-        {/* {JSON.stringify(unit.unitID.includes("L"))} */}
+        {/* {JSON.stringify(unit.modifiers)} */}
         {/* {isLeader ? "leader" : "x"} */}
       </div>
-
-      {!isFriendly && (
-        <div className="absolute top-1/2 left-1/2 flex size-fit -translate-1/2 justify-center items-center text-sm text-red-300 bg-red-950 rounded-sm opacity-80 scale-90">
-          ENEMY
-        </div>
-      )}
-
-      {isLeader && (
-        <img
-          className="pointer-events-none absolute top-2/7 left-3/5 -translate-1/2 scale-45 rotate-18"
-          src={crownSprite}
-        />
-      )}
     </motion.div>
   );
 }
