@@ -9,7 +9,10 @@ const useSocket = () => {
   const setRoomData = useSocketStore((state) => state.setRoomData);
   const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
 
-  const isFirstPlayer = useMemo(() => true, []);
+  const isFirstPlayer = useMemo(
+    () => socketID === roomData?.hostID,
+    [roomData, socketID],
+  );
 
   /**
    * Chat Actions

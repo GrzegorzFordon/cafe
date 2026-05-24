@@ -25,7 +25,7 @@ import CardBurnEffectsView from "./CardBurnEffectsView.jsx";
  * Handles Display and Drag Events (play card, burn card)
  */
 
-const MAX_HAND_FAN_ANGLE_DEGREES = 10;
+const MAX_HAND_FAN_ANGLE_DEGREES = 15;
 
 const BURN_TRESHOLD_X_MIN = 350;
 const BURN_TRESHOLD_Y_MAX = 150;
@@ -86,6 +86,7 @@ function Card({ order, card, index }) {
       // const burnAction = new BurnAction(card);
       // addActionObject(burnAction);
       addBurnEffect(card);
+      // console.log("[Card Component]", "burning", card);
     }
     isBurning.set(false);
   };
@@ -147,9 +148,6 @@ function Card({ order, card, index }) {
         transition: { duration: 0.3 },
       }}
       transition={easeOut}
-      style={{
-        willChange: true,
-      }}
       className="relative aspect-2.5/3.5 h-full w-full will-change-transform select-none"
     >
       <motion.div
@@ -170,7 +168,9 @@ function Card({ order, card, index }) {
           // rotateX: dragDeltaSpringValueY.get() * 2 + "deg",
           // rotateY: dragDeltaSpringValueX.get() * 2 + "deg",
           rotateZ: `${Math.round(angle)}deg`,
-          scale: 0.99,
+          willChange: "auto",
+          WebkitFontSmoothing: "never",
+          WebkitBackfaceVisibility: "hidden",
         }}
       >
         <CardVisual key={order} order={order} card={card} />
@@ -187,14 +187,13 @@ function Card({ order, card, index }) {
           className="absolute top-1/2 left-1/2 size-full -translate-1/2 opacity-85 mix-blend-multiply"
         ></div>
 
-        <CardBurnEffectsView data={card.burnEffects} />
-
-        <span className="absolute right-0 bottom-0 -translate-1/2 rounded-sm bg-amber-50 p-1">
+        {/* <span className="absolute right-0 bottom-0 -translate-1/2 rounded-sm bg-amber-50 p-1">
           {card?.cardID}
-        </span>
-        <span className="text-md absolute top-1/3 left-1/2 flex w-9/10 -translate-1/2 text-sm items-center justify-center rounded-sm bg-amber-50 font-black text-black will-change-transform">
+        </span> */}
+        <span className="text-md absolute bottom-1 left-1/2 flex w-fit -translate-1/2 items-center justify-center overflow-visible overflow-x-visible rounded-sm bg-amber-50 p-1 text-sm font-black whitespace-nowrap text-black">
           {card?.name}
         </span>
+        <CardBurnEffectsView data={card.burnEffects} />
       </motion.div>
     </Reorder.Item>
   );

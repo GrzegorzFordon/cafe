@@ -1,6 +1,6 @@
 class Ability {
-  constructor(options) {
-    this.playerID = options.playerID;
+  constructor(playerID) {
+    this.playerID = playerID;
   }
 
   resolve() {}

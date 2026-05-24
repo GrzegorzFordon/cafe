@@ -15,6 +15,7 @@ function Units() {
   const handleEffectSpawn = useCallback(
     async (e) => {
       if (e.name === "Unit Spawned Effect") {
+        console.log(e);
         //clone loses methods, so replace hex with new proper hex object TODO figure out cleaner answer
         const clone = structuredClone(e.unit);
         clone.hex = new Hex(clone.hex.q, clone.hex.r, clone.hex.s);
@@ -25,7 +26,7 @@ function Units() {
       }
 
       if (e.name === "Unit Moved Effect") {
-        setUnits((draft) => {
+        await setUnits((draft) => {
           const unit = draft.find((val) => val.id === e.unitID);
           unit.hex = e.hex;
         });

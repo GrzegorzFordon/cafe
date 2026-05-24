@@ -15,6 +15,7 @@ import useValidate from "../hooks/useValidate";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import useSocketStore from "../../../../stores/useSocketStore";
 import useSocket from "../../../socket/hooks/useSocket";
+import { UNIT_STATS } from "@cafe/engine/config";
 
 function Unit({ unit }) {
   const { getActionsByUnit, addActionObject } = useAction();
@@ -32,6 +33,8 @@ function Unit({ unit }) {
         return unitYellow;
       case "0U02":
         return unitPulp;
+      case "0U03":
+        return unitPink;
       default:
         return unitYellow;
     }
@@ -53,11 +56,11 @@ function Unit({ unit }) {
 
   const isExhausted = useMemo(
     () => unit.modifiers.some((val) => val.name === "Exhausted"),
-    [unit.modifiers],
+    [unit],
   );
   const isCharged = useMemo(
     () => unit.modifiers.some((val) => val.name === "Charged"),
-    [unit.modifiers],
+    [unit],
   );
 
   const myAction = useMemo(
@@ -86,6 +89,15 @@ function Unit({ unit }) {
     if (!getLegalMoves(unit).some((val) => val.isEqual(mousedOverHex))) return;
     addActionObject(new MoveAction(unit, mousedOverHex));
   };
+
+  const attackValueWithModifiers = useMemo(() => {
+    let atkBonus = 0;
+    unit.modifiers.forEach((m) => {
+      if (m.name === "Unit Stat" && m.stat === UNIT_STATS.ATTACK)
+        atkBonus += m.amount;
+    });
+    return unit.atk + atkBonus;
+  }, [unit.atk, unit.modifiers]);
 
   return (
     <motion.div
@@ -137,7 +149,7 @@ function Unit({ unit }) {
       </motion.div>
 
       <UnitHUD
-        atk={unit.atk}
+        atk={attackValueWithModifiers}
         hp={unit.hp}
         speed={unit.speed}
         isFriendly={isFriendly}
@@ -148,7 +160,6 @@ function Unit({ unit }) {
 
       <div className="size-fit bg-amber-50 text-sm">
         {/* {JSON.stringify(unit.modifiers)} */}
-        {/* {isLeader ? "leader" : "x"} */}
       </div>
     </motion.div>
   );

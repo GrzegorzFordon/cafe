@@ -2,7 +2,7 @@ import UnitAlice from "./list/units/UnitAlice.js";
 import CardModel from "./card.model.js";
 import SpellZap from "./list/spells/SpellZap.js";
 import UnitPulp from "./list/units/UnitPulp.js";
-import UnitB from "./list/units/UnitB.js";
+import UnitBeta from "./list/units/UnitBeta.js";
 import InfusionA from "./list/infusions/InfusionA.js";
 import InfusionB from "./list/infusions/InfusionB.js";
 import SpellRespawn from "./list/spells/SpellRespawn.js";
@@ -15,7 +15,7 @@ import UpgradeB from "./list/upgrades/UpgradeB.js";
 export const CardList = new Map();
 CardList.set("0U01", UnitAlice);
 CardList.set("0U02", UnitPulp);
-CardList.set("0U03", UnitB);
+CardList.set("0U03", UnitBeta);
 
 CardList.set("0I01", InfusionA);
 CardList.set("0I02", InfusionB);

@@ -10,10 +10,10 @@ function ActiveCardDisplay() {
   const handleEffectActiveCard = async (e) => {
     if (e.name !== "Card Resolving Effect") return;
     setActiveCard(e.card);
-    // await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     await setTimeout(() => {
       setActiveCard(undefined);
-    }, 600);
+    }, 500);
   };
 
   useEffect(() => {

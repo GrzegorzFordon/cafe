@@ -24,11 +24,18 @@ class BoardModel {
     const dirs = isDiagonal ? Hex.diagonals : Hex.directions;
     const moves = [];
     const startHex = new Hex(hex.q, hex.r, hex.s);
-    for (let i = 1; i < reach + 1; i++)
-      dirs.forEach((val) => {
-        const nextHex = startHex.add(val.scale(i));
+    // for (let i = 1; i < reach + 1; i++)
+    //   dirs.forEach((val) => {
+    //     const nextHex = startHex.add(val.scale(i));
+    //     if (this.hexList.some((h) => h.isEqual(nextHex))) moves.push(nextHex);
+    //   });
+    dirs.forEach((dir) => {
+      for (let i = 1; i < reach + 1; i++) {
+        const nextHex = startHex.add(dir.scale(i));
         if (this.hexList.some((h) => h.isEqual(nextHex))) moves.push(nextHex);
-      });
+        else break;
+      }
+    });
     return moves;
   }
 

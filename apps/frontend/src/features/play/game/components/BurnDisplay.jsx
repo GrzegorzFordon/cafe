@@ -41,32 +41,12 @@ function BurnDisplay() {
     return count;
   }, [burnEffects]);
 
-  // const list = useMemo(
-  //   () =>
-  //     burnEffects.map((action) => (
-  //       <p key={action.id}>
-  //         {JSON.stringify(expand ? action : action.burnEffects)}
-  //       </p>
-  //     )),
-  //   [expand, burnEffects],
-  // );
-  // const list2 = useMemo(
-  //   () =>
-  //     usedBurnEffects.map((action) => (
-  //       <p key={action.id}>
-  //         {JSON.stringify(expand ? action : action.burnEffects)}
-  //       </p>
-  //     )),
-  //   [expand, usedBurnEffects],
-  // );
   return (
-    <div className="absolute top-1/6 left-2 flex flex-col items-start justify-start rounded-sm bg-amber-50 p-2 font-semibold text-black select-none">
+    <div className="absolute top-1/3 left-2 flex flex-col items-start justify-start rounded-sm bg-amber-50 p-2 font-semibold text-black select-none">
       <div className="flex gap-2 font-bold">Burns</div>
       <p>Power Up: {powerCount}</p>
       <p>Speed Up: {speedCount}</p>
       <p>Move Up: {moveCount}</p>
-      {/* {list} */}
-      {/* {JSON.stringify(burnEffects)} */}
     </div>
   );
 }

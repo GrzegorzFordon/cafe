@@ -52,7 +52,7 @@ class UnitController extends Controller {
       atk: 1,
       hp: 1,
       speed: 5,
-      reach: 3,
+      reach: 2,
     };
     const ids = this.game.options.players.map((p) => p.id);
     this.spawnUnit(ids[0], "0L01", BASE_HEX_MAP.get(0).neighbor(1), stats);
@@ -119,19 +119,13 @@ class UnitController extends Controller {
    * COMBAT
    */
   handleCombat(attackerUnitID, defenderUnitID, hex, powerBonusAmount) {
-    // console.log(attackerUnitID, defenderUnitID, this.units);
     const attacker = this.units.find((val) => val.id == attackerUnitID);
     const defender = this.units.find((val) => val.id == defenderUnitID);
-    const attackerAtk = attacker.atk;
-    const defenderAtk = defender.atk;
+    const attackerAtk = attacker.Attack;
+    // const defenderAtk = defender.atk;
     const effect = new CombatStartedEffect(attackerUnitID, defenderUnitID);
     this.game.eventEmitter.emit("sim:effect", effect);
     defender.takeDamage(this.game, attackerAtk + powerBonusAmount);
-    // attacker.takeDamage(this.game, defenderAtk);
-    // if (attackerUnit.atk >= defenderUnit.atk) {
-    //   // this.units = this.units.filter((val) => val != defenderUnit);
-    //   defenderUnit.die(this.game);
-    // }
   }
 
   getUnitAtHex(hex) {

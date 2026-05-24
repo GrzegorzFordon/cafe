@@ -48,7 +48,7 @@ function DebugWindow() {
     <motion.div
       // drag
       dragMomentum={false}
-      className="absolute top-1/6 right-2 flex h-fit w-32 flex-col items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
+      className="absolute top-1/6 right-2 flex h-fit w-38 flex-col items-center justify-center gap-2 rounded-sm bg-amber-50 p-2"
     >
       <h1 className="flex items-center justify-center font-black text-black select-none">
         {phase} Phase

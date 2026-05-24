@@ -24,7 +24,7 @@ function Tile({ hex, isActive, isMirrored, isSpawnInUse }) {
     [hex, isMirrored],
   );
 
-  const position = useMemo(() => pixelFromHex(rotHex), [pixelFromHex, rotHex]);
+  const position = useMemo(() => pixelFromHex(hex), [pixelFromHex, hex]);
   const tileSize = useBoardStore((state) => state.tileSize);
 
   const actions = getActionsByHex(rotHex);
@@ -131,7 +131,7 @@ function Tile({ hex, isActive, isMirrored, isSpawnInUse }) {
         )}
       </AnimatePresence>
 
-      {/* <div className="absolute size-fit rounded-sm bg-amber-50 text-sm">
+      {/* <div className="absolute size-fit rounded-sm bg-amber-50 scale-80 w-fit text-nowrap text-sm">
         {rotHex.q}|{rotHex.r}|{rotHex.s}
       </div> */}
 

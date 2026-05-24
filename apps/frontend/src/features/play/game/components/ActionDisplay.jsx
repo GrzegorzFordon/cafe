@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useAction from "../hooks/useAction";
 import GameButton from "../tile/ui/GameButton";
 // eslint-disable-next-line no-unused-vars
@@ -11,7 +11,9 @@ function ActionDisplay() {
   const list = useMemo(
     () =>
       actions.map((action) => (
-        <p key={action.id}>{JSON.stringify(expand ? action : action.name)}</p>
+        <p key={action.id}>
+          {JSON.stringify(expand ? action : action.name, null, 2)}
+        </p>
       )),
     [expand, actions],
   );

@@ -12,13 +12,14 @@ function CardVisual({ card, order }) {
   );
 
   return (
-      <motion.img
-        key={order}
-        draggable="false"
-        src={spritePath}
-        alt={card?.cardID}
-        className="size-fit object-scale-down select-none"
-      />
+    <motion.img
+      key={order}
+      draggable="false"
+      src={spritePath}
+      alt={card?.cardID}
+      style={{willChange:"auto"}}
+      className="size-fit object-scale-down select-none"
+    />
   );
 }
 export default CardVisual;

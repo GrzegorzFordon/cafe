@@ -6,7 +6,6 @@ import { nanoid } from "nanoid";
 
 class GameModel {
   constructor(options) {
-    this.id = nanoid();
     this.winCount = new Map();
   }
 }

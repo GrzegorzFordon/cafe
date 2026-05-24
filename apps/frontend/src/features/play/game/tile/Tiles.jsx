@@ -84,11 +84,12 @@ function Tiles() {
   const list = useMemo(
     () =>
       hexList.map((hex) => {
-        const isActiveUnit = legalTiles.some((val) => val.isEqual(hex));
-        const isActiveCard = isCardDrag && mousedOverHex.isEqual(hex);
+        const rotHex = isFirstPlayer ? hex : hex.mirror();
+        const isActiveUnit = legalTiles.some((val) => val.isEqual(rotHex));
+        const isActiveCard = isCardDrag && mousedOverHex.isEqual(rotHex);
         const isActive = isActiveUnit || isActiveCard;
         const centerHex = new Hex(0, 0, 0);
-        const isSpawnInUse = spawns.keys().some((val) => val.isEqual(hex));
+        const isSpawnInUse = spawns.keys().some((val) => val.isEqual(rotHex));
         return (
           !hex.isEqual(centerHex) && (
             <Tile

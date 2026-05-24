@@ -8,6 +8,8 @@ import UnitMovedEffect from "../effect/effects/unitMoved.effect.js";
 import UnitDamagedEffect from "../effect/effects/unitDamaged.effect.js";
 import UnitDiedEffect from "../effect/effects/unitDied.effect.js";
 import UnitChargedEffect from "../effect/effects/unitCharged.effect.js";
+import { UNIT_STATS } from "../config.js";
+import UnitStatModifier from "./modifier/unitStat.modifier.js";
 // import { incrementCounter } from "../util/refCount.js";
 
 class UnitModel {
@@ -25,42 +27,26 @@ class UnitModel {
     this.speed = options.unitData.speed ?? 0;
     this.reach = options.unitData.reach ?? 1;
     this.loot = options.unitData.loot ?? 1;
-
-    // this.isCharged = false; TODO turn into modifier!
-    // this.exhausted = false; TODO also modifier??
-
-    this.modifiers = [];
+    this.ranged = options.unitData.ranged ?? 0;
+    this.modifiers = [
+      // new UnitStatModifier({ stat: UNIT_STATS.ATTACK, amount: 5 }),
+    ];
   }
 
-  // get remainingHealth() {
-  //   return 5;
-  // }
-
-  // init() {}
-
-  // onInit(){
-
-  // }
-
-  // onPlay(){
-
-  // }
-
-  // spawn() {}
+  get Attack() {
+    let atkBonus = 0;
+    this.modifiers.forEach((m) => {
+      if (m.name === "Unit Stat" && m.stat === UNIT_STATS.ATTACK)
+        atkBonus += m.amount;
+    });
+    return this.atk + atkBonus;
+  }
 
   move(controller, hex) {
     this.hex = hex;
     const effect = new UnitMovedEffect(this.id, hex);
     controller.eventEmitter.emit("sim:effect", effect);
   }
-
-  //CHANGE TO MODIFIER
-  // charge() {
-  //   if (this.isCharged) return;
-  //   this.isCharged = true;
-  //   const effect = new UnitChargedEffect(this.id, this.isCharged);
-  //   controller.eventEmitter.emit("sim:effect", effect);
-  // }
 
   takeDamage(controller, amount) {
     this.hp -= amount;
@@ -82,5 +68,14 @@ class UnitModel {
     this.modifiers.push(modifier);
   }
 }
+
+// UnitModel.Attack = () => {
+//   let atkBonus = 0;
+//   this.modifiers.forEach((m) => {
+//     if (m.name === "Unit Stat" && m.stat === UNIT_STATS.ATTACK)
+//       atkBonus += m.amount;
+//   });
+//   return this.atk + atkBonus;
+// };
 
 export default UnitModel;

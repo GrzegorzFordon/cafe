@@ -20,13 +20,13 @@ function Hand() {
       if (socketID !== e.playerID) return;
 
       if (e.name == "Card Drawn Effect") {
-        if (SEND_LOGS) console.log("[Hand] Caught Draw: ", e);
+        if (SEND_LOGS) console.log("[Hand] Caught Draw: ", e.card);
         setCards((p) => [...p, e.card]);
         await new Promise((resolve) => setTimeout(resolve, 50));
       } else if (e.name == "Card Discarded Effect") {
         if (SEND_LOGS) console.log("[Hand] Caught Discard: ", e);
         setCards((p) => p.filter((val) => val.id != e.card.id));
-        await new Promise((resolve) => setTimeout(resolve, 10));
+        // await new Promise((resolve) => setTimeout(resolve, 10));
       }
     },
     [socketID],

@@ -18,21 +18,25 @@ const colorFromBurnType = (type) => {
 function CardBurnEffectsView({ data }) {
   const list = useMemo(
     () =>
-      data.map((val) => {
+      data.map((val,i) => {
         const color = colorFromBurnType(val);
         return (
           <div
+            key={i}
             style={{ backgroundColor: color }}
-            className="size-6 rounded-full bg-green-50 shadow-black/40"
-          ></div>
+            className="relative size-6 rounded-full shadow-black/40"
+          >
+            <div className="absolute top-1/2 left-1/2 size-4 -translate-1/2 rounded-full bg-black/40 bg-blend-multiply shadow-black/40" />
+          </div>
         );
       }),
     [data],
   );
 
   return (
-    <div className="absolute -top-1 -right-1 flex size-fit flex-col gap-0.5 justify-start items-center">
+    <div className="absolute -top-2 right-2 flex size-fit flex-col items-center justify-start gap-0.5">
       {list}
+      {/* {JSON.stringify(data)} */}
     </div>
   );
 }

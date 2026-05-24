@@ -20,6 +20,9 @@ import useBoard from "./hooks/useBoard";
 function GamePage() {
   const setActionsSubAck = useSocketStore((state) => state.setActionsSubAck);
   const resetActions = useGameStore((state) => state.resetActions);
+  const resetUsedBurnEffects = useGameStore(
+    (state) => state.resetUsedBurnEffects,
+  );
   const { spawnsInfo } = useBoard();
 
   const handleEffectGamePage = useCallback(
@@ -29,9 +32,10 @@ function GamePage() {
         // console.log("Game Page", e);
         setActionsSubAck(false);
         resetActions();
+        resetUsedBurnEffects();
       }
     },
-    [resetActions, setActionsSubAck],
+    [resetActions, resetUsedBurnEffects, setActionsSubAck],
   );
 
   useEffect(() => {
@@ -48,9 +52,11 @@ function GamePage() {
       <DebugWindow />
       <ActionPainter />
       <ActiveCardDisplay />
-      {/* <BurnDisplay /> */}
+      <BurnDisplay />
       <Deck />
-      <span className="absolute left-1/2 top-1/2 z-50 bg-amber-50">{JSON.stringify(spawnsInfo)}</span>
+      <span className="absolute top-1/2 left-1/2 z-50 bg-amber-50">
+        {JSON.stringify(spawnsInfo)}
+      </span>
     </div>
   );
 }

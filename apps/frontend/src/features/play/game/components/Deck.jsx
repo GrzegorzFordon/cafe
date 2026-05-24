@@ -16,6 +16,10 @@ function Deck() {
         setCardsLeftInDeck(e.cardsInDeckAmount ?? 0);
         await new Promise((resolve) => setTimeout(resolve, 10));
       }
+      if (e.name == "Card Shuffled Back Into Deck Effect") {
+        setCardsLeftInDeck(e.cardsInDeckAmount ?? 0);
+        await new Promise((resolve) => setTimeout(resolve, 10));
+      }
       if (e.name == "Card Discarded Effect") {
         setCardsInDiscard(e.cardsInDiscardAmount ?? 0);
         await new Promise((resolve) => setTimeout(resolve, 10));

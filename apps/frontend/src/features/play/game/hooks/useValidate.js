@@ -16,7 +16,7 @@ const useValidate = () => {
     );
   };
 
-  const getLegalTargets = () => {
+  const getLegalTargets = (card) => {
     return [];
     // return gameController.boardController.getLegalMoves(unit);
   };

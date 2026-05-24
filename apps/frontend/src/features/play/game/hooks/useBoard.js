@@ -63,7 +63,7 @@ const useBoard = () => {
     };
     const hex = layout.pixelToHexRounded(offsetMousePos);
     const rotHex = isFirstPlayer ? hex : hex.mirror();
-    return hex;
+    return rotHex;
   }, [boardRef, mousePos, layout, isFirstPlayer]);
 
   const boardPos = useMemo(() => {

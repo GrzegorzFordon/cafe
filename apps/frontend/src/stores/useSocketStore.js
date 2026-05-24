@@ -19,7 +19,7 @@ const useSocketStore = create(
     connect: () => {
       if (get().socket) return;
       eventBus.connectToServer();
-      console.log("[Socket Store] Connecting");
+      // console.log("[Socket Store] Connecting");
       const socket = io(SOCKET_URL);
 
       socket?.on("socket:id", (val) => set({ socketID: val }));
@@ -64,7 +64,7 @@ const useSocketStore = create(
     disconnect: () => {
       if (!get().socket) return;
       // eventBus.disconnect();
-      console.log("[Socket Store] Disconnecting");
+      // console.log("[Socket Store] Disconnecting");
       get().socket.disconnect();
       get().socket.offAny();
       set({ socket: undefined, roomData: undefined });

@@ -23,7 +23,10 @@ class PlayerController extends Controller {
       ),
     );
 
-    this.playerModels.forEach((m) => m.shuffle());
+    this.playerModels.forEach((m) => {
+      m.setupDeck();
+      m.shuffle();
+    });
     this.drawUpToHandSize();
   }
 
@@ -42,20 +45,25 @@ class PlayerController extends Controller {
   }
 
   draw(playerID, amount) {
-    const model = this.playerModels.get(playerID);
-    for (let n = 0; n < amount; n++) model.draw(this.game);
+    const playerModel = this.playerModels.get(playerID);
+    for (let n = 0; n < amount; n++) playerModel.draw(this.game);
   }
 
   discardCard(playerID, cardID) {
-    const model = this.playerModels.get(playerID);
-    // console.log("[Player Controller] Discarding", playerID, cardID);
-    model.discardCard(this.game, cardID);
+    const playerModel = this.playerModels.get(playerID);
+    playerModel.discardCard(this.game, cardID);
+  }
+
+  shuffleCardIntoDeck(playerID, card) {
+    const playerModel = this.playerModels.get(playerID);
+    if (!playerModel) return;
+    playerModel.shuffleCardIntoDeck(this.game, card);
   }
 
   getCardInHand(playerID, cardID) {
-    const model = this.playerModels.get(playerID);
-    if (!model) return;
-    const card = model.getCardInHand(cardID);
+    const playerModel = this.playerModels.get(playerID);
+    if (!playerModel) return;
+    const card = playerModel.getCardInHand(cardID);
     if (!card) return;
     return card;
   }

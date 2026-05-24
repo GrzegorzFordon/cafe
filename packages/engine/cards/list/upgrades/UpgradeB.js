@@ -5,7 +5,7 @@ import StructureCardModel from "../structure.card.js";
 class UpgradeB extends StructureCardModel {
   constructor(options) {
     super(options);
-    this.cardID = "0G01";
+    this.cardID = "0G02";
     this.name = "Upgrade B";
     this.speed = 7;
     this.burnEffects = [BURN_TYPES.MOVE];

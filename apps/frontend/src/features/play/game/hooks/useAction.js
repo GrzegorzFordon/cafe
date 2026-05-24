@@ -35,7 +35,7 @@ const useAction = () => {
     return actions.filter((val) => val.target?.isEqual(target));
   };
   const getActionsByHex = (hex) => {
-    return actions.filter((val) => val.hex?.isEqual(hex));
+    return actions.filter((val) => val.target.object?.isEqual(hex));
   };
 
   const getActionsByCard = (card) => {

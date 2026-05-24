@@ -32,6 +32,10 @@ const useGameStore = create(
     setUsedBurnEffects: (val) => {
       set({ usedBurnEffects: val });
     },
+
+    resetUsedBurnEffects: () => {
+      set({ usedBurnEffects: [] });
+    },
   })),
 );
 

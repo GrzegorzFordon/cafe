@@ -7,7 +7,12 @@ import UnitController from "../unit/unit.controller.js";
 import GameModel from "./game.model.js";
 import { nanoid } from "nanoid";
 import StateMachine, { states } from "./states/stateMachine.js";
-import { BASE_HEX_MAP, GAME_PHASES, TARGET_HEX_MAP } from "../config.js";
+import {
+  BASE_HEX_MAP,
+  BURN_TYPES,
+  GAME_PHASES,
+  TARGET_HEX_MAP,
+} from "../config.js";
 import GameAdvancedEffect from "../effect/effects/gameAdvanced.effect.js";
 import _ from "lodash";
 import EventEmitter from "eventemitter3";
@@ -31,8 +36,6 @@ class GameController {
   }
 
   async start() {
-    // console.log("[Game] Initialized, options:", this.options);
-    console.log(this.options);
     this.model = new GameModel(this);
     await this.stateMachine.init(this);
     await this.boardController.init(this);
@@ -50,51 +53,10 @@ class GameController {
     this.stateMachine.changeState(states.END);
   }
 
-  sortActionsBySpeed(actions) {
-    return actions.sort(
-      (a, b) =>
-        (b?.card?.speed ? b.card.speed : b.unit.speed) -
-        (a?.card?.speed ? a.card.speed : a.unit.speed),
-    );
-  }
-
   handleActions(actions) {
     this.advance();
-    console.log(JSON.stringify(actions));
-    // actions.forEach((val) => console.log(val.card.speed));
-    actions = this.sortActionsBySpeed(actions);
-    // actions.forEach((val) => console.log(val.card.speed));
-
-    _.defer(() => {
-      while (actions.length > 0) {
-        const nextAction = actions.shift();
-        if (nextAction.name === "PLAY") this.handlePlayAction(nextAction);
-        if (nextAction.name === "MOVE") this.handleMoveAction(nextAction);
-      }
-      this.advance();
-    });
-
-    // _.defer(() => {
-    // });
-  }
-
-  handleAction(action) {
-    // console.log("[Game] handling", action.id);
-    action.bonuses.forEach((val) => {
-      this.playerController.discardCard(action.playerID, val.id);
-    });
-  }
-
-  handleMoveAction(action) {
-    this.handleAction(action);
-    this.boardController.resolveMove(action.unit, action.hex, action.bonuses);
-  }
-
-  handlePlayAction(action) {
-    this.handleAction(action);
-    const options = { hex: action.hex };
-    this.cardController.resolveCard(action.playerID, action.card.id, options);
-    this.playerController.discardCard(action.playerID, action.card.id);
+    this.actionController.resolveActions(actions);
+    _.defer(() => this.advance());
   }
 
   handleWincon() {
@@ -119,17 +81,13 @@ class GameController {
         BASE_HEX_MAP.get(1).isEqual(unit.hex);
 
       const unitCharged = unit.modifiers.some((mod) => mod.name === "Charged");
-      // console.log(unit.id, unitStandsOnBase, unitCharged);
       if (unitStandsOnBase && unitCharged) {
-        console.log(unit.id, "is charged and standing on base");
-        // const modifier = new ChargedModifier();
-        // unit.addModifier(modifier);
-        // const effect = new UnitModifiedEffect(unit.id, modifier, true);
-        // this.eventEmitter.emit("sim:effect", effect);
         unit.die(this);
+        //TODO - Have player gain point
       }
     });
   }
+
   handleCharge() {
     this.unitController.units.forEach((unit) => {
       const unitStandsOnCharger =
@@ -140,7 +98,6 @@ class GameController {
         (mod) => mod.name === "Charged",
       );
       if (unitStandsOnCharger && !unitAlreadyCharged) {
-        console.log(unit.id, "standing on charger");
         const modifier = new ChargedModifier();
         unit.addModifier(modifier);
         const effect = new UnitModifiedEffect(unit.id, modifier, true);

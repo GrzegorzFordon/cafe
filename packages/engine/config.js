@@ -26,17 +26,6 @@ export const BASE_HEX_MAP = new Map([
   [1, new Hex(0, -2, 2)],
 ]);
 
-// export const SPAWNS_HEX_MAP = new Map({
-//   0: [
-//     [0, new Hex(-1, 2, -1)],
-//     [1, new Hex(1, 2, -3)],
-//   ],
-//   1: [
-//     [0, new Hex(1, -2, 1)],
-//     [1, new Hex(-1, -1, 2)],
-//   ],
-// });
-
 export const TARGET_HEX_MAP = new Map([
   [0, new Hex(-2, 1, 1)],
   [1, new Hex(2, -1, -1)],
@@ -50,4 +39,16 @@ export const BURN_TYPES = {
   PAY: "PAY",
 };
 
-export const SPELL_TARGET_TYPES = ["HEX", "UNIT"];
+export const SPELL_TARGET_TYPES = {
+  HEX: "HEX",
+  UNIT: "UNIT",
+  ANY: "ANY",
+  NONE: "NONE",
+};
+
+export const UNIT_STATS = {
+  SPEED: "SPEED",
+  ATTACK: "ATTACK",
+  HEALTH: "HEALTH",
+  REACH: "REACH",
+};
