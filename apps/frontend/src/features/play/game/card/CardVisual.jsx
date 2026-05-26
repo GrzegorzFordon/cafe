@@ -17,7 +17,6 @@ function CardVisual({ card, order }) {
       draggable="false"
       src={spritePath}
       alt={card?.cardID}
-      style={{willChange:"auto"}}
       className="size-fit object-scale-down select-none"
     />
   );

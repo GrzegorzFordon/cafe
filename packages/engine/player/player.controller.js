@@ -16,12 +16,14 @@ class PlayerController extends Controller {
   }
 
   init(options) {
-    this.game.options.players.forEach((player) =>
+    let firstIteration = true;
+    this.game.options.players.forEach((player) => {
       this.playerModels.set(
         player.id ?? 0,
-        new PlayerModel(options, player.id ?? 0), //TODO second argument needs .id
-      ),
-    );
+        new PlayerModel(options, player.id ?? 0, firstIteration),
+      );
+      firstIteration = false;
+    });
 
     this.playerModels.forEach((m) => {
       m.setupDeck();
@@ -72,6 +74,14 @@ class PlayerController extends Controller {
     const model = this.playerModels.get(playerID);
     if (!model) return;
     const res = model.getHeldBurnTypes();
+    if (!res) return;
+    return res;
+  }
+
+  isFirstPlayer(playerID) {
+    const model = this.playerModels.get(playerID);
+    if (!model) return;
+    const res = model.isFirstPlayer;
     if (!res) return;
     return res;
   }

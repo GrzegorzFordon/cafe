@@ -2,10 +2,10 @@ import { BURN_TYPES } from "../../config";
 import Action from "../action.model";
 
 class MoveAction extends Action {
-  constructor(unit, hex) {
+  constructor(unit, target) {
     super();
     this.unit = unit;
-    this.hex = hex;
+    this.target = target;
     this.name = "MOVE";
   }
 }

@@ -6,16 +6,25 @@ import { useImmer } from "use-immer";
 import { AnimatePresence } from "motion/react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "motion/react";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+import { SPELL_TARGET_TYPES } from "@cafe/engine/config.js";
+import useValidate from "../hooks/useValidate.js";
+import useUnits from "../hooks/useUnits.js";
 
 function Units() {
   // const [units, setUnits] = useState([]);
+  const { getLegalTargets } = useValidate();
 
   const [units, setUnits] = useImmer([]);
 
-  const handleEffectSpawn = useCallback(
+  const [legalTargets, setLegalTargets] = useImmer([]);
+
+  const { firstMousedOverUnit } = useUnits();
+
+  const handleEffect = useCallback(
     async (e) => {
       if (e.name === "Unit Spawned Effect") {
-        console.log(e);
+        // console.log(e);
         //clone loses methods, so replace hex with new proper hex object TODO figure out cleaner answer
         const clone = structuredClone(e.unit);
         clone.hex = new Hex(clone.hex.q, clone.hex.r, clone.hex.s);
@@ -62,24 +71,56 @@ function Units() {
     [setUnits],
   );
 
-  useEffect(() => {
-    return () => {};
-  }, [handleEffectSpawn]);
+  const handleCardDragStart = useCallback(
+    (card) => {
+      if (card.targetType !== SPELL_TARGET_TYPES.UNIT) return;
+      const result = getLegalTargets(card);
+      setLegalTargets(result);
+    },
+    [getLegalTargets, setLegalTargets],
+  );
+  const handleCardDragEnd = () => {
+    setLegalTargets([]);
+  };
 
   useEffect(() => {
-    eventBus.subscribeToGameEffects(handleEffectSpawn);
+    eventBus.subscribeToGameEffects(handleEffect);
 
     return () => {
-      eventBus.unsubscribeToGameEffects(handleEffectSpawn);
+      eventBus.unsubscribeToGameEffects(handleEffect);
     };
-  }, [handleEffectSpawn]);
+  }, [handleEffect]);
 
-  const list = (
-    <AnimatePresence>
-      {units.map((val) => {
-        return <Unit key={val.id} unit={val} unitID={1} />;
-      })}
-    </AnimatePresence>
+  useEffect(() => {
+    eventEmitter.on("card:drag:start", handleCardDragStart);
+    eventEmitter.on("card:drag:end", handleCardDragEnd);
+    return () => {
+      eventEmitter.off("card:drag:start", handleCardDragStart);
+      eventEmitter.off("card:drag:end", handleCardDragEnd);
+    };
+  });
+
+
+
+  const list = useMemo(
+    () => (
+      <AnimatePresence>
+        {units.map((val) => {
+          const isLegalTarget = legalTargets.some(
+            (legalTarget) => legalTarget.id === val.id,
+          );
+          return (
+            <Unit
+              key={val.id}
+              unit={val}
+              unitID={1}
+              isLegalTarget={isLegalTarget}
+            />
+          );
+        })}
+      </AnimatePresence>
+    ),
+    [legalTargets, units],
   );
 
   return (

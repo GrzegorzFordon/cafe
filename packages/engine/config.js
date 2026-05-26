@@ -52,3 +52,9 @@ export const UNIT_STATS = {
   HEALTH: "HEALTH",
   REACH: "REACH",
 };
+
+export const TARGET_OPTIONS = {
+  EMPTY: "isEmpty",
+  SPAWN: "isSpawn",
+  FRIENDLY: "isFriendly",
+};

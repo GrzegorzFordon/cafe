@@ -59,6 +59,10 @@ class GameController {
     _.defer(() => this.advance());
   }
 
+  /**
+   * Move to Upkeep State?
+   */
+
   handleWincon() {
     /**
      * for each player

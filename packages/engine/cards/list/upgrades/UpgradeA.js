@@ -1,8 +1,11 @@
-import { BURN_TYPES } from "../../../config.js";
+import { BURN_TYPES, UNIT_STATS } from "../../../config.js";
+import UnitStatModifier from "../../../unit/modifier/unitStat.modifier.js";
+import ModifyUnitAbility from "../../abilities/modifyUnit.ability.js";
 import CardModel from "../../card.model.js";
 import StructureCardModel from "../structure.card.js";
+import UpgradeCardModel from "../upgrade.card.js";
 
-class UpgradeA extends StructureCardModel {
+class UpgradeA extends UpgradeCardModel {
   constructor(options) {
     super(options);
     this.cardID = "0G01";
@@ -11,8 +14,18 @@ class UpgradeA extends StructureCardModel {
     this.burnEffects = [BURN_TYPES.MOVE];
   }
 
-  onPlay(controller, options) {
-    super.onPlay(controller, options);
+  onPlay(controller, target) {
+    const modifier = new UnitStatModifier({
+      stat: UNIT_STATS.ATTACK,
+      amount: 5,
+    });
+    const modifyAbility = new ModifyUnitAbility({
+      playerID: this.playerID,
+      unit: target,
+      modification: modifier,
+    });
+    this.abilities.push(modifyAbility);
+    super.onPlay(controller, target);
   }
 }
 export default UpgradeA;

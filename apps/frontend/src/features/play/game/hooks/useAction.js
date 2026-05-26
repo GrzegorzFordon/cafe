@@ -1,4 +1,4 @@
-import { BURN_TYPES } from "@cafe/engine/config";
+import { BURN_TYPES, SPELL_TARGET_TYPES } from "@cafe/engine/config";
 import useGameStore from "../stores/useGameStore";
 import { useState } from "react";
 import useSocketStore from "../../../../stores/useSocketStore";
@@ -35,7 +35,11 @@ const useAction = () => {
     return actions.filter((val) => val.target?.isEqual(target));
   };
   const getActionsByHex = (hex) => {
-    return actions.filter((val) => val.target.object?.isEqual(hex));
+    return actions.filter(
+      (val) =>
+        (val.targetType === SPELL_TARGET_TYPES.HEX || val.name === "MOVE") &&
+        val.target?.isEqual(hex),
+    );
   };
 
   const getActionsByCard = (card) => {

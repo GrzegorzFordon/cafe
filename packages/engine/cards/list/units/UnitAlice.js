@@ -9,8 +9,8 @@ class UnitAlice extends UnitCardModel {
     this.name = "Alice";
   }
 
-  onPlay(controller, options) {
-    super.onPlay(controller, options);
+  onPlay(controller, target) {
+    super.onPlay(controller, target);
   }
 }
 export default UnitAlice;

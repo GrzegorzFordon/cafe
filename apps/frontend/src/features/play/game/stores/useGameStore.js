@@ -8,6 +8,7 @@ const useGameStore = create(
     actions: [],
     burnEffects: [],
     usedBurnEffects: [],
+    mousedOverUnits: [],
 
     setGameController: (gameController) => {
       set({ gameController: gameController });
@@ -35,6 +36,16 @@ const useGameStore = create(
 
     resetUsedBurnEffects: () => {
       set({ usedBurnEffects: [] });
+    },
+
+    addMousedOverUnit: (unit) => {
+      set((state) => ({ mousedOverUnits: [...state.mousedOverUnits, unit] }));
+    },
+
+    removeMousedOverUnit: (unit) => {
+      set((state) => ({
+        mousedOverUnits: state.mousedOverUnits.filter((val) => val !== unit),
+      }));
     },
   })),
 );

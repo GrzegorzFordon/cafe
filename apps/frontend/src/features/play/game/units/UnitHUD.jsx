@@ -10,6 +10,7 @@ function UnitHUD({
   isExhausted,
   isCharged,
   isLeader,
+  isLegalTarget,
 }) {
   return (
     <div draggable={false} className="pointer-events-none select-none">
@@ -45,6 +46,11 @@ function UnitHUD({
           className="pointer-events-none absolute top-2/7 left-3/5 -translate-1/2 scale-45 rotate-18"
           src={crownSprite}
         />
+      )}
+      {isLegalTarget && (
+        <div className="absolute top-1/2 left-1/2 flex size-fit -translate-1/2 scale-80 items-center justify-center rounded-sm bg-green-950 text-sm text-green-300 opacity-80">
+          TARGET
+        </div>
       )}
     </div>
   );

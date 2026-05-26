@@ -1,3 +1,4 @@
+import { SPELL_TARGET_TYPES, TARGET_OPTIONS } from "../../config.js";
 import SpawnUnitAbility from "../abilities/spawnUnit.ability.js";
 import CardModel from "../card.model.js";
 
@@ -9,9 +10,14 @@ class UnitCardModel extends CardModel {
     this.hp = unitData.hp ?? 0;
     this.speed = unitData.speed ?? 0;
     this.reach = unitData.reach ?? 0;
+    this.targetType = SPELL_TARGET_TYPES.HEX;
+    this.targetOptions = options.targetOptions ?? [
+      TARGET_OPTIONS.EMPTY,
+      TARGET_OPTIONS.SPAWN,
+    ];
   }
 
-  onPlay(controller, options) {
+  onPlay(controller, target) {
     const unitData = {
       atk: this.atk,
       hp: this.hp,
@@ -22,12 +28,13 @@ class UnitCardModel extends CardModel {
     const spawnAbility = new SpawnUnitAbility({
       playerID: this.playerID,
       cardID: this.cardID,
-      hex: options.hex,
+      // hex: options.hex,
+      hex: target,
       unitData,
     });
 
     this.abilities.push(spawnAbility);
-    super.onPlay(controller, options);
+    super.onPlay(controller);
   }
 }
 

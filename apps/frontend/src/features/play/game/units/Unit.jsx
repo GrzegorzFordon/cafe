@@ -16,10 +16,12 @@ import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import useSocketStore from "../../../../stores/useSocketStore";
 import useSocket from "../../../socket/hooks/useSocket";
 import { UNIT_STATS } from "@cafe/engine/config";
+import useUnits from "../hooks/useUnits";
 
-function Unit({ unit }) {
+function Unit({ unit, isLegalTarget }) {
   const { getActionsByUnit, addActionObject } = useAction();
   const { mousedOverHex, pixelFromHex, isHexWithinBoard } = useBoard();
+  const { addMousedOverUnit, removeMousedOverUnit } = useUnits();
   const { getLegalMoves } = useValidate();
   const sprite = useMemo(() => {
     switch (unit.unitID) {
@@ -125,6 +127,8 @@ function Unit({ unit }) {
       <motion.div
         drag={!hasActions && isFriendly && !isExhausted}
         dragSnapToOrigin={!hasActions}
+        // onHoverStart={() => addMousedOverUnit(unit)}
+        // onHoverEnd={() => removeMousedOverUnit(unit)}
         onPointerDown={() => {
           if (!hasActions) handleDragStart();
         }}
@@ -142,8 +146,10 @@ function Unit({ unit }) {
         whileDrag={{ opacity: 0.5 }}
       >
         <img
-          className="pointer-events-none size-fit select-none"
+          className="size-fit select-none"
           draggable="false"
+          onPointerEnter={() => addMousedOverUnit(unit)}
+          onPointerLeave={() => removeMousedOverUnit(unit)}
           src={sprite}
         />
       </motion.div>
@@ -156,6 +162,7 @@ function Unit({ unit }) {
         isExhausted={isExhausted}
         isCharged={isCharged}
         isLeader={isLeader}
+        isLegalTarget={isLegalTarget}
       />
 
       <div className="size-fit bg-amber-50 text-sm">

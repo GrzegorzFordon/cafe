@@ -15,28 +15,22 @@ import BurnAction from "@cafe/engine/action/actions/burn.action.js";
 import { useMemo, useRef } from "react";
 import ReactRough, { Line, Rectangle } from "rough-react-wrapper";
 import useGameStore from "../stores/useGameStore.js";
-import { BURN_TYPES } from "@cafe/engine/config.js";
+import { BURN_TYPES, SPELL_TARGET_TYPES } from "@cafe/engine/config.js";
 import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import CardBurnEffectsView from "./CardBurnEffectsView.jsx";
-// import rough from "roughjs";
-
-/**
- * Client side Card component
- * Handles Display and Drag Events (play card, burn card)
- */
+import useUnits from "../hooks/useUnits.js";
+import CardHUD from "./CardHUD.jsx";
 
 const MAX_HAND_FAN_ANGLE_DEGREES = 15;
-
 const BURN_TRESHOLD_X_MIN = 350;
 const BURN_TRESHOLD_Y_MAX = 150;
 
 function Card({ order, card, index }) {
+  const ref = useRef();
+  const addBurnEffect = useGameStore((state) => state.addBurnEffect);
   const { mousedOverHex, isMousedOverHexWithinBoard, boardPos } = useBoard();
   const { addActionObject, hasActionsOfType, isCardBurned } = useAction();
-  const isBurning = useMotionValue(0);
-  const addBurnEffect = useGameStore((state) => state.addBurnEffect);
-  const ref = useRef();
-
+  const { firstMousedOverUnit } = useUnits();
   const isPlayed = useMemo(
     () => hasActionsOfType(card.id, "PLAY"),
     [card.id, hasActionsOfType],
@@ -45,6 +39,7 @@ function Card({ order, card, index }) {
 
   const angle = MAX_HAND_FAN_ANGLE_DEGREES * (index - 0.5);
 
+  const isBurning = useMotionValue(0);
   const dragOffsetMotionValueX = useMotionValue(0);
   const dragOffsetMotionValueY = useMotionValue(0);
   const dragOffsetSpringValueX = useSpring(dragOffsetMotionValueX, {
@@ -56,37 +51,23 @@ function Card({ order, card, index }) {
     mass: 5,
   });
 
-  const dragDeltaMotionValueX = useMotionValue(0);
-  const dragDeltaMotionValueY = useMotionValue(0);
-  const dragDeltaSpringValueX = useSpring(dragDeltaMotionValueX, {
-    damping: 10,
-    mass: 5,
-    restDelta: 0.1,
-  });
-  const dragDeltaSpringValueY = useSpring(dragDeltaMotionValueY, {
-    // bounce: 1,
-    damping: 10,
-    mass: 5,
-    restDelta: 0.1,
-  });
-
   const handlePlay = () => {
     eventEmitter.emit("card:drag:end", card);
 
     dragOffsetSpringValueX.jump(0);
     dragOffsetSpringValueY.jump(0);
-    dragDeltaSpringValueX.jump(0);
-    dragDeltaSpringValueY.jump(0);
-    ref.current.style.left = -dragOffsetSpringValueX.get() + "px";
-    ref.current.style.top = -dragOffsetSpringValueY.get() + "px";
+    ref.current.style.left = "0px";
+    ref.current.style.top = "0px";
+
     if (isMousedOverHexWithinBoard) {
-      const playAction = new PlayAction(card, mousedOverHex);
+      const target =
+        card.targetType === SPELL_TARGET_TYPES.HEX
+          ? mousedOverHex
+          : firstMousedOverUnit;
+      const playAction = new PlayAction(card, target);
       addActionObject(playAction);
     } else if (isBurning.get() == true) {
-      // const burnAction = new BurnAction(card);
-      // addActionObject(burnAction);
       addBurnEffect(card);
-      // console.log("[Card Component]", "burning", card);
     }
     isBurning.set(false);
   };
@@ -113,12 +94,6 @@ function Card({ order, card, index }) {
     const offY = Math.abs(posY - boardPos.y);
     const burn = offX > BURN_TRESHOLD_X_MIN && offY < BURN_TRESHOLD_Y_MAX;
     isBurning.set(burn);
-
-    //drag offset delta for 3d rotation
-    // dragDeltaMotionValueX.set(Math.max(Math.min(info.delta.x * 5, 30), -30));
-    // dragDeltaMotionValueY.set(Math.max(Math.min(info.delta.y * 5, 30), -30));
-    // dragDeltaMotionValueX.set(info.delta.x);
-    // dragDeltaMotionValueY.set(info.delta.y);
   };
 
   return (
@@ -130,8 +105,7 @@ function Card({ order, card, index }) {
         scale: 0.3,
         opacity: 0.7,
         cursor: "grabbing",
-        // rotateX: dragDeltaSpringValueY.get(),
-        // rotateY: dragDeltaSpringValueX.get(),
+        pointerEvents: "none",
       }}
       key={card}
       layout
@@ -165,34 +139,11 @@ function Card({ order, card, index }) {
         }
         style={{
           filter: !isBurning.get() && isPlayed ? "brightness(0.4)" : "none",
-          // rotateX: dragDeltaSpringValueY.get() * 2 + "deg",
-          // rotateY: dragDeltaSpringValueX.get() * 2 + "deg",
           rotateZ: `${Math.round(angle)}deg`,
-          willChange: "auto",
-          WebkitFontSmoothing: "never",
-          WebkitBackfaceVisibility: "hidden",
         }}
       >
         <CardVisual key={order} order={order} card={card} />
-
-        <div className="pointer-events-none absolute -top-2 left-2 z-30 flex aspect-square size-4 scale-200 items-center justify-center rounded-full p-2 text-center text-sm font-black text-orange-500 text-shadow-2xs text-shadow-black/70">
-          {card.speed && card.speed !== 0 ? card.speed : ""}
-        </div>
-
-        <div
-          style={{
-            backgroundColor:
-              isBurned || isBurning.get() ? "red" : "transparent",
-          }}
-          className="absolute top-1/2 left-1/2 size-full -translate-1/2 opacity-85 mix-blend-multiply"
-        ></div>
-
-        {/* <span className="absolute right-0 bottom-0 -translate-1/2 rounded-sm bg-amber-50 p-1">
-          {card?.cardID}
-        </span> */}
-        <span className="text-md absolute bottom-1 left-1/2 flex w-fit -translate-1/2 items-center justify-center overflow-visible overflow-x-visible rounded-sm bg-amber-50 p-1 text-sm font-black whitespace-nowrap text-black">
-          {card?.name}
-        </span>
+        <CardHUD card={card} isBurning={isBurned || isBurning.get()} />
         <CardBurnEffectsView data={card.burnEffects} />
       </motion.div>
     </Reorder.Item>

@@ -11,38 +11,39 @@ import { BURN_TYPES } from "../config.js";
 import CardShuffledBackIntoDeckEffect from "../effect/effects/cardShuffledIntoDeck.effect.js";
 
 class PlayerModel {
-  constructor(options, playerID) {
+  constructor(options, playerID, isFirstPlayer) {
     this.playerID = playerID;
     this.hand = [];
     this.deck = [
       "0U01",
       "0U01",
-      "0U02",
-      "0U02",
-      "0U03",
-      "0U03",
+      // "0U02",
+      // "0U02",
+      // "0U03",
+      // "0U03",
       "0I01",
-      "0I01",
-      "0I02",
-      "0I02",
+      // "0I01",
+      // "0I02",
+      // "0I02",
       "0S01",
-      "0S01",
-      "0S02",
-      "0S02",
-      "0S03",
-      "0S03",
-      "0T01",
-      "0T01",
+      // "0S01",
+      // "0S02",
+      // "0S02",
+      // "0S03",
+      // "0S03",
+      // "0T01",
+      // "0T01",
+      // "0T02",
       "0T02",
-      "0T02",
+      // "0G01",
       "0G01",
-      "0G01",
-      "0G02",
+      // "0G02",
       "0G02",
     ];
     this.discard = [];
     this.actionPoints = 2;
     this.autoIncrement = 0;
+    this.isFirstPlayer = isFirstPlayer;
   }
 
   setupDeck() {

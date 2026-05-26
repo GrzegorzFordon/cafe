@@ -7,6 +7,7 @@ import { Hex } from "@cafe/shared/util/hex.js";
 import useSocket from "../../../socket/hooks/useSocket.js";
 import eventBus from "../util/eventBus.js";
 import { useImmer } from "use-immer";
+import { SPELL_TARGET_TYPES } from "@cafe/engine/config.js";
 
 function Tiles() {
   const { hexList, mousedOverHex } = useBoard();
@@ -30,17 +31,18 @@ function Tiles() {
   };
 
   const handleCardDragStart = useCallback(
-    (unit) => {
-      const result = getLegalTargets(unit);
+    (card) => {
+      if (card.targetType !== SPELL_TARGET_TYPES.HEX) return;
+      const result = getLegalTargets(card);
       setLegalTiles(result);
-      setIsCardDrag(1);
+      // setIsCardDrag(1);
     },
     [getLegalTargets],
   );
 
   const handleCardDragEnd = () => {
     setLegalTiles([]);
-    setIsCardDrag(0);
+    // setIsCardDrag(0);
   };
 
   const handleEffectTiles = useCallback(
@@ -85,24 +87,22 @@ function Tiles() {
     () =>
       hexList.map((hex) => {
         const rotHex = isFirstPlayer ? hex : hex.mirror();
-        const isActiveUnit = legalTiles.some((val) => val.isEqual(rotHex));
-        const isActiveCard = isCardDrag && mousedOverHex.isEqual(rotHex);
-        const isActive = isActiveUnit || isActiveCard;
+        const isActiveUnit = legalTiles.some((val) => val?.isEqual(rotHex));
         const centerHex = new Hex(0, 0, 0);
-        const isSpawnInUse = spawns.keys().some((val) => val.isEqual(rotHex));
+        const isSpawnInUse = spawns.keys().some((val) => val?.isEqual(rotHex));
         return (
           !hex.isEqual(centerHex) && (
             <Tile
               key={JSON.stringify(hex)}
               hex={hex}
-              isActive={isActive}
+              isActive={isActiveUnit}
               isMirrored={!isFirstPlayer}
               isSpawnInUse={isSpawnInUse}
             />
           )
         );
       }),
-    [hexList, isCardDrag, isFirstPlayer, legalTiles, mousedOverHex, spawns],
+    [hexList, isFirstPlayer, legalTiles, spawns],
   );
 
   return (

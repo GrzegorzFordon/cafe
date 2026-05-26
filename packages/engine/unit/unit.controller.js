@@ -110,14 +110,17 @@ class UnitController extends Controller {
     if (!unit) return;
     unit.move(this.game, hex);
     const modifier = new ExhaustedModifier();
+    this.modifyUnit(unitID, modifier);
+  }
+
+  modifyUnit(unitID, modifier) {
+    const unit = this.units.find((val) => val.id === unitID);
+    if (!unit) return;
     unit.addModifier(modifier);
     const effect = new UnitModifiedEffect(unit.id, modifier, true);
     this.game.eventEmitter.emit("sim:effect", effect);
   }
 
-  /**
-   * COMBAT
-   */
   handleCombat(attackerUnitID, defenderUnitID, hex, powerBonusAmount) {
     const attacker = this.units.find((val) => val.id == attackerUnitID);
     const defender = this.units.find((val) => val.id == defenderUnitID);
@@ -150,6 +153,12 @@ class UnitController extends Controller {
       const effect = new UnitModifiedEffect(unit.id, modifier, false);
       this.game.eventEmitter.emit("sim:effect", effect);
     });
+  }
+
+  isFriendly(playerID, unitID) {
+    const unit = this.units.find((unit) => unit.id === unitID);
+    if (!unit) return false;
+    return unit.playerID === playerID;
   }
 }
 

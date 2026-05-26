@@ -29,7 +29,7 @@ class UnitModel {
     this.loot = options.unitData.loot ?? 1;
     this.ranged = options.unitData.ranged ?? 0;
     this.modifiers = [
-      // new UnitStatModifier({ stat: UNIT_STATS.ATTACK, amount: 5 }),
+      // new UnitStatModifier({ stat: UNIT_STATS.ATTACK, amount: 3 }),
     ];
   }
 

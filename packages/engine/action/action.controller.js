@@ -20,7 +20,6 @@ class ActionController extends Controller {
   }
 
   async resolveAction(action) {
-    //TODO - resolve action
     action.bonuses.forEach((val) => {
       this.game.cardController.burnCard(action.playerID, val.id);
       this.game.playerController.discardCard(action.playerID, val.id);
@@ -31,22 +30,29 @@ class ActionController extends Controller {
   }
 
   async resolvePlayAction(action) {
-    const options = { hex: action.target.object };
+    // const options = { hex: action.target.object };
+
+    //TODO - Validate action first
 
     await this.game.cardController.resolveCard(
       action.playerID,
       action.card.id,
-      options,
+      // options,
+      action.target,
     );
     this.game.playerController.discardCard(action.playerID, action.card.id);
   }
+
   async resolveMoveAction(action) {
+    //TODO - Validate action first
     this.game.boardController.resolveMove(
       action.unit,
-      action.hex,
+      action.target,
       action.bonuses,
     );
   }
+
+
 
   sortActionsBySpeed(actions) {
     return actions.sort((a, b) => {
