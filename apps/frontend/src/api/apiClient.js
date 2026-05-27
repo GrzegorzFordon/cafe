@@ -1,7 +1,6 @@
 // AXIOS CLIENT INSTANCE
 // set the base url and common things
 // services will dictate what method and what endpoint they wanna use
-import "dotenv/config";
 import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3500";
