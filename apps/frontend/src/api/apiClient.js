@@ -4,7 +4,7 @@
 import "dotenv/config";
 import axios from "axios";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3500";
+const BACKEND_URL = import.meta.env.BACKEND_URL || "http://localhost:3500";
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
