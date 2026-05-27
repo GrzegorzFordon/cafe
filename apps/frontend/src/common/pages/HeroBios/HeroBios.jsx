@@ -1,4 +1,4 @@
-import image from "../../../assets/heroes.PNG";
+// import image from "../../../assets/heroes.jpg";
 import FramedHero from "./FramedHero";
 
 function HeroBios() {

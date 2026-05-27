@@ -1,4 +1,4 @@
-import builderSprite from "../../../assets/deckbuilder.png";
+import builderSprite from "../../../assets/deckbuilder.jpg";
 
 function DeckBuilder() {
   return (
