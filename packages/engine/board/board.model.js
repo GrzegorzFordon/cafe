@@ -4,7 +4,7 @@ import { BOARD_SIZE } from "../config.js";
 class BoardModel {
   constructor() {
     this.hexList = [];
-    this.structures = [];
+    this.structures = new Map();
     this.spawns = new Map();
   }
 
@@ -36,6 +36,10 @@ class BoardModel {
   updateSpawns(unit, spawn, isAdd) {
     if (isAdd) this.spawns.set(new Hex(spawn.q, spawn.r, spawn.s), unit);
     else this.spawns.delete(spawn);
+  }
+
+  spawnStructure(structure, hex) {
+    this.structures.set(hex, structure);
   }
 }
 

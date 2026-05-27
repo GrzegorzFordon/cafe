@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Card from "../Card/Card.jsx";
+import Card from "../card/Card.jsx";
 import { AnimatePresence, Reorder } from "motion/react";
 import eventBus from "../util/eventBus.js";
 // eslint-disable-next-line no-unused-vars

@@ -46,13 +46,13 @@ class UnitController extends Controller {
       atk: 0,
       hp: 2,
       speed: 6,
-      reach: 3,
+      reach: 2,
     };
     const statsMinionB = {
       atk: 1,
       hp: 1,
       speed: 5,
-      reach: 2,
+      reach: 1,
     };
     const ids = this.game.options.players.map((p) => p.id);
     this.spawnUnit(ids[0], "0L01", BASE_HEX_MAP.get(0).neighbor(1), stats);
@@ -105,13 +105,22 @@ class UnitController extends Controller {
     );
   }
 
-  moveUnit(unitID, hex) {
+  moveUnit(unitID, hex, exhaust = true) {
     const unit = this.units.find((val) => val.id == unitID);
     if (!unit) return;
     unit.move(this.game, hex);
-    const modifier = new ExhaustedModifier();
-    this.modifyUnit(unitID, modifier);
+
+    if (exhaust) {
+      const modifier = new ExhaustedModifier();
+      this.modifyUnit(unitID, modifier);
+    }
   }
+
+  // teleportUnit(unitID, hex) {
+  //   const unit = this.units.find((val) => val.id == unitID);
+  //   if (!unit) return;
+  //   unit.move(this.game, hex);
+  // }
 
   modifyUnit(unitID, modifier) {
     const unit = this.units.find((val) => val.id === unitID);
@@ -119,6 +128,12 @@ class UnitController extends Controller {
     unit.addModifier(modifier);
     const effect = new UnitModifiedEffect(unit.id, modifier, true);
     this.game.eventEmitter.emit("sim:effect", effect);
+  }
+
+  damageUnit(unitID, amount) {
+    const unit = this.units.find((val) => val.id == unitID);
+    if (!unit) return;
+    unit.takeDamage(this.game, amount);
   }
 
   handleCombat(attackerUnitID, defenderUnitID, hex, powerBonusAmount) {

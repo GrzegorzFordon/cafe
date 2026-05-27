@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res.send("Welcome.");
 });
 
-app.use("/movies", moviesRouter);
+// app.use("/movies", moviesRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 

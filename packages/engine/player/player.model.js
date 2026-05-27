@@ -17,15 +17,15 @@ class PlayerModel {
     this.deck = [
       "0U01",
       "0U01",
-      // "0U02",
-      // "0U02",
+      "0U02",
+      "0U02",
+      "0U03",
       // "0U03",
-      // "0U03",
-      "0I01",
+      // "0I01",
       // "0I01",
       // "0I02",
       // "0I02",
-      "0S01",
+      // "0S01",
       // "0S01",
       // "0S02",
       // "0S02",
@@ -34,11 +34,11 @@ class PlayerModel {
       // "0T01",
       // "0T01",
       // "0T02",
-      "0T02",
+      // "0T02",
       // "0G01",
-      "0G01",
+      // "0G01",
       // "0G02",
-      "0G02",
+      // "0G02",
     ];
     this.discard = [];
     this.actionPoints = 2;
@@ -52,7 +52,7 @@ class PlayerModel {
       const cardModel = CardList.get(val);
       const card = new cardModel({
         playerID: this.playerID,
-        id: this.autoIncrement++,
+        id: "C"+this.autoIncrement++,
       });
       deckCards.push(card);
     });

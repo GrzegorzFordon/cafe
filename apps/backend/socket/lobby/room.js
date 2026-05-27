@@ -20,12 +20,11 @@ class Room {
     this.submittedActions = new Map();
   }
 
-  // effects = [];
-
   addPlayer(PlayerDTO) {
     console.log(`[Room] ${this.id} Adding Player ${PlayerDTO.id}`);
     this.players.push(PlayerDTO);
   }
+  
   removePlayer(PlayerDTO) {
     console.log(`[Room] ${this.id} Removing Player ${PlayerDTO.id}`);
     this.players = this.players.filter((val) => val.id !== PlayerDTO.id);
@@ -33,17 +32,6 @@ class Room {
 
   startGame() {
     console.log("[Room] Starting Game Sim", this.id, this.players);
-
-    this.gameController.eventEmitter.on("sim:effect", (val) => {
-      // console.log("[Room]", this.id, val.name);
-      // this.effects.push(val);
-    });
-    this.gameController.eventEmitter.on("sim:advance", (val) => {
-      // console.log(this.id, val, this.effects);
-      // eventEmitter.emit("room:advance", this.id, val.phase, this.effects);
-      // this.effects = [];
-    });
-
     this.gameController.start();
     this.status = roomStatus.INPROGRESS;
     eventEmitter.emit("server:room:start", this.id, this.players);
@@ -81,5 +69,3 @@ class Room {
 }
 
 export default Room;
-
-// ID, Players, Game Instance, Room Actions, Room Events

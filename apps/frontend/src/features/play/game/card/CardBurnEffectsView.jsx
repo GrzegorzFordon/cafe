@@ -34,7 +34,7 @@ function CardBurnEffectsView({ data }) {
   );
 
   return (
-    <div className="absolute -top-2 right-2 flex size-fit flex-col items-center justify-start gap-0.5">
+    <div className="absolute -top-2 right-0 flex size-fit flex-col items-center justify-start gap-0.5">
       {list}
       {/* {JSON.stringify(data)} */}
     </div>

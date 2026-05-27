@@ -10,6 +10,7 @@ import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import { SPELL_TARGET_TYPES } from "@cafe/engine/config.js";
 import useValidate from "../hooks/useValidate.js";
 import useUnits from "../hooks/useUnits.js";
+import UnitModel from "@cafe/engine/unit/unit.model.js";
 
 function Units() {
   // const [units, setUnits] = useState([]);
@@ -100,7 +101,9 @@ function Units() {
     };
   });
 
-
+  // useEffect(() => {
+  //   console.log(firstMousedOverUnit?.unitID);
+  // }, [firstMousedOverUnit]);
 
   const list = useMemo(
     () => (

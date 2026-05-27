@@ -28,7 +28,6 @@ class UnitCardModel extends CardModel {
     const spawnAbility = new SpawnUnitAbility({
       playerID: this.playerID,
       cardID: this.cardID,
-      // hex: options.hex,
       hex: target,
       unitData,
     });

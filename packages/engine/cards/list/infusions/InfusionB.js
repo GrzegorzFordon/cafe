@@ -10,6 +10,7 @@ class InfusionB extends InfusionCardModel {
     this.burnEffects = [BURN_TYPES.POWER, BURN_TYPES.POWER];
     this.name = "Double Espresso";
     this.uses = options.uses ?? 0;
+    this.cardText = `2 Uses (${2 - this.uses} left)`;
   }
 
   //TODO - prevent from being discarded

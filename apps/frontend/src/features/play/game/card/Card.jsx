@@ -20,6 +20,7 @@ import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import CardBurnEffectsView from "./CardBurnEffectsView.jsx";
 import useUnits from "../hooks/useUnits.js";
 import CardHUD from "./CardHUD.jsx";
+import useValidate from "../hooks/useValidate.js";
 
 const MAX_HAND_FAN_ANGLE_DEGREES = 15;
 const BURN_TRESHOLD_X_MIN = 350;
@@ -31,6 +32,8 @@ function Card({ order, card, index }) {
   const { mousedOverHex, isMousedOverHexWithinBoard, boardPos } = useBoard();
   const { addActionObject, hasActionsOfType, isCardBurned } = useAction();
   const { firstMousedOverUnit } = useUnits();
+  const { getLegalTargets } = useValidate();
+
   const isPlayed = useMemo(
     () => hasActionsOfType(card.id, "PLAY"),
     [card.id, hasActionsOfType],
@@ -64,6 +67,19 @@ function Card({ order, card, index }) {
         card.targetType === SPELL_TARGET_TYPES.HEX
           ? mousedOverHex
           : firstMousedOverUnit;
+      console.log(
+        target ?? "no target",
+        getLegalTargets(card),
+        card.targetType,
+      );
+      if (
+        !getLegalTargets(card).some((val) => {
+          if (card.targetType === SPELL_TARGET_TYPES.UNIT)
+            return val.id === target?.id;
+          else return val.isEqual(target);
+        })
+      )
+        return;
       const playAction = new PlayAction(card, target);
       addActionObject(playAction);
     } else if (isBurning.get() == true) {
@@ -122,10 +138,10 @@ function Card({ order, card, index }) {
         transition: { duration: 0.3 },
       }}
       transition={easeOut}
-      className="relative aspect-2.5/3.5 h-full w-full will-change-transform select-none"
+      className="relative aspect-2.5/3.5 size-full select-none"
     >
       <motion.div
-        className="absolute aspect-2.5/3.5 h-full w-full select-none active:cursor-grabbing"
+        className="absolute top-1/2 left-1/2 aspect-2.5/3.5 size-full -translate-1/2 select-none active:cursor-grabbing"
         key={card}
         whileHover={
           isPlayed || isBurned

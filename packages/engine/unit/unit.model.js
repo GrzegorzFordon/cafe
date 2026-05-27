@@ -23,11 +23,13 @@ class UnitModel {
 
     this.unitID = options.unitID ?? 1;
     this.atk = options.unitData.atk ?? 0;
+    this.maxHp = options.unitData.hp ?? 0;
     this.hp = options.unitData.hp ?? 0;
     this.speed = options.unitData.speed ?? 0;
     this.reach = options.unitData.reach ?? 1;
     this.loot = options.unitData.loot ?? 1;
     this.ranged = options.unitData.ranged ?? 0;
+    this.hubris = options.unitData.hubris ?? 1;
     this.modifiers = [
       // new UnitStatModifier({ stat: UNIT_STATS.ATTACK, amount: 3 }),
     ];
@@ -40,6 +42,15 @@ class UnitModel {
         atkBonus += m.amount;
     });
     return this.atk + atkBonus;
+  }
+
+  get Health() {
+    let hpBonus = 0;
+    this.modifiers.forEach((m) => {
+      if (m.name === "Unit Stat" && m.stat === UNIT_STATS.HEALTH)
+        hpBonus += m.amount;
+    });
+    return this.hp + hpBonus;
   }
 
   move(controller, hex) {
@@ -62,20 +73,12 @@ class UnitModel {
       spawnHex: this.spawnHex,
     });
     controller.eventEmitter.emit("sim:effect", effect);
+    //TODO - trigger hubris mill
   }
 
   addModifier(modifier) {
     this.modifiers.push(modifier);
   }
 }
-
-// UnitModel.Attack = () => {
-//   let atkBonus = 0;
-//   this.modifiers.forEach((m) => {
-//     if (m.name === "Unit Stat" && m.stat === UNIT_STATS.ATTACK)
-//       atkBonus += m.amount;
-//   });
-//   return this.atk + atkBonus;
-// };
 
 export default UnitModel;

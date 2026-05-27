@@ -1,21 +1,16 @@
 import Ability from "./ability.js";
 
-class MoveUnitAbility extends Ability {
+class DamageUnitAbility extends Ability {
   constructor(options) {
     super(options);
     this.playerID = options.playerID;
     this.unit = options.unit;
-    this.hex = options.hex;
+    this.amount = options.amount;
   }
 
   resolve(controller) {
     super.resolve(controller);
-    // controller.unitController.spawnUnit(
-    //   this.playerID,
-    //   this.cardID,
-    //   this.hex,
-    //   this.unitData,
-    // );
+    controller.unitController.damageUnit(this.unit.id, this.amount);
   }
 }
-export default MoveUnitAbility;
+export default DamageUnitAbility;

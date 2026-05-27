@@ -1,7 +1,7 @@
 import AuthButton from "./AuthButton";
 // import "./navBar.css";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/cafe_logo.png";
+import logo from "../../../assets/cafe_logo.PNG";
 import { useNavigate } from "react-router";
 import ProfileCard from "./ProfileCard";
 import useAuthStore from "../../../stores/useAuthStore";

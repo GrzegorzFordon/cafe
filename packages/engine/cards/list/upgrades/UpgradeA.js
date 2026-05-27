@@ -1,4 +1,4 @@
-import { BURN_TYPES, UNIT_STATS } from "../../../config.js";
+import { BURN_TYPES, TARGET_OPTIONS, UNIT_STATS } from "../../../config.js";
 import UnitStatModifier from "../../../unit/modifier/unitStat.modifier.js";
 import ModifyUnitAbility from "../../abilities/modifyUnit.ability.js";
 import CardModel from "../../card.model.js";
@@ -12,6 +12,8 @@ class UpgradeA extends UpgradeCardModel {
     this.name = "Upgrade A";
     this.speed = 7;
     this.burnEffects = [BURN_TYPES.MOVE];
+    this.targetOptions = [TARGET_OPTIONS.FRIENDLY];
+    this.cardText = "+5 Attack.";
   }
 
   onPlay(controller, target) {

@@ -10,14 +10,6 @@ class ModifyUnitAbility extends Ability {
 
   resolve(controller) {
     super.resolve(controller);
-    // console.log(this);
-    // this.unit.modifiers.push(this.modification);
-    // const effect = new UnitModifiedEffect(
-    //   this.unit.id,
-    //   this.modification,
-    //   true,
-    // );
-    // controller.eventEmitter.emit("sim:effect", effect);
     controller.unitController.modifyUnit(this.unit.id, this.modification);
   }
 }

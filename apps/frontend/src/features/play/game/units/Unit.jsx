@@ -101,6 +101,15 @@ function Unit({ unit, isLegalTarget }) {
     return unit.atk + atkBonus;
   }, [unit.atk, unit.modifiers]);
 
+  const healthValueWithModifiers = useMemo(() => {
+    let hpBonus = 0;
+    unit.modifiers.forEach((m) => {
+      if (m.name === "Unit Stat" && m.stat === UNIT_STATS.HEALTH)
+        hpBonus += m.amount;
+    });
+    return unit.hp + hpBonus;
+  }, [unit.hp, unit.modifiers]);
+
   return (
     <motion.div
       ref={ref}
@@ -125,12 +134,12 @@ function Unit({ unit, isLegalTarget }) {
       />
 
       <motion.div
-        drag={!hasActions && isFriendly && !isExhausted}
+        drag={!hasActions && isDraggable}
         dragSnapToOrigin={!hasActions}
         // onHoverStart={() => addMousedOverUnit(unit)}
         // onHoverEnd={() => removeMousedOverUnit(unit)}
         onPointerDown={() => {
-          if (!hasActions) handleDragStart();
+          if (!hasActions && isDraggable) handleDragStart();
         }}
         onPointerUp={() => eventEmitter.emit("unit:drag:end", unit)}
         onDragStart={() => handleDragStart()}
@@ -139,7 +148,7 @@ function Unit({ unit, isLegalTarget }) {
         className="UNIT_MOVER_GHOST absolute top-1/2 left-1/2 size-full -translate-1/2 rounded-2xl hover:not-[isDraggable]:cursor-grab active:not-[isDraggable]:cursor-grabbing"
         style={{
           filter: hasActions || isExhausted ? "brightness(0.4)" : "none",
-          pointerEvents: isDraggable ? "all" : "none",
+          // pointerEvents: isDraggable ? "all" : "none",
           opacity: 0,
           scale: isLeader ? 1 : 0.9,
         }}
@@ -156,7 +165,7 @@ function Unit({ unit, isLegalTarget }) {
 
       <UnitHUD
         atk={attackValueWithModifiers}
-        hp={unit.hp}
+        hp={healthValueWithModifiers}
         speed={unit.speed}
         isFriendly={isFriendly}
         isExhausted={isExhausted}

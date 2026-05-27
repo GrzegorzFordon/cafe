@@ -11,6 +11,7 @@ class InfusionA extends InfusionCardModel {
     this.burnEffects = [BURN_TYPES.SPEED, BURN_TYPES.MOVE];
     this.name = "Green Tea";
     this.uses = options.uses ?? 0;
+    this.cardText = `2 Uses (${2 - this.uses} left)`;
   }
 
   //TODO - prevent from being discarded

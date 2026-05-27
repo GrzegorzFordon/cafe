@@ -7,6 +7,7 @@ class UnitPulp extends UnitCardModel {
     super(options, { atk: 2, hp: 1, speed: 6, reach: 1 });
     this.cardID = "0U02";
     this.name = "Unit Pulp";
+    this.cardText = "2ATK | 1HP";
   }
 
   onPlay(controller, options) {

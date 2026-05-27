@@ -15,6 +15,7 @@ class CardModel {
     this.onBurnAbilities = [];
     this.targetType = SPELL_TARGET_TYPES.NONE;
     this.targetOptions = options.targetOptions ?? [];
+    this.cardText = "";
   }
 
   onPlay(controller, options) {

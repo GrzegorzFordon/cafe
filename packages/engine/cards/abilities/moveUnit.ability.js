@@ -10,12 +10,7 @@ class MoveUnitAbility extends Ability {
 
   resolve(controller) {
     super.resolve(controller);
-    // controller.unitController.spawnUnit(
-    //   this.playerID,
-    //   this.cardID,
-    //   this.hex,
-    //   this.unitData,
-    // );
+    controller.unitController.moveUnit(this.unit.id, this.hex, false);
   }
 }
 export default MoveUnitAbility;

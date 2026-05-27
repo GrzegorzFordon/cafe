@@ -19,7 +19,6 @@ class Lobby {
   createRoom(playerDTO) {
     try {
       const roomID = this.getRandomRoomCode();
-      // console.log(`Room Manager creating new Room with ID ${roomID}`);
       const res = RoomDTO.parse({
         id: roomID,
         hostID: playerDTO.id,
@@ -29,7 +28,6 @@ class Lobby {
       const room = new Room(res);
       this.rooms.set(roomID, room);
       this.joinRoom(roomID, playerDTO);
-      // this.rooms.forEach((val, key, map) => console.log(key));
       return { roomID };
     } catch (error) {
       throw error;
@@ -57,7 +55,6 @@ class Lobby {
 
   deleteRoom(roomID) {
     try {
-      // console.log(`Deleting Room ${roomID}`);
       const room = this.getRoomByID(roomID);
       this.rooms.delete(room.id);
     } catch (error) {}
@@ -86,6 +83,7 @@ class Lobby {
       throw error;
     }
   }
+
   submitPlayerActions(roomID, playerID, actions) {
     try {
       const room = this.getRoomByID(roomID);
@@ -94,15 +92,16 @@ class Lobby {
       throw error;
     }
   }
+
   updateGameInRoom(roomID, actions) {
     try {
-      // console.log("Lobby,Updating", roomID, actions);
       const room = this.getRoomByID(roomID);
       room.updateGame(actions);
     } catch (error) {
       throw error;
     }
   }
+
   finishGameInRoom(roomID) {
     try {
       const room = this.getRoomByID(roomID);
