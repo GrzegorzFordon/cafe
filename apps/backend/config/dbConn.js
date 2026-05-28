@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import "dotenv/config";
 
+let dbInstance = null;
+
 const connectDB = async () => {
   console.log("connecting to atlas");
   try {
@@ -12,4 +14,9 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;
+const getInstance = async () => {
+  if (!dbInstance) await connectDB();
+  return dbInstance;
+};
+
+export default getInstance;
