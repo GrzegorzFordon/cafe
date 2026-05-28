@@ -1,6 +1,4 @@
-// import mongoose from "mongoose";
-const mongoose = require('mongoose'); 
-
+import mongoose from "mongoose";
 
 const movieSchema = new mongoose.Schema({
   plot: {

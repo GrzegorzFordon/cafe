@@ -2,8 +2,8 @@ import "dotenv/config";
 import http from "http";
 import { logEvents } from "./middleware/logger.js";
 import connectDB from "./config/dbConn.js";
-// import mongoose from "mongoose";
-const mongoose = require('mongoose'); 
+import mongoose from "mongoose";
+
 // import createWebSocketServer from "./socket/socket.server.js";
 import app from "./app.js";
 import Socket from "./socket/socket.js";
