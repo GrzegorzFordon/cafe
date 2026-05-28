@@ -18,7 +18,7 @@
   --mono: ui-monospace, Consolas, monospace;
 
   background: var(--bg);
-  background-image: url(../../public/bg_tex.png);
+  background-image: url(/bg_tex.png);
   background-size: 10rem;
   background-blend-mode:soft-light;
   opacity: 0.8;
