@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import getInstance from "../../config/dbConn.js";
 
-const mongooseInstance = getInstance();
-const userSchema = new mongooseInstance.Schema(
+// const mongooseInstance = getInstance();
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: "String",
