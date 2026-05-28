@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import getInstance from "../../config/dbConn";
+import getInstance from "../../config/dbConn.js";
 
 const userSchema = new getInstance().Schema(
   {
