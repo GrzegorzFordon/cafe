@@ -1,9 +1,8 @@
 import { Server as SocketIOServer } from "socket.io";
 import Lobby from "./lobby/lobby.js";
-import { GameDTO, RoomDTO, PlayerDTO } from "@cafe/shared/schemas/schemas.js";
-import { GAME_PHASES } from "@cafe/engine/config.js";
+import { RoomDTO, PlayerDTO } from "../../packages/shared/schemas/schemas";
 import _ from "lodash";
-import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+import { eventEmitter } from "../../packages/shared/eventEmitter";
 
 class Socket {
   constructor(httpServer) {
