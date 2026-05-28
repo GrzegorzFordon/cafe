@@ -25,14 +25,14 @@ socket.init();
 
 const mongooseInstance = getInstance();
 
-mongooseInstance.once("open", () => {
+mongooseInstance.connection.once("open", () => {
   console.log("Connected to MongoDB");
   httpServer.listen(PORT, () => {
     console.log("Server is running");
   });
 });
 
-mongooseInstance.on("error", (err) => {
+mongooseInstance.connection.on("error", (err) => {
   console.log(err);
   logEvents(
     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,

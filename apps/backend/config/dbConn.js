@@ -9,7 +9,7 @@ const connectDB = async () => {
     const client = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "test123",
     });
-    dbInstance = client.connection;
+    dbInstance = client;
   } catch (error) {
     console.log(error);
   }
