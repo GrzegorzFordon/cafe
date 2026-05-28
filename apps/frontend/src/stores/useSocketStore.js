@@ -6,7 +6,8 @@ import { RoomDTO } from "@cafe/shared/schemas/schemas.js";
 import { eventEmitter } from "@cafe/shared/eventEmitter";
 import eventBus from "../features/play/game/util/eventBus";
 
-const SOCKET_URL = "http://192.168.2.115:3500";
+// const SOCKET_URL = "http://192.168.2.115:3500";
+const SOCKET_URL = "https://cafe-websocket.onrender.com";
 
 const useSocketStore = create(
   devtools((set, get) => ({
