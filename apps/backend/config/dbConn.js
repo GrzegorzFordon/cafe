@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
+import "dotenv/config";
 
 const connectDB = async () => {
   console.log("connecting to atlas");
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "test123",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
     });
   } catch (error) {
     console.log(error);

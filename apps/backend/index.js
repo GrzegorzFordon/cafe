@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 3500;
 
 const httpServer = http.createServer(app);
 // createWebSocketServer(httpServer);
-// const socket = new Socket(httpServer);
-// socket.init();
+const socket = new Socket(httpServer);
+socket.init();
 connectDB();
 
 mongoose.connection.once("open", () => {
