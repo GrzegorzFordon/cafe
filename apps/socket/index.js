@@ -1,7 +1,9 @@
 import "dotenv/config";
 import http from "http";
-import app from "./app.js";
-import Socket from "./socket/socket.js";
+import Socket from "./socket.js";
+import express from "express";
+import cors from "cors";
+import corsOptions from "./config/corsOptions.js";
 
 const PORT = process.env.PORT || 3500;
 
