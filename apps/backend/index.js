@@ -2,26 +2,15 @@ import "dotenv/config";
 import http from "http";
 import { logEvents } from "./middleware/logger.js";
 import getInstance from "./config/dbConn.js";
-// import mongoose from "mongoose";
 import app from "./app.js";
-import Socket from "./socket/socket.js";
+// import Socket from "./socket/socket.js";
 
 const PORT = process.env.PORT || 3500;
 
 const httpServer = http.createServer(app);
-const socket = new Socket(httpServer);
-socket.init();
 
-// const connectDB = async () => {
-//   console.log("connecting to atlas");
-//   try {
-//     await mongoose.connect(process.env.MONGODB_URI, {
-//       dbName: "test123",
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+// const socket = new Socket(httpServer);
+// socket.init();
 
 const mongooseInstance = getInstance();
 
@@ -40,7 +29,3 @@ mongooseInstance.connection.on("error", (err) => {
   );
 });
 
-// httpServer.listen(PORT, () => {
-//   console.log("Server is running");
-// }
-// );
