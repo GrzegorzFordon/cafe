@@ -6,9 +6,10 @@ let dbInstance = null;
 const connectDB = async () => {
   console.log("connecting to atlas");
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
+    const client = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "test123",
     });
+    dbInstance = client.connection;
   } catch (error) {
     console.log(error);
   }

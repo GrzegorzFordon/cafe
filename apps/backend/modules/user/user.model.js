@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 // import getInstance from "../../config/dbConn.js";
 
-// const mongooseInstance = getInstance();
-const userSchema = new mongoose.Schema(
+const mongooseInstance = getInstance();
+const userSchema = new mongooseInstance.Schema(
   {
     name: {
       type: "String",
@@ -50,4 +50,4 @@ userSchema.pre("save", async function () {
   }
 });
 
-export default mongoose.model("User", userSchema);
+export default mongooseInstance.model("User", userSchema);
