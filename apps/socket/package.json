@@ -1,27 +1,12 @@
 {
-  "name": "cafe-websocket",
+  "name": "socket",
   "version": "1.0.0",
-  "description": "",
+  "description": "cafe-websocket",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "turbo run build"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "date-fns": "^4.1.0",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "express-async-handler": "^1.2.0",
-    "nanoid": "^5.1.9",
-    "nodemon": "^3.1.14",
-    "socket.io": "^4.8.3",
-    "uuid": "^14.0.0"
-  },
-  "devDependencies": {
-    "concurrently": "^9.2.1"
-  }
+  "license": "ISC"
 }
