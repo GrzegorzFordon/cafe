@@ -1,6 +1,6 @@
 import { customAlphabet } from "nanoid";
 import Room, { roomStatus } from "./room.js";
-import { PlayerDTO, RoomDTO } from "../../../packages/shared/schemas/schemas";
+import { PlayerDTO, RoomDTO } from "../../../packages/shared/schemas/schemas.js";
 
 class Lobby {
   constructor() {
