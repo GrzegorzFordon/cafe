@@ -10,8 +10,9 @@ const useCardImage = (cardID) => {
     const fetchImage = async () => {
       try {
         console.log(spritePath);
-        const res = await import(spritePath);
-        setImage(res);
+        const res = await import(`../assets/cards/${cardID ?? "def"}.png`);
+        console.log(res.default);
+        setImage(res.default);
       } catch (error) {
         console.log(error);
       }
