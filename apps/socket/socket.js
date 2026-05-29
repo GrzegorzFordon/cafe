@@ -4,11 +4,12 @@ import { RoomDTO, PlayerDTO } from "../../packages/shared/schemas/schemas.js";
 import _ from "lodash";
 import { eventEmitter } from "../../packages/shared/eventEmitter.js";
 import EventEmitter from "eventemitter3";
+import allowedOrigins from "./config/allowedOrigins";
 class Socket {
   constructor(httpServer) {
     this.server = new SocketIOServer(httpServer, {
       cors: {
-        origin: ["http://localhost:5173", "http://192.168.2.115:5173", "*"],
+        origin: allowedOrigins,
         methods: ["GET", "POST"],
       },
     });
