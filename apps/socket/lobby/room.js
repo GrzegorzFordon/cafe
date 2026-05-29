@@ -1,8 +1,8 @@
 /* this is the room object used for creating specific games */
 
-import GameController from "../../../packages/engine/game/game.controller";
-import { eventEmitter } from "../../../packages/shared/eventEmitter";
-import EventEmitter from "eventemitter3";
+import GameController from "../../../packages/engine/game/game.controller.js";
+import { eventEmitter } from "../../../packages/shared/eventEmitter.js";
+// import EventEmitter from "eventemitter3";
 
 export const roomStatus = {
   LOBBY: 0,
