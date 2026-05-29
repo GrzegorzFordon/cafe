@@ -24,9 +24,9 @@ class Socket {
   }
 
   onCreateRoom(socket, data, ack) {
-    console.log(
-      `[Socket (Server)] Received request to create Room from User ${socket.id}`,
-    );
+    // console.log(
+    //   `[Socket (Server)] Received request to create Room from User ${socket.id}`,
+    // );
     try {
       const player = PlayerDTO.parse({ id: socket.id });
       const res = this.lobby.createRoom(player);
@@ -45,9 +45,9 @@ class Socket {
   }
 
   onJoinRoom(socket, data, ack) {
-    console.log(
-      `[Socket (Server)] User ${socket.id} is trying to join Room ${data.roomID}`,
-    );
+    // console.log(
+    //   `[Socket (Server)] User ${socket.id} is trying to join Room ${data.roomID}`,
+    // );
     try {
       const player = PlayerDTO.parse({ id: socket.id });
       const res = this.lobby.joinRoom(data.roomID, player);
@@ -65,9 +65,9 @@ class Socket {
   }
 
   onLeaveRoom(socket, data, ack) {
-    console.log(
-      `[Socket (Server)] User ${socket.id} is trying to leave Room ${data.roomID}`,
-    );
+    // console.log(
+    //   `[Socket (Server)] User ${socket.id} is trying to leave Room ${data.roomID}`,
+    // );
     try {
       const player = PlayerDTO.parse({ id: socket.id });
       this.lobby.leaveRoom(data.roomID, player);
@@ -85,14 +85,14 @@ class Socket {
   }
 
   onGameStart(socket, data, ack) {
-    console.log(
-      `[Socket (Server)] User ${socket.id} is trying to start game in Room ${data.roomID}`,
-    );
+    // console.log(
+    //   `[Socket (Server)] User ${socket.id} is trying to start game in Room ${data.roomID}`,
+    // );
     this.lobby.startGameInRoom(data.roomID);
   }
 
   onGameActions(socket, data, ack) {
-    console.log("[Socket (Server)] Received game actions from", socket.id);
+    // console.log("[Socket (Server)] Received game actions from", socket.id);
     this.lobby.submitPlayerActions(data.roomID, socket.id, data.actions);
     ack?.({
       status: "ok",
@@ -100,14 +100,14 @@ class Socket {
   }
 
   onGameFinish(socket, data, ack) {
-    console.log(
-      `[Socket (Server)] User ${socket.id} is trying to finish game in Room ${data.roomID}`,
-    );
+    // console.log(
+    //   `[Socket (Server)] User ${socket.id} is trying to finish game in Room ${data.roomID}`,
+    // );
     this.lobby.finishGameInRoom(data.roomID);
   }
 
   init() {
-    console.log("[Socket (Server)] Initializing Websocket");
+    // console.log("[Socket (Server)] Initializing Websocket");
 
     eventEmitter.on("server:room:start", (roomID, info) =>
       this.broadcastGameStart(roomID, info),
@@ -117,7 +117,7 @@ class Socket {
     );
 
     this.server.on("connection", async (socket) => {
-      console.log(`[Socket (Server)] User connected (${socket.id})`);
+      // console.log(`[Socket (Server)] User connected (${socket.id})`);
 
       socket.join("general");
       this.server.to(socket.id).emit("socket:id", socket.id);
@@ -170,19 +170,19 @@ class Socket {
       });
 
       socket.on("disconnect", () => {
-        console.log(`[Socket (Server)] User disconnected (${socket.id})`);
+        // console.log(`[Socket (Server)] User disconnected (${socket.id})`);
       });
     });
   }
 
   broadcastLobbyState() {
-    console.log("[Socket (Server)] Broadcasting lobby state");
+    // console.log("[Socket (Server)] Broadcasting lobby state");
     const rooms = this.lobby.getAllRooms();
     this.server.emit("lobby:change", { rooms: rooms });
   }
 
   broadcastRoomState(roomID) {
-    console.log(`[Socket (Server)] Broadcasting Room state to Room ${roomID}`);
+    // console.log(`[Socket (Server)] Broadcasting Room state to Room ${roomID}`);
     const room = this.lobby.getRoomByID(roomID);
     if (!room) return;
     const schema = RoomDTO.parse({
@@ -195,16 +195,16 @@ class Socket {
   }
 
   broadcastGameStart(roomID, info) {
-    console.log("[Socket (Server)] Broadcasting Game Start", roomID);
+    // console.log("[Socket (Server)] Broadcasting Game Start", roomID);
     this.server.to(roomID).emit("socket:game:start", info);
   }
 
   broadcastGameActions(roomID, actions) {
-    console.log(
-      "[Socket (Server)] Broadcasting Game Actions",
-      roomID,
-      actions.length,
-    );
+    // console.log(
+    //   "[Socket (Server)] Broadcasting Game Actions",
+    //   roomID,
+    //   actions.length,
+    // );
     this.server.to(roomID).emit("socket:game:update", actions);
   }
 }
