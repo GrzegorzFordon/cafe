@@ -12,12 +12,14 @@ class CardController extends Controller {
   resolveCard(playerID, cardID, target) {
     const card = this.game.playerController.getCardInHand(playerID, cardID);
     if (!card) return;
+    console.log("playing card:",card)
     card.onPlay(this.game, target);
   }
 
   burnCard(playerID, cardID) {
     const card = this.game.playerController.getCardInHand(playerID, cardID);
     if (!card) return;
+    console.log("burning card:",card)
     card.onBurn(this.game, card);
   }
 
