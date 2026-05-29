@@ -9,6 +9,7 @@ const useCardImage = (cardID) => {
   useEffect(() => {
     const fetchImage = async () => {
       try {
+        console.log(spritePath);
         const res = await import(spritePath);
         setImage(res);
       } catch (error) {
