@@ -1,7 +1,7 @@
 /* this is the room object used for creating specific games */
 
-import GameController from "@cafe/engine/game/game.controller.js";
-import { eventEmitter } from "@cafe/shared/eventEmitter.js";
+import GameController from "../../../packages/engine/game/game.controller";
+import { eventEmitter } from "../../../packages/shared/eventEmitter";
 import EventEmitter from "eventemitter3";
 
 export const roomStatus = {
