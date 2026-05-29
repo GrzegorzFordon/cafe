@@ -20,7 +20,7 @@ class ActionController extends Controller {
   }
 
   async resolveAction(action) {
-    action.bonuses.forEach((val) => {
+    action.bonuses?.forEach((val) => {
       this.game.cardController.burnCard(action.playerID, val.id);
       this.game.playerController.discardCard(action.playerID, val.id);
     });
@@ -51,8 +51,6 @@ class ActionController extends Controller {
       action.bonuses,
     );
   }
-
-
 
   sortActionsBySpeed(actions) {
     return actions.sort((a, b) => {
