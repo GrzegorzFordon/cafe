@@ -3,7 +3,7 @@ import Lobby from "./lobby/lobby.js";
 import { RoomDTO, PlayerDTO } from "../../packages/shared/schemas/schemas.js";
 import _ from "lodash";
 import { eventEmitter } from "../../packages/shared/eventEmitter.js";
-
+import EventEmitter from "eventemitter3";
 class Socket {
   constructor(httpServer) {
     this.server = new SocketIOServer(httpServer, {
