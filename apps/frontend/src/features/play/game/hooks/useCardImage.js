@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 const useCardImage = (cardID) => {
   const [image, setImage] = useState(null);
   const spritePath = useMemo(
-    () => `/src/features/play/game/assets/cards/${cardID ?? "def"}.png`,
+    () => `../assets/cards/${cardID ?? "def"}.png`,
     [cardID],
   );
   useEffect(() => {
