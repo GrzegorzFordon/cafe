@@ -3,11 +3,10 @@
 import { AnimatePresence, easeOut, motion, Reorder } from "motion/react";
 import { useMemo } from "react";
 // import useCardList from "../hooks/useCardList";
-
 function CardVisual({ card, order }) {
   // const sprite = useCardList(card?.cardID);
   const spritePath = useMemo(
-    () => `src/features/play/game/assets/cards/${card?.cardID ?? "def"}.png`,
+    () => `../assets/cards/${card?.cardID ?? "def"}.png`,
     [card.cardID],
   );
 
