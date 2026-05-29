@@ -14,7 +14,7 @@ function CardVisual({ card, order }) {
     <motion.img
       key={order}
       draggable="false"
-      src={spritePath}
+      src={import(spritePath)}
       alt={card?.cardID}
       className="size-fit object-scale-down select-none"
     />
