@@ -1,7 +1,7 @@
 // import * as VFX from "react-vfx";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, easeOut, motion, Reorder } from "motion/react";
-import { useMemo } from "react";
+// import { useMemo } from "react";
 import useCardImage from "../hooks/useCardImage";
 // import useCardList from "../hooks/useCardList";
 function CardVisual({ card, order }) {
