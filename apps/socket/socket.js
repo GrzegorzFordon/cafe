@@ -1,8 +1,8 @@
 import { Server as SocketIOServer } from "socket.io";
 import Lobby from "./lobby/lobby.js";
-import { RoomDTO, PlayerDTO } from "../../packages/shared/schemas/schemas";
+import { RoomDTO, PlayerDTO } from "../../packages/shared/schemas/schemas.js";
 import _ from "lodash";
-import { eventEmitter } from "../../packages/shared/eventEmitter";
+import { eventEmitter } from "../../packages/shared/eventEmitter.js";
 
 class Socket {
   constructor(httpServer) {
