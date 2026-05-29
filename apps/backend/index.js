@@ -14,18 +14,21 @@ const httpServer = http.createServer(app);
 
 const mongooseInstance = getInstance();
 
-mongooseInstance.connection.once("open", () => {
-  console.log("Connected to MongoDB");
-  httpServer.listen(PORT, () => {
-    console.log("Server is running");
-  });
-});
+// mongooseInstance.connection.once("open", () => {
+//   console.log("Connected to MongoDB");
+//   httpServer.listen(PORT, () => {
+//     console.log("Server is running");
+//   });
+// });
 
-mongooseInstance.connection.on("error", (err) => {
-  console.log(err);
-  logEvents(
-    `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
-    "mongoErrLog.log",
-  );
-});
+// mongooseInstance.connection.on("error", (err) => {
+//   console.log(err);
+//   logEvents(
+//     `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
+//     "mongoErrLog.log",
+//   );
+// });
 
+httpServer.listen(PORT, () => {
+  console.log("Server is running");
+});
