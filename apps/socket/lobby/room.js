@@ -49,9 +49,10 @@ class Room {
   }
 
   updateGame(actions) {
+    console.log("[Room] Submitting actions to Sim", actions)
     this.gameController.handleActions([...actions]);
     eventEmitter.emit("server:room:actions", this.id, actions);
-    this.submittedActions = new Map();
+    this.submittedActions.clear();
   }
 
   // finishGame() {
