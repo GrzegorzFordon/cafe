@@ -4,7 +4,7 @@ import { RoomDTO, PlayerDTO } from "../../packages/shared/schemas/schemas.js";
 import _ from "lodash";
 import { eventEmitter } from "../../packages/shared/eventEmitter.js";
 import EventEmitter from "eventemitter3";
-import allowedOrigins from "./config/allowedOrigins";
+import allowedOrigins from "./config/allowedOrigins.js";
 class Socket {
   constructor(httpServer) {
     this.server = new SocketIOServer(httpServer, {
