@@ -1,5 +1,4 @@
 import * as z from "zod";
-import { roomStatus } from "../../../apps/backend/socket/lobby/room.js";
 
 export const PlayerDTO = z.object({
   id: z.string(),
@@ -16,8 +15,8 @@ export const GameDTO = z.object({
 export const RoomDTO = z.object({
   id: z.string(),
   hostID: z.string(),
-  players: z.array(PlayerDTO), //<- this should be users instead of players maybe (differentiate between user in room and player in game)
-  status: z.enum(roomStatus),
+  players: z.array(PlayerDTO), 
+  status: z.number(),
 });
 
 export const PawnDTO = z.object({

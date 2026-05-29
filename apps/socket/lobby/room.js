@@ -1,14 +1,5 @@
-/* this is the room object used for creating specific games */
-
 import GameController from "../../../packages/engine/game/game.controller.js";
 import { eventEmitter } from "../../../packages/shared/eventEmitter.js";
-// import EventEmitter from "eventemitter3";
-
-export const roomStatus = {
-  LOBBY: 0,
-  INPROGRESS: 1,
-  FINISHED: 2,
-};
 
 class Room {
   constructor(roomDTO) {
@@ -24,7 +15,7 @@ class Room {
     console.log(`[Room] ${this.id} Adding Player ${PlayerDTO.id}`);
     this.players.push(PlayerDTO);
   }
-  
+
   removePlayer(PlayerDTO) {
     console.log(`[Room] ${this.id} Removing Player ${PlayerDTO.id}`);
     this.players = this.players.filter((val) => val.id !== PlayerDTO.id);
@@ -33,7 +24,7 @@ class Room {
   startGame() {
     console.log("[Room] Starting Game Sim", this.id, this.players);
     this.gameController.start();
-    this.status = roomStatus.INPROGRESS;
+    this.status = 1;
     eventEmitter.emit("server:room:start", this.id, this.players);
   }
 
@@ -64,7 +55,7 @@ class Room {
   }
 
   // finishGame() {
-  //   this.status = roomStatus.FINISHED;
+  //   this.status = 2;
   // }
 }
 

@@ -1,5 +1,5 @@
 import { customAlphabet } from "nanoid";
-import Room, { roomStatus } from "./room.js";
+import Room from "./room.js";
 import { PlayerDTO, RoomDTO } from "../../../packages/shared/schemas/schemas.js";
 
 class Lobby {
@@ -23,7 +23,7 @@ class Lobby {
         id: roomID,
         hostID: playerDTO.id,
         players: [],
-        status: roomStatus.LOBBY,
+        status: 0,
       });
       const room = new Room(res);
       this.rooms.set(roomID, room);
