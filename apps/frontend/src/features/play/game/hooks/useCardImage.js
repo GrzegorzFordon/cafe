@@ -11,7 +11,6 @@ const useCardImage = (cardID) => {
       try {
         console.log(spritePath);
         const res = await import(`../assets/cards/${cardID ?? "def"}.png`);
-        console.log(res.default);
         setImage(res.default);
       } catch (error) {
         console.log(error);
