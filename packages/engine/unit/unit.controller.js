@@ -56,7 +56,7 @@ class UnitController extends Controller {
     };
     const ids = this.game.options.players.map((p) => p.id);
     this.spawnUnit(ids[0], "0L01", BASE_HEX_MAP.get(0).neighbor(1), stats);
-    this.spawnUnit(ids[0], "0L03", BASE_HEX_MAP.get(0).neighbor(4), statsB);
+    // this.spawnUnit(ids[0], "0L03", BASE_HEX_MAP.get(0).neighbor(4), statsB);
     this.spawnUnit(
       ids[0],
       "0U01",
@@ -81,12 +81,12 @@ class UnitController extends Controller {
       BASE_HEX_MAP.get(1).neighbor(2),
       statsMinionB,
     );
-    this.spawnUnit(
-      ids[1] ?? 13,
-      "0U02",
-      BASE_HEX_MAP.get(1).neighbor(4),
-      statsMinionB,
-    );
+    // this.spawnUnit(
+    //   ids[1] ?? 13,
+    //   "0U02",
+    //   BASE_HEX_MAP.get(1).neighbor(4),
+    //   statsMinionB,
+    // );
   }
 
   spawnUnit(playerID, unitID, hex, unitData) {
