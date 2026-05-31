@@ -4,7 +4,7 @@ import { devtools } from "zustand/middleware";
 const useBoardStore = create(
   devtools((set) => ({
     boardRef: undefined,
-    tileSize: 48,
+    tileSize: 50,
 
     setBoardRef: (boardRef) => {
       set({ boardRef });

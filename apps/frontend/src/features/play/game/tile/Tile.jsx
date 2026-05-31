@@ -33,7 +33,7 @@ function Tile({ hex, isActive, isMirrored, isSpawnInUse }) {
   const isBase = BASE_HEX_MAP.values().some((v) => rotHex.isEqual(v));
   const isTarget = TARGET_HEX_MAP.values().some((v) => rotHex.isEqual(v));
   const isOuterEdge = useMemo(
-    () => rotHex.distance(new Hex(0, 0, 0)) === 4,
+    () => rotHex.distance(new Hex(0, 0, 0)) === 5,
     [rotHex],
   );
   const isOuterEdgeCorner = useMemo(

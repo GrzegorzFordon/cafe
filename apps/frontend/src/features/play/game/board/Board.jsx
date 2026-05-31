@@ -33,7 +33,7 @@ function Board() {
   return (
     <div
       ref={ref}
-      className="absolute top-3/7 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded bg-green-500 text-2xl font-black text-black select-none"
+      className="absolute scale-120 top-3/7 left-1/2 flex -translate-1/2 flex-col items-center justify-center rounded bg-green-500 text-2xl font-black text-black select-none"
     >
       <div
         draggable="false"

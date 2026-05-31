@@ -92,7 +92,7 @@ class BoardController extends Controller {
       const nextHex = unitHex.lerp(targetHex, i / dist);
       const occupant = this.game.unitController.getUnitAtHex(nextHex);
       if (occupant) {
-        this.game.unitController.moveUnit(unit.id, goalHex);
+        this.game.unitController.moveUnit(unit.id, goalHex, false);
         if (unit.playerID !== occupant.playerID) {
           this.game.unitController.handleCombat(
             unit.id,
@@ -106,7 +106,7 @@ class BoardController extends Controller {
       goalHex = nextHex;
     }
     if (goalHex.isEqual(targetHex))
-      this.game.unitController.moveUnit(unit.id, goalHex);
+      this.game.unitController.moveUnit(unit.id, goalHex, false);
   }
 }
 
