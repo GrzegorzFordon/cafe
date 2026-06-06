@@ -10,6 +10,7 @@ class UnitCardModel extends CardModel {
     this.hp = unitData.hp ?? 0;
     this.speed = unitData.speed ?? 0;
     this.reach = unitData.reach ?? 0;
+    this.unitAbilities = unitData.unitAbilities ?? [];
     this.targetType = SPELL_TARGET_TYPES.HEX;
     this.targetOptions = options.targetOptions ?? [
       TARGET_OPTIONS.EMPTY,
@@ -23,6 +24,7 @@ class UnitCardModel extends CardModel {
       hp: this.hp,
       speed: this.speed,
       reach: this.reach,
+      abilities: this.abilities,
     };
 
     const spawnAbility = new SpawnUnitAbility({

@@ -1,0 +1,21 @@
+actions - inputs to the sim
+controller - validates and resolves actions
+routes movement to board controller
+routes card play to card controller
+
+board - holds info about the board
+all tiles, spawns (+current units), structures
+handles movement
+
+card - everything that makes up the cards
+abilities - the pure card ability building blocks that cards can use
+controller - validates and resolves card play actions
+model - has onPlay and onBurn methods (add more as needed)
+
+effect - every effect anything has on anything
+how the frontend is informed about changes in the sim
+
+game - central game controller
+references to all other controllers
+holds state machine
+single handleactions input for sim (other than validation)

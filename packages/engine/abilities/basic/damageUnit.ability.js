@@ -1,9 +1,9 @@
-import Ability from "./ability.js";
+import Ability from "../ability.js";
+import OneshotAbility from "./oneshot.oneshot.js";
 
 class DamageUnitAbility extends Ability {
   constructor(options) {
     super(options);
-    this.playerID = options.playerID;
     this.unit = options.unit;
     this.amount = options.amount;
   }

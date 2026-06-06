@@ -1,10 +1,10 @@
 //maybe not needed? no actually we need init, die, stats
 
-import { eventEmitter } from "../../shared/eventEmitter.js";
+import { eventEmitter } from "@cafe/shared/eventEmitter.js";
 import { BASE_HEX_MAP } from "../config.js";
 import UnitSpawnedEffect from "../effect/effects/unitSpawned.effect.js";
 import CombatStartedEffect from "../effect/effects/combatStarted.effect.js";
-import UnitModel from "./unit.model.js";
+import UnitModel from "./unit/unit.model.js";
 import Controller from "../controller.js";
 import { Hex } from "@cafe/shared/util/hex.js";
 import ExhaustedModifier from "./modifier/exhausted.modifier.js";
@@ -56,7 +56,6 @@ class UnitController extends Controller {
     };
     const ids = this.game.options.players.map((p) => p.id);
     this.spawnUnit(ids[0], "0L01", BASE_HEX_MAP.get(0).neighbor(1), stats);
-    // this.spawnUnit(ids[0], "0L03", BASE_HEX_MAP.get(0).neighbor(4), statsB);
     this.spawnUnit(
       ids[0],
       "0U01",
@@ -81,12 +80,6 @@ class UnitController extends Controller {
       BASE_HEX_MAP.get(1).neighbor(2),
       statsMinionB,
     );
-    // this.spawnUnit(
-    //   ids[1] ?? 13,
-    //   "0U02",
-    //   BASE_HEX_MAP.get(1).neighbor(4),
-    //   statsMinionB,
-    // );
   }
 
   spawnUnit(playerID, unitID, hex, unitData) {
@@ -98,17 +91,14 @@ class UnitController extends Controller {
       id: this.autoIncrement++,
     });
     this.units.push(unit);
-    this.game.eventEmitter.emit("sim:effect", new UnitSpawnedEffect(unit, hex));
-    this.game.eventEmitter.emit(
-      "sim:inner:unitSpawned",
-      new UnitSpawnedEffect(unit, hex),
-    );
+    unit.onSpawn(this.game);
   }
 
   moveUnit(unitID, hex, exhaust = true) {
-    const unit = this.units.find((val) => val.id == unitID);
+    const unit = getUnitByID(unitID);
     if (!unit) return;
-    unit.move(this.game, hex);
+
+    unit.onMove(this.game, hex);
 
     if (exhaust) {
       const modifier = new ExhaustedModifier();
@@ -116,34 +106,33 @@ class UnitController extends Controller {
     }
   }
 
-  // teleportUnit(unitID, hex) {
-  //   const unit = this.units.find((val) => val.id == unitID);
-  //   if (!unit) return;
-  //   unit.move(this.game, hex);
-  // }
-
   modifyUnit(unitID, modifier) {
-    const unit = this.units.find((val) => val.id === unitID);
+    const unit = getUnitByID(unitID);
     if (!unit) return;
-    unit.addModifier(modifier);
-    const effect = new UnitModifiedEffect(unit.id, modifier, true);
-    this.game.eventEmitter.emit("sim:effect", effect);
+
+    unit.onModify(modifier);
   }
 
   damageUnit(unitID, amount) {
-    const unit = this.units.find((val) => val.id == unitID);
+    const unit = getUnitByID(unitID);
     if (!unit) return;
-    unit.takeDamage(this.game, amount);
+
+    unit.onDamage(this.game, amount);
   }
 
   handleCombat(attackerUnitID, defenderUnitID, hex, powerBonusAmount) {
     const attacker = this.units.find((val) => val.id == attackerUnitID);
     const defender = this.units.find((val) => val.id == defenderUnitID);
     const attackerAtk = attacker.Attack;
-    // const defenderAtk = defender.atk;
+
     const effect = new CombatStartedEffect(attackerUnitID, defenderUnitID);
     this.game.eventEmitter.emit("sim:effect", effect);
-    defender.takeDamage(this.game, attackerAtk + powerBonusAmount);
+
+    this.damageUnit(defender.id, attackerAtk + powerBonusAmount);
+  }
+
+  getUnitByID(ID) {
+    return this.units.find((val) => val.id === unitID);
   }
 
   getUnitAtHex(hex) {
@@ -158,7 +147,6 @@ class UnitController extends Controller {
 
   readyAllUnits() {
     this.units.forEach((unit) => {
-      // console.log(unit.modifiers);
       const isExhausted = unit.modifiers.find(
         (val) => val.name === "Exhausted",
       );

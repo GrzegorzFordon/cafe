@@ -44,6 +44,7 @@ class PlayerModel {
     this.actionPoints = 2;
     this.autoIncrement = 0;
     this.isFirstPlayer = isFirstPlayer;
+    this.baseHits = 0;
   }
 
   setupDeck() {
@@ -52,7 +53,7 @@ class PlayerModel {
       const cardModel = CardList.get(val);
       const card = new cardModel({
         playerID: this.playerID,
-        id: "C"+this.autoIncrement++,
+        id: "C" + this.autoIncrement++,
       });
       deckCards.push(card);
     });

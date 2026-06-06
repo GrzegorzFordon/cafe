@@ -1,15 +1,13 @@
-// //use ability of unit action
+import Action from "../action.model";
 
-// const AbilityAction = (unitID, coords) => {
-//   const lastx, lasty;
-//   const execute = () => {};
-//   const undo = () => {};
+class AbilityAction extends Action {
+  constructor(pawn, abilityID, target) {
+    super();
+    this.pawn = pawn;
+    this.target = target;
+    this.abilityID = abilityID;
+    this.name = "ABILITY";
+  }
+}
 
-//   return { execute, undo };
-// };
-
-// export default AbilityAction;
-
-/**
- * Consumes Burn Effects: Speed, 
- */
+export default AbilityAction;

@@ -1,9 +1,8 @@
-import Ability from "./ability.js";
-import UnitModifiedEffect from "../../effect/effects/unitModified.effect.js";
+import Ability from "../ability.js";
+
 class ModifyUnitAbility extends Ability {
   constructor(options) {
     super(options);
-    this.playerID = options.playerID;
     this.unit = options.unit;
     this.modification = options.modification;
   }

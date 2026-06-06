@@ -1,7 +1,7 @@
 class ModifierModel {
   constructor(options) {
     this.name = "Base Modifier";
-    // this.added = options.added ?? true;
+    this.source = options.source;
   }
 }
 export default ModifierModel;

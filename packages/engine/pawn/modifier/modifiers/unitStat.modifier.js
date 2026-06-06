@@ -1,5 +1,5 @@
 import { UNIT_STATS } from "../../config.js";
-import ModifierModel from "./modifier.model.js";
+import ModifierModel from "../modifier.model.js";
 
 class UnitStatModifier extends ModifierModel {
   constructor(options) {

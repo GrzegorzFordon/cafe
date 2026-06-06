@@ -2,7 +2,7 @@ import Effect from "../effect.js";
 
 class UnitDiedEffect extends Effect {
   name = "Unit Died Effect";
-  constructor(unitID, hex) {
+  constructor(unitID) {
     super();
     this.unitID = unitID;
   }

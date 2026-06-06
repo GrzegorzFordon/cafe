@@ -1,4 +1,4 @@
-import ModifierModel from "./modifier.model.js";
+import ModifierModel from "../modifier.model.js";
 
 class ExhaustedModifier extends ModifierModel {
   constructor(options) {

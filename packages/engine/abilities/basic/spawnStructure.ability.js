@@ -1,9 +1,8 @@
-import Ability from "./ability.js";
+import Ability from "../ability.js";
 
 class SpawnUnitAbility extends Ability {
   constructor(options) {
     super(options);
-    // this.controller = options.controller;
     this.playerID = options.playerID;
     this.cardID = options.cardID;
     this.hex = options.hex;

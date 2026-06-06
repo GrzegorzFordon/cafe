@@ -29,6 +29,10 @@ class CardModel {
     controller.eventEmitter.emit("sim:effect", effect);
     this.onBurnAbilities?.forEach((a) => a.resolve(controller, options));
   }
+
+  onDraw(controller,options){}
+
+  onDiscard(controller,options){}
 }
 
 export default CardModel;

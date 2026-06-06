@@ -13,6 +13,7 @@ import UpgradeA from "./list/upgrades/UpgradeA.js";
 import UpgradeB from "./list/upgrades/UpgradeB.js";
 
 export const CardList = new Map();
+
 CardList.set("0U01", UnitAlice);
 CardList.set("0U02", UnitPulp);
 CardList.set("0U03", UnitBeta);

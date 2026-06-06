@@ -1,10 +1,9 @@
+import Ability from "../ability.js";
 import CardShuffledBackIntoDeckEffect from "../../effect/effects/cardShuffledIntoDeck.effect.js";
-import Ability from "./ability.js";
 
 class ShuffleBackAbility extends Ability {
   constructor(playerID, card) {
     super(playerID);
-    this.playerID = playerID;
     this.card = card;
   }
 
